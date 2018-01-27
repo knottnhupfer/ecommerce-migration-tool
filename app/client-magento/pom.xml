@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>client-magento</artifactId>
+	<name>E-Commerce Java magento client</name>
+
+	<licenses>
+		<license>
+			<name>Modified MIT license</name>
+			<url>http://downloads.smooth-systems.solutions/LICENSE_OPEN_SOURCE</url>
+			<comments>Modified MIT License</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<email>support@smooth-systems.solutions</email>
+			<id>SmoothSystems</id>
+			<name>Smooth Systems Solutions</name>
+			<url>http://www.smooth-systems.solutions</url>
+		</developer>
+	</developers>
+
+	<parent>
+		<groupId>org.smooth.systems.ecommerce</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.smooth.systems.ecommerce</groupId>
+			<artifactId>migration-client-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.chen0040</groupId>
+			<artifactId>java-magento-client</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

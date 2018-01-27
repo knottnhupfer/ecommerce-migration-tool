@@ -1,0 +1,52 @@
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+  <category>
+  	<id><![CDATA[12]]></id>
+  	<id_parent xlink:href="http://prestashop.local/api/categories/2"><![CDATA[2]]></id_parent>
+  	<level_depth><![CDATA[2]]></level_depth>
+  	<nb_products_recursive notFilterable="true"><![CDATA[1]]></nb_products_recursive>
+  	<active><![CDATA[1]]></active>
+  	<id_shop_default><![CDATA[1]]></id_shop_default>
+  	<is_root_category><![CDATA[0]]></is_root_category>
+  	<position><![CDATA[1]]></position>
+  	<date_add><![CDATA[2017-09-13 19:45:06]]></date_add>
+  	<date_upd><![CDATA[2017-09-13 19:49:19]]></date_upd>
+  	<name>
+      <language id="1" xlink:href="http://prestashop.local/api/languages/1"><![CDATA[Farben]]></language>
+      <language id="2"   xlink:href="http://prestashop.local/api/languages/2"><![CDATA[Farben]]></language>
+      <language id="3" xlink:href="http://prestashop.local/api/languages/3"><![CDATA[Farben]]></language>
+    </name>
+	  <link_rewrite>
+      <language id="1" xlink:href="http://prestashop.local/api/languages/1"><![CDATA[farben]]></language>
+      <language id="2" xlink:href="http://prestashop.local/api/languages/2"><![CDATA[colours]]></language>
+      <language id="3" xlink:href="http://prestashop.local/api/languages/3"><![CDATA[colori]]></language>
+    </link_rewrite>
+	  <description>
+      <language id="1" xlink:href="http://prestashop.local/api/languages/1"><![CDATA[]]></language>
+      <language id="2" xlink:href="http://prestashop.local/api/languages/2"><![CDATA[]]></language>
+      <language id="3" xlink:href="http://prestashop.local/api/languages/3"><![CDATA[]]></language>
+    </description>
+  	<meta_title>
+      <language id="1" xlink:href="http://prestashop.local/api/languages/1"><![CDATA[]]></language>
+      <language id="2" xlink:href="http://prestashop.local/api/languages/2"><![CDATA[Farben von Pure & Original]]></language>
+      <language id="3" xlink:href="http://prestashop.local/api/languages/3"><![CDATA[Farben von Pure & Original]]></language>
+    </meta_title>
+	  <meta_description>
+      <language id="1" xlink:href="http://prestashop.local/api/languages/1"><![CDATA[]]></language>
+      <language id="2" xlink:href="http://prestashop.local/api/languages/2"><![CDATA[]]></language>
+      <language id="3" xlink:href="http://prestashop.local/api/languages/3"><![CDATA[]]></language>
+    </meta_description>
+	  <meta_keywords>
+      <language id="1" xlink:href="http://prestashop.local/api/languages/1"><![CDATA[]]></language>
+      <language id="2" xlink:href="http://prestashop.local/api/languages/2"><![CDATA[]]></language>
+      <language id="3" xlink:href="http://prestashop.local/api/languages/3"><![CDATA[]]></language>
+    </meta_keywords>
+    <associations>
+      <categories nodeType="category" api="categories"/>
+      <products nodeType="product" api="products">
+	      <product xlink:href="http://prestashop.local/api/products/9">
+	        <id><![CDATA[9]]></id>
+	      </product>
+      </products>
+    </associations>
+  </category>
+</prestashop>

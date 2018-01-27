@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<prestashop>
+    <category>
+        <id>14</id>
+        <id_parent>12</id_parent>
+        <active>false</active>
+        <name>
+            <language id="1">Test en 1</language>
+            <language id="2">Test de 1</language>
+            <language id="3">Test it 1</language>
+        </name>
+        <description>
+            <language id="1"></language>
+            <language id="2"></language>
+            <language id="3"></language>
+        </description>
+        <link_rewrite>
+            <language id="1">test1</language>
+            <language id="2">test1</language>
+            <language id="3">test1</language>
+        </link_rewrite>
+    </category>
+</prestashop>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<prestashop>
+    <category>
+        <id_parent>0</id_parent>
+        <active>1</active>
+        <name>
+            <language id="3">Catalog (italian)</language>
+            <language id="2">Catalog (german)</language>
+        </name>
+        <description>
+            <language id="3"/>
+            <language id="2"/>
+        </description>
+        <link_rewrite>
+            <language id="3">Catalog(italian)</language>
+            <language id="2">Catalog(german)</language>
+        </link_rewrite>
+    </category>
+</prestashop>

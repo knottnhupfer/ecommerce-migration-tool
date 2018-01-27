@@ -1,0 +1,10 @@
+# eclipse files
+.recommenders/
+.metadata/
+RemoteSystemsTempFiles/
+
+# java files
+target/
+.settings/
+.classpath
+.project

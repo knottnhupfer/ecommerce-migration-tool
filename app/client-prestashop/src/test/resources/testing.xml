@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<prestashop>
+    <category>
+        <id_parent>19</id_parent>
+        <active>1</active>
+        <name>
+            <language id="3">Lampade e faretti LED</language>
+        </name>
+        <description>
+            <language id="3"/>
+        </description>
+        <link_rewrite>
+            <language id="3">lampadeefarettiled</language>
+        </link_rewrite>
+    </category>
+</prestashop>

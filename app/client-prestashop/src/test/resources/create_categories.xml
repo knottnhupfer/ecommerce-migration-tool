@@ -1,0 +1,22 @@
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+  <category>
+  	<id_parent>12</id_parent>
+  	<active><![CDATA[1]]></active>
+  	<is_root_category><![CDATA[0]]></is_root_category>
+  	<name>
+      <language id="1"><![CDATA[Neue Category]]></language>
+      <language id="2"><![CDATA[New category]]></language>
+      <language id="3"><![CDATA[Nuova categoria]]></language>
+    </name>
+	  <description>
+      <language id="1"><![CDATA[]]></language>
+      <language id="2"><![CDATA[]]></language>
+      <language id="3"><![CDATA[]]></language>
+    </description>
+	  <link_rewrite>
+      <language id="1"><![CDATA[farben123]]></language>
+      <language id="2"><![CDATA[colours123]]></language>
+      <language id="3"><![CDATA[colori123]]></language>
+    </link_rewrite>
+  </category>
+</prestashop>
