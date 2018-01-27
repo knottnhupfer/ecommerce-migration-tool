@@ -40,7 +40,7 @@ public class Product {
 
   private ProductDimensionAndShipping dimension;
 
-  private ProductTranslateableAttributes attributes;
+  private List<ProductTranslateableAttributes> attributes = new ArrayList<>();
 
   private List<Long> categories = new ArrayList<>();
 

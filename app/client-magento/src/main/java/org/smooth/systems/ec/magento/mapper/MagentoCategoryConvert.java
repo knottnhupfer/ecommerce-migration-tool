@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.CategoryTranslateableAttributes;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 @Component
+@ConditionalOnProperty(prefix = "migration.magento2", name = "base-url")
 public class MagentoCategoryConvert {
 
   public Category convertCategory(com.github.chen0040.magento.models.Category category, String language) {

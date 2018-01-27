@@ -22,11 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @ConditionalOnProperty(prefix = "migration.magento2", name = "base-url")
 public class MagentoObjectReader extends AbstractMagentoConnector implements MigrationSystemReader {
 
-  private final MagentoCategoryConvert converter;
+  private final MagentoCategoryConvert categoryConverter;
 
   public MagentoObjectReader(Magento2ConnectorConfiguration config, MagentoCategoryConvert converter) {
     super(config);
-    this.converter = converter;
+    this.categoryConverter = converter;
   }
 
   @Override
@@ -60,7 +60,7 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
       com.github.chen0040.magento.models.Category category = client.categories().getRootCategoryById(config.getCategoryId());
       Assert.notNull(category, "Root category retrieving failed");
 
-      Category cat = converter.convertCategory(category, config.getCategoryLanguage());
+      Category cat = categoryConverter.convertCategory(category, config.getCategoryLanguage());
       Assert.notNull(cat, "Category conversion failed");
 
       log.info("Retrieved category: {}", cat);
