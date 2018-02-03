@@ -19,3 +19,4 @@ modules.xml
 
 # runtime files
 application.log
+data/
