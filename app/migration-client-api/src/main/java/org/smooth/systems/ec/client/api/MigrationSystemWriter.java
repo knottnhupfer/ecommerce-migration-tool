@@ -35,15 +35,6 @@ public interface MigrationSystemWriter extends RegisterableComponent {
   public void writeUsers(List<User> customers, boolean updateIfExists) throws ObjectAlreadyExistsException;
 
   /**
-   * Preparing the data model ex. setting root category id, manipulating the
-   * category tree according the destination system.
-   * 
-   * @param categories
-   *          categories to be created at the destination system
-   */
-  public void prepareDataModel(Category mergeCategories);
-
-  /**
    * Write categories to system, if the customer already exists writing the
    * customers will fail. Existing elements are checked by the name of the
    * element since the id can change over various systems.
