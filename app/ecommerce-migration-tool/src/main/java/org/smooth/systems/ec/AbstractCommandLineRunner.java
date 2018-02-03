@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.List;
 
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
+import org.smooth.systems.utils.ErrorUtil;
 import org.springframework.boot.ApplicationArguments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.smooth.systems.utils.ErrorUtil;
 
 import lombok.extern.slf4j.Slf4j;
 

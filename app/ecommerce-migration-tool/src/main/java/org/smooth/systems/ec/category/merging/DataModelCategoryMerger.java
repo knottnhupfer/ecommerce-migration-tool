@@ -12,11 +12,10 @@ import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.CategoryTranslateableAttributes;
 import org.smooth.systems.ec.model.MigrationCategoryModel;
+import org.smooth.systems.utils.ErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-
-import com.smooth.systems.utils.ErrorUtil;
 
 import lombok.extern.slf4j.Slf4j;
 

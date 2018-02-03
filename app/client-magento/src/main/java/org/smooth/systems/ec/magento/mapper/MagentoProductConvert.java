@@ -11,11 +11,14 @@ import org.smooth.systems.ec.migration.model.Product.ProductType;
 import org.smooth.systems.ec.migration.model.Product.ProductVisibility;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.utils.ErrorUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.MagentoAttribute;
+import com.github.chen0040.magento.models.ProductMedia;
 
 @Component
 @ConditionalOnProperty(prefix = "migration.magento2", name = "base-url")
@@ -25,7 +28,7 @@ public class MagentoProductConvert {
   public static final String KEY_NAME_FRIENDLY_URL = "url_key";
   public static final String KEY_NAME_SHORT_DESCRIPTION = "short_description";
   public static final String KEY_NAME_TAGS = "meta_keyword";
-  
+
   public static final String KEY_NAME_IMAGE = "image";
 
   // not used yet
@@ -36,10 +39,18 @@ public class MagentoProductConvert {
 
   public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-  public Product convertProduct(com.github.chen0040.magento.models.Product product, String language) {
+  private final MagentoClient client;
+
+  @Autowired
+  public MagentoProductConvert(MagentoClient client) {
+    this.client = client;
+  }
+
+  public Product convertProduct(com.github.chen0040.magento.models.Product product, String language, boolean appendImageUrls) {
     Assert.notNull(product, "product is null, unable to convert");
 
     Product prod = new Product();
+    prod.setId(product.getId());
     prod.setSku(product.getSku());
     prod.setCostPrice(product.getPrice());
     prod.setCreationDate(LocalDateTime.parse(product.getUpdated_at(), DATE_FORMATTER));
@@ -54,27 +65,13 @@ public class MagentoProductConvert {
     // populateChildCategory(cat, category.getChildren_data(), language);
 
     populateProductAttributes(product, prod, language);
+    if(appendImageUrls) {
+      appendImageUrlsToProduct(product.getSku(), prod);
+    }
     return prod;
   }
 
-  // TODO
-  // image ... main image url
-
   private void populateProductAttributes(com.github.chen0040.magento.models.Product product, Product prod, String language) {
-
-    // getMagentoAttributeValue(KEY_NAME_DESCRIPTION, product);
-    // getMagentoAttributeValue(KEY_NAME_FRIENDLY_URL, product);
-    // getMagentoAttributeValue(KEY_NAME_SHORT_DESCRIPTION, product);
-    // getMagentoAttributeValue(KEY_NAME_TAGS, product);
-    //
-    // getMagentoAttributeValue(KEY_NAME_MANUFACTURER, product);
-    // getMagentoAttributeValue(KEY_NAME_META_TITLE, product);
-    // getMagentoAttributeValue(KEY_NAME_META_DESCRIPTION, product);
-    // getMagentoAttributeValue(KEY_NAME_URL_PATH, product);
-    
-    String imageUrl = getMagentoAttributeValue(KEY_NAME_IMAGE, product);
-    System.out.println("Image url: " + imageUrl);
-
     ProductTranslateableAttributes attributes = new ProductTranslateableAttributes(language);
     attributes.setName(product.getName());
     attributes.setDescription(getMagentoAttributeValue(KEY_NAME_DESCRIPTION, product));
@@ -82,6 +79,16 @@ public class MagentoProductConvert {
     attributes.setShortDescription(getMagentoAttributeValue(KEY_NAME_SHORT_DESCRIPTION, product));
     attributes.setTags(getMagentoAttributeListValue(KEY_NAME_TAGS, product));
     prod.getAttributes().add(attributes);
+  }
+
+  private void appendImageUrlsToProduct(String sku, Product prod) {
+    List<ProductMedia> mediaList = client.media().getProductMediaList(prod.getSku());
+    for (ProductMedia productMedia : mediaList) {
+      if(!KEY_NAME_IMAGE.equals(productMedia.getMedia_type())) {
+        continue;
+      }
+      prod.getProductImageUrls().add(productMedia.getFile());
+    }
   }
 
   private String getMagentoAttributeValue(String attributeCode, com.github.chen0040.magento.models.Product product) {

@@ -12,59 +12,62 @@ import org.springframework.boot.ApplicationRunner;
 //import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import org.smooth.systems.utils.FileUtils;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
 public class ProductsToCategoryMappingGenerator implements ApplicationRunner {
 
-  @Autowired
-  private CategoriesRepository categoriesRepo;
+	@Autowired
+	private CategoriesRepository categoriesRepo;
 
-  @Autowired
-  private ProductCategoryMappingRepository productsCategoryRepo;
+	@Autowired
+	private ProductCategoryMappingRepository productsCategoryRepo;
 
-  @Override
-  public void run(ApplicationArguments applicationArguments) throws Exception {
-    log.trace("run()");
-    Properties properties = retrieveAllProductsWithCategoryMapping();
-    log.info("Properties({})", properties.size());
-    log.info("{}", properties);
-  }
+	@Override
+	public void run(ApplicationArguments applicationArguments) throws Exception {
+		log.trace("run()");
+		Properties properties = retrieveAllProductsWithCategoryMapping();
+		log.info("Properties({})", properties.size());
+		log.info("{}", properties);
+		FileUtils.writePropertiesToFile(properties, "data/products_mapping.properties", "mapping from productId to categoryId\n# productId=categoryId");
+	}
 
-  private Properties retrieveAllProductsWithCategoryMapping() {
-    log.info("retrieveAllProductsAndCategoryMapping()");
-    List<Long> allProductIds = productsCategoryRepo.findAllProductIds();
-    log.info("Found {} products", allProductIds.size());
+	private Properties retrieveAllProductsWithCategoryMapping() {
+		log.info("retrieveAllProductsAndCategoryMapping()");
+		List<Long> allProductIds = productsCategoryRepo.findAllProductIds();
+		log.info("Found {} products", allProductIds.size());
 
-    Properties properties = new Properties();
-    for (Long productId : allProductIds) {
-      properties.put(productId, getCategoryIdForProductId(productId));
-    }
-    return properties;
-  }
+		Properties properties = new Properties();
+		for (Long productId : allProductIds) {
+			properties.put(productId.toString(), getCategoryIdForProductId(productId).toString());
+		}
+		return properties;
+	}
 
-  private Long getCategoryIdForProductId(Long productId) {
-    log.debug("getCategoryIdForProductId({})", productId);
-    List<Long> categoryIds = productsCategoryRepo.findByProductId(productId);
-    if (categoryIds.isEmpty()) {
-      String msg = String.format("No categoryIds found for productId:%s", productId);
-      log.error(msg);
-      throw new RuntimeException(msg);
-    }
-    log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
+	private Long getCategoryIdForProductId(Long productId) {
+		log.debug("getCategoryIdForProductId({})", productId);
+		List<Long> categoryIds = productsCategoryRepo.findByProductId(productId);
+		if (categoryIds.isEmpty()) {
+			String msg = String.format("No categoryIds found for productId:%s", productId);
+			log.error(msg);
+			throw new RuntimeException(msg);
+		}
+		log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
 
-    List<MagentoCategory> categories = categoriesRepo.getByCategoryIds(categoryIds);
-    if (categories.isEmpty()) {
-      String msg = String.format("No categories found for productId:%s", productId);
-      log.error(msg);
-      throw new RuntimeException(msg);
-    }
-    if (categoryIds.size() != categories.size()) {
-      log.warn("Unable to fetch proper category size({}), found categories: {}", categoryIds.size(), categories);
-    }
-    log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
+		List<MagentoCategory> categories = categoriesRepo.getByCategoryIds(categoryIds);
+		if (categories.isEmpty()) {
+			String msg = String.format("No categories found for productId:%s", productId);
+			log.error(msg);
+			throw new RuntimeException(msg);
+		}
+		if (categoryIds.size() != categories.size()) {
+			log.warn("Unable to fetch proper category size({}), found categories: {}", categoryIds.size(), categories);
+		}
+		log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
 
-    return categories.get(0).getId();
-  }
+		return categories.get(0).getId();
+	}
 }
