@@ -1,24 +1,23 @@
 package org.smooth.systems.ec.utils.db.component;
 
-import java.util.List;
-import java.util.Properties;
-
+import lombok.extern.slf4j.Slf4j;
+import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.db.model.MagentoCategory;
 import org.smooth.systems.ec.utils.db.repository.CategoriesRepository;
 import org.smooth.systems.ec.utils.db.repository.ProductCategoryMappingRepository;
+import org.smooth.systems.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-//import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import org.smooth.systems.utils.FileUtils;
+import java.util.List;
+import java.util.Properties;
 
-import lombok.extern.slf4j.Slf4j;
-
+/**
+ * Created by David Monichi <david.monichi@smooth-systems.solutions> on 03.02.18.
+ */
 @Slf4j
 @Component
-public class ProductsToCategoryMappingGenerator implements ApplicationRunner {
+public class ProductsToCategoryMappingExecutor implements IActionExecuter {
 
 	@Autowired
 	private CategoriesRepository categoriesRepo;
@@ -27,12 +26,17 @@ public class ProductsToCategoryMappingGenerator implements ApplicationRunner {
 	private ProductCategoryMappingRepository productsCategoryRepo;
 
 	@Override
-	public void run(ApplicationArguments applicationArguments) throws Exception {
-		log.trace("run()");
+	public void execute() {
+		log.trace("execute()");
 		Properties properties = retrieveAllProductsWithCategoryMapping();
 		log.info("Properties({})", properties.size());
 		log.info("{}", properties);
 		FileUtils.writePropertiesToFile(properties, "data/products_mapping.properties", "mapping from productId to categoryId\n# productId=categoryId");
+	}
+
+	@Override
+	public String getActionName() {
+		return "products-mapping";
 	}
 
 	private Properties retrieveAllProductsWithCategoryMapping() {
