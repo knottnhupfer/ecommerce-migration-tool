@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.smooth.systems</groupId>
+	<artifactId>ecommerce-utils</artifactId>
+	<name>E-Commerce utils tools</name>
+
+	<licenses>
+		<license>
+			<name>Modified MIT license</name>
+			<url>http://downloads.smooth-systems.solutions/LICENSE_OPEN_SOURCE</url>
+			<comments>Modified MIT License</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<email>support@smooth-systems.solutions</email>
+			<id>SmoothSystems</id>
+			<name>Smooth Systems Solutions</name>
+			<url>http://www.smooth-systems.solutions</url>
+		</developer>
+	</developers>
+
+	<parent>
+		<groupId>org.smooth.systems.ecommerce</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>
