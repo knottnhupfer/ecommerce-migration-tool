@@ -36,10 +36,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.smooth.systems.base</groupId>
-			<artifactId>smooth-systems-utils</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.smooth.systems.ecommerce</groupId>
 			<artifactId>client-prestashop</artifactId>
 		</dependency>
@@ -51,19 +47,6 @@
 			<groupId>org.smooth.systems.ecommerce</groupId>
 			<artifactId>migration-client-api</artifactId>
 		</dependency>
-
-		<!-- <dependency> -->
-		<!-- <groupId>org.springframework.cloud</groupId> -->
-		<!-- <artifactId>spring-cloud-starter-oauth2</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.springframework.boot</groupId> -->
-		<!-- <artifactId>spring-boot-starter-security</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.springframework.boot</groupId> -->
-		<!-- <artifactId>spring-boot-starter-web</artifactId> -->
-		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

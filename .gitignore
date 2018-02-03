@@ -8,3 +8,14 @@ target/
 .settings/
 .classpath
 .project
+
+
+# IntelliJ
+*.iml
+modules.xml
+.idea/misc.xml
+*.ipr
+.idea
+
+# runtime files
+application.log

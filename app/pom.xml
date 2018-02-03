@@ -49,11 +49,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<dependency>
-				<groupId>com.smooth.systems.base</groupId>
-				<artifactId>smooth-systems-utils</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
-			</dependency>
+			<!--<dependency>-->
+				<!--<groupId>com.smooth.systems.base</groupId>-->
+				<!--<artifactId>smooth-systems-utils</artifactId>-->
+				<!--<version>1.0.0-SNAPSHOT</version>-->
+			<!--</dependency>-->
 			<dependency>
 				<groupId>org.smooth.systems.ecommerce</groupId>
 				<artifactId>ecommerce-migration-tool</artifactId>
@@ -75,9 +75,14 @@
 				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
+				<groupId>org.smooth.systems.ecommerce</groupId>
+				<artifactId>ecommerce-utils</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
 				<groupId>com.github.chen0040</groupId>
 				<artifactId>java-magento-client</artifactId>
-				<version>1.0.13</version>
+				<version>1.0.14</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -87,6 +92,7 @@
 		<module>migration-client-api</module>
 		<module>client-magento</module>
 		<module>client-prestashop</module>
+		<module>ecommerce-utils</module>
 	</modules>
 
 	<repositories>
