@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.client.util;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -13,10 +14,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.utils.FileUtils;
 
 @Slf4j
-@NoArgsConstructor
 public class ObjectIdMapper {
 
+	private final File file;
+
+	private final String comment;
+
 	private Map<Long, Long> categoryIdMapping = new HashMap<>();
+
+	public ObjectIdMapper(String fileName, String comment) {
+		this.file = new File(fileName);
+		this.comment = comment;
+	}
 
 	public Long getMappedIdForId(Long idToMap) throws NotFoundException {
 		if (!categoryIdMapping.containsKey(idToMap)) {
@@ -36,26 +45,23 @@ public class ObjectIdMapper {
 		categoryIdMapping.put(srcId, dstId);
 	}
 
-	public void writeMappingToFile(String filePath) {
+	public void writeMappingToFile() {
 		Properties fileContent = new Properties();
 		for (Long srcId : categoryIdMapping.keySet()) {
 			fileContent.setProperty(srcId.toString(), categoryIdMapping.get(srcId).toString());
 		}
-		FileUtils.writePropertiesToFile(fileContent, filePath, "# defines the mapping from source category id to created category id in destination system");
+		FileUtils.writePropertiesToFile(fileContent, file.getAbsolutePath(), comment);
 	}
 
-	public static ObjectIdMapper createCategoriesMapping(MigrationConfiguration config) {
-		log.info("Initialize categories mapping with file: {}", config.getCategoriesMappingFile());
-		ObjectIdMapper mapper = new ObjectIdMapper();
-
-		Properties categoryMappingProperties = FileUtils.readPropertiesFromFile(config.getCategoriesMappingFile());
+	public void initializeIdMapperFromFile() {
+		log.info("Initialize categories mapping with file: {}", file.getAbsolutePath());
+		Properties categoryMappingProperties = FileUtils.readPropertiesFromFile(file.getAbsolutePath());
 		Set<Object> keySet = categoryMappingProperties.keySet();
 		for (Object key : keySet) {
 			Long mappedCatId = Long.valueOf(((String) key).trim());
 			Long dstCatId = Long.valueOf(((String) categoryMappingProperties.get(key)).trim());
-			mapper.addMapping(mappedCatId, dstCatId);
+			addMapping(mappedCatId, dstCatId);
 		}
-		log.info("Initialized object id mapper: {}", mapper.getClass().getCanonicalName());
-		return mapper;
+		log.info("Initialized object id mapper from file: {}", file.getAbsolutePath());
 	}
 }

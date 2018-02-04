@@ -17,4 +17,6 @@ public class MagentoCategory {
   private Long id;
 
   private Long level;
+
+  private Long parentId;
 }

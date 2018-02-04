@@ -1,6 +1,7 @@
 package org.smooth.systems.ec.utils.db.component;
 
 import lombok.extern.slf4j.Slf4j;
+import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.db.model.MagentoCategory;
 import org.smooth.systems.ec.utils.db.repository.CategoriesRepository;
@@ -25,18 +26,21 @@ public class ProductsToCategoryMappingExecutor implements IActionExecuter {
 	@Autowired
 	private ProductCategoryMappingRepository productsCategoryRepo;
 
+	@Autowired
+	private MigrationConfiguration config;
+
+	@Override
+	public String getActionName() {
+		return "products-mapping";
+	}
+
 	@Override
 	public void execute() {
 		log.trace("execute()");
 		Properties properties = retrieveAllProductsWithCategoryMapping();
 		log.info("Properties({})", properties.size());
 		log.info("{}", properties);
-		FileUtils.writePropertiesToFile(properties, "data/products_mapping.properties", "mapping from productId to categoryId\n# productId=categoryId");
-	}
-
-	@Override
-	public String getActionName() {
-		return "products-mapping";
+		FileUtils.writePropertiesToFile(properties, config.getGeneratedCreatedCategoriesMappingFile(), " mapping from productId to categoryId\n# productId=categoryId");
 	}
 
 	private Properties retrieveAllProductsWithCategoryMapping() {
@@ -53,7 +57,7 @@ public class ProductsToCategoryMappingExecutor implements IActionExecuter {
 
 	private Long getCategoryIdForProductId(Long productId) {
 		log.debug("getCategoryIdForProductId({})", productId);
-		List<Long> categoryIds = productsCategoryRepo.findByProductId(productId);
+		List<Long> categoryIds = productsCategoryRepo.getCategoryIdsforProductId(productId);
 		if (categoryIds.isEmpty()) {
 			String msg = String.format("No categoryIds found for productId:%s", productId);
 			log.error(msg);

@@ -15,51 +15,65 @@ import lombok.Data;
 @Data
 public class MigrationConfiguration {
 
-  @JsonProperty("source-system-name")
-  private String sourceSystemName;
+	@JsonProperty("source-system-name")
+	private String sourceSystemName;
 
-  @JsonProperty("destination-system-name")
-  private String destinationSystemName;
+	@JsonProperty("destination-system-name")
+	private String destinationSystemName;
 
-  @JsonProperty("root-category-id")
-  private Long rootCategoryId;
+	@JsonProperty("root-category-id")
+	private Long rootCategoryId;
 
-  @JsonProperty("root-category-language")
-  private String rootCategoryLanguage;
+	@JsonProperty("root-category-language")
+	private String rootCategoryLanguage;
 
-  @JsonProperty("additional-categories")
-  private List<CategoryConfig> additionalCategories;
+	@JsonProperty("additional-categories")
+	private List<CategoryConfig> additionalCategories;
 
-  @JsonProperty("categories-mapping-file")
-  private String categoriesMappingFile;
+	@JsonProperty("categories-merging-file")
+	private String categoriesMergingFile;
 
-  @JsonProperty("category-ids-merging-ignore-list")
-  private List<Long> categoryIdsMergingIgnoreList;
+	@JsonProperty("generated-created-categories-mapping-file")
+	private String generatedCreatedCategoriesMappingFile;
 
-  @JsonProperty("category-ids-skipping")
-  private List<Long> categoryIdsSkipping;
+	@JsonProperty("category-ids-merging-ignore-list")
+	private List<Long> categoryIdsMergingIgnoreList;
 
-  @Override
-  public String toString() {
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    try {
-      ByteArrayOutputStream os = new ByteArrayOutputStream();
-      mapper.writeValue(os, this);
-      return new String(os.toByteArray(), "UTF-8");
-    } catch (Exception e) {
-      return "ERROR: Unable to convert object to string.";
-    }
-  }
+	@JsonProperty("category-ids-skipping")
+	private List<Long> categoryIdsSkipping;
 
-  public void storeConfiguration(MigrationConfiguration config) {
-    sourceSystemName = config.sourceSystemName;
-    destinationSystemName = config.destinationSystemName;
-    rootCategoryId = config.rootCategoryId;
-    rootCategoryLanguage = config.rootCategoryLanguage;
-    additionalCategories = config.additionalCategories;
-    categoriesMappingFile = config.categoriesMappingFile;
-    categoryIdsMergingIgnoreList = config.categoryIdsMergingIgnoreList != null ? config.categoryIdsMergingIgnoreList
-        : Collections.emptyList();
-    categoryIdsSkipping = config.categoryIdsSkipping != null ? config.categoryIdsSkipping : Collections.emptyList();
-  }
+	@JsonProperty("products-merging-file")
+	private String productsMergingFile;
+
+	@JsonProperty("generated-products-merging-file")
+	private String generatedProductsMergingFile;
+
+	@Override
+	public String toString() {
+		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+		try {
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			mapper.writeValue(os, this);
+			return new String(os.toByteArray(), "UTF-8");
+		} catch (Exception e) {
+			return "ERROR: Unable to convert object to string.";
+		}
+	}
+
+	public void storeConfiguration(MigrationConfiguration config) {
+		sourceSystemName = config.sourceSystemName;
+		destinationSystemName = config.destinationSystemName;
+		rootCategoryId = config.rootCategoryId;
+		rootCategoryLanguage = config.rootCategoryLanguage;
+		additionalCategories = config.additionalCategories;
+
+		categoriesMergingFile = config.categoriesMergingFile;
+		generatedCreatedCategoriesMappingFile = config.generatedCreatedCategoriesMappingFile;
+		categoryIdsMergingIgnoreList = config.categoryIdsMergingIgnoreList != null ? config.categoryIdsMergingIgnoreList
+			: Collections.emptyList();
+		categoryIdsSkipping = config.categoryIdsSkipping != null ? config.categoryIdsSkipping : Collections.emptyList();
+
+		productsMergingFile = config.productsMergingFile;
+		generatedProductsMergingFile = config.generatedProductsMergingFile;
+	}
 }

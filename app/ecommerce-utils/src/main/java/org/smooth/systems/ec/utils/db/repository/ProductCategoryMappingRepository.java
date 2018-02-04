@@ -13,5 +13,8 @@ public interface ProductCategoryMappingRepository extends JpaRepository<MagentoP
   List<Long> findAllProductIds();
 
   @Query("SELECT m.categoryId FROM MagentoProductCategoryMapping m WHERE m.productId = :productId")
-  List<Long> findByProductId(@Param("productId") Long productId);
+  List<Long> getCategoryIdsforProductId(@Param("productId") Long productId);
+
+	@Query("SELECT distinct m.productId FROM MagentoProductCategoryMapping m WHERE m.categoryId IN (:categoryIds)")
+	List<Long> getProductIdsForCategoryIds(@Param("categoryIds") List<Long> categoryIds);
 }

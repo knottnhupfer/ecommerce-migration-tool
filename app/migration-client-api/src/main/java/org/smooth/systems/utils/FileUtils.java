@@ -41,7 +41,7 @@ public class FileUtils {
 	}
 
 	public static final void writePropertiesToFile(Properties properties, String fileName, String comment) {
-		log.info("writePropertiesToFile({}, {})", fileName, comment);
+		log.info("writePropertiesToFile({}, ...)", fileName);
 		File newPropertiesFile = new File(fileName);
 		if (!newPropertiesFile.getParentFile().isDirectory()) {
 			if (!newPropertiesFile.getParentFile().mkdirs()) {
