@@ -10,7 +10,6 @@ import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.AbstractCategoryWriter;
 import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.User;
-import org.smooth.systems.ec.prestashop17.Prestashop17ConnectorConfiguration;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
 import org.smooth.systems.ec.prestashop17.mapper.CategoryMapper;
@@ -31,17 +30,14 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
   private final PrestashopLanguageTranslatorCache languagesCache;
 
-  private final Prestashop17ConnectorConfiguration prestashopConfig;
-
   private CategoryWriter categoryWriter;
 
   @Autowired
   public Prestashop17ObjectWriter(MigrationConfiguration config, PrestashopLanguageTranslatorCache languagesCache,
-      Prestashop17Client client, Prestashop17ConnectorConfiguration prestashopConfig) {
+      Prestashop17Client client) {
     this.config = config;
     this.client = client;
     this.languagesCache = languagesCache;
-    this.prestashopConfig = prestashopConfig;
   }
 
   @Override
@@ -54,14 +50,6 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   public void writeUsers(List<User> customers, boolean updateIfExists) throws ObjectAlreadyExistsException {
     log.info("writeUsers({}, {})", customers.size(), updateIfExists);
     throw new RuntimeException("Not implemented yet");
-  }
-
-  @Override
-  public void prepareDataModel(Category rootCategory) {
-    log.info("prepareDataModel({})", rootCategory);
-    log.info("Set prestashop base-category-id to: {}", prestashopConfig.getBaseCategoryId());
-    rootCategory.setParentId(prestashopConfig.getBaseCategoryId());
-    log.info("Updated root category:{}", rootCategory);
   }
 
   @Override
@@ -116,7 +104,8 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
     @Override
     protected Long writeCategory(Category category, int level) {
-      org.smooth.systems.ec.prestashop17.model.Category cat = CategoryMapper.convertCategoryToSystemModel(languagesCache, category, counter == 0);
+      org.smooth.systems.ec.prestashop17.model.Category cat = CategoryMapper.convertCategoryToSystemModel(languagesCache, category,
+          counter == 0);
       log.info("Write category[{}]: {}", ++counter, cat);
       org.smooth.systems.ec.prestashop17.model.Category createdCategory = client.writeCategory(cat);
       return createdCategory.getId();

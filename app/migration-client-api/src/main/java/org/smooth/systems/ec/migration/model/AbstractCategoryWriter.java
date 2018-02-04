@@ -19,7 +19,7 @@ public abstract class AbstractCategoryWriter extends AbstractCategoryRecursivePr
 
   protected AbstractCategoryWriter(MigrationConfiguration config) {
     this.config = config;
-    categoryIdMapper = new ObjectIdMapper();
+    categoryIdMapper = new ObjectIdMapper(config.getCategoriesMergingFile(), "");
   }
 
   @Override

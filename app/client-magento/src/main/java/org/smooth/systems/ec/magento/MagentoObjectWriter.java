@@ -27,11 +27,6 @@ public class MagentoObjectWriter extends AbstractMagentoConnector implements Mig
   public void writeUsers(List<User> customers, boolean updateIfExists) throws ObjectAlreadyExistsException {
     throw new RuntimeException("Not implemented yet");
   }
-  
-  @Override
-  public void prepareDataModel(Category mergeCategories) {
-    throw new RuntimeException("Not implemented yet");
-  }
 
   @Override
   public void writeCategories(Category categories) throws ObjectAlreadyExistsException {
