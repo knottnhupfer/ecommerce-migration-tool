@@ -20,3 +20,5 @@ modules.xml
 # runtime files
 application.log
 data/
+app/logs/
+config/generated/*.properties

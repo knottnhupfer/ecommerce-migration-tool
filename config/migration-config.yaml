@@ -1,0 +1,40 @@
+# migration configuration
+---
+source-system-name: magento2
+destination-system-name: prestashop17
+
+
+##
+## Category mapping
+##
+root-category-id: 2
+root-category-language: it
+additional-categories:
+  -
+    category-id: 26
+    category-language: de
+# manual created mapping file which maps alternative languages category id to root category id
+categories-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/categories-merging.properties
+# list of category ids which do not need to be mapped to root category ex. additional category
+# anyway all categories needs to be mapped so that eventual products can be mapped
+category-ids-merging-ignore-list:
+  - 53
+  - 127
+  - 128
+  - 126
+  - 78
+category-ids-skipping:
+#  - 50
+# maps root category ids of the source system to created category ids on the destination system
+generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/generated-created-categories-mapping.properties
+
+
+##
+## Products mapping
+##
+
+# manual created product mapping file which maps alternative languages product id to root product id
+products-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/products-merging.properties
+
+# generated mapping file which maps alternative languages source system product ids to a root category id of the source system
+generated-products-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/generated-products-merging.properties
