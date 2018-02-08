@@ -45,14 +45,16 @@ public class ProductsToCategoryMappingExecutor implements IActionExecuter {
 
 	private Properties retrieveAllProductsWithCategoryMapping() {
 		log.info("retrieveAllProductsAndCategoryMapping()");
-		List<Long> allProductIds = productsCategoryRepo.findAllProductIds();
-		log.info("Found {} products", allProductIds.size());
+		throw new RuntimeException("Not used anymore");
 
-		Properties properties = new Properties();
-		for (Long productId : allProductIds) {
-			properties.put(productId.toString(), getCategoryIdForProductId(productId).toString());
-		}
-		return properties;
+//		List<Long> allProductIds = productsCategoryRepo.findAllProductIds();
+//		log.info("Found {} products", allProductIds.size());
+//
+//		Properties properties = new Properties();
+//		for (Long productId : allProductIds) {
+//			properties.put(productId.toString(), getCategoryIdForProductId(productId).toString());
+//		}
+//		return properties;
 	}
 
 	private Long getCategoryIdForProductId(Long productId) {

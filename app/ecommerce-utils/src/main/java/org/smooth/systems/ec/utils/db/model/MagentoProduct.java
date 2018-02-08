@@ -18,5 +18,6 @@ public class MagentoProduct {
 
   private String sku;
 
-  private Long level;
+	@Column(name = "type_id")
+  private String typeId;
 }

@@ -33,20 +33,23 @@ public class MigrationConfiguration {
 	@JsonProperty("categories-merging-file")
 	private String categoriesMergingFile;
 
-	@JsonProperty("generated-created-categories-mapping-file")
-	private String generatedCreatedCategoriesMappingFile;
-
 	@JsonProperty("category-ids-merging-ignore-list")
 	private List<Long> categoryIdsMergingIgnoreList;
 
 	@JsonProperty("category-ids-skipping")
 	private List<Long> categoryIdsSkipping;
 
+	@JsonProperty("generated-created-categories-mapping-file")
+	private String generatedCreatedCategoriesMappingFile;
+
 	@JsonProperty("products-merging-file")
 	private String productsMergingFile;
 
 	@JsonProperty("generated-products-merging-file")
 	private String generatedProductsMergingFile;
+
+	@JsonProperty("product-ids-skipping")
+	private List<Long> productIdsSkipping;
 
 	@Override
 	public String toString() {
@@ -75,5 +78,6 @@ public class MigrationConfiguration {
 
 		productsMergingFile = config.productsMergingFile;
 		generatedProductsMergingFile = config.generatedProductsMergingFile;
+		productIdsSkipping = config.productIdsSkipping != null ? config.productIdsSkipping : Collections.emptyList();
 	}
 }

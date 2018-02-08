@@ -25,6 +25,9 @@ public abstract class AbstractProductsForCategoryReader implements IActionExecut
 	protected CategoriesRepository categoriesRepo;
 
 	@Autowired
+	private ProductCategoryMappingRepository productsCategoryRepo;
+
+	@Autowired
 	protected ProductCategoryMappingRepository productCategoryMappingRepo;
 
 	protected List<Long> retrieveProductIdsForCateoryId(Long mainCategoryId) {
@@ -47,5 +50,29 @@ public abstract class AbstractProductsForCategoryReader implements IActionExecut
 
 	private List<Long> getProductsForCategoryIds(List<Long> categoryIds) {
 		return productCategoryMappingRepo.getProductIdsForCategoryIds(categoryIds);
+	}
+
+	protected Long getCategoryIdForProductId(Long productId) {
+		log.debug("getCategoryIdForProductId({})", productId);
+		List<Long> categoryIds = productsCategoryRepo.getCategoryIdsforProductId(productId);
+		if (categoryIds.isEmpty()) {
+			String msg = String.format("No categoryIds found for productId:%s", productId);
+			log.error(msg);
+			throw new RuntimeException(msg);
+		}
+		log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
+
+		List<MagentoCategory> categories = categoriesRepo.getByCategoryIds(categoryIds);
+		if (categories.isEmpty()) {
+			String msg = String.format("No categories found for productId:%s", productId);
+			log.error(msg);
+			throw new RuntimeException(msg);
+		}
+		if (categoryIds.size() != categories.size()) {
+			log.warn("Unable to fetch proper category size({}), found categories: {}", categoryIds.size(), categories);
+		}
+		log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
+
+		return categories.get(0).getId();
 	}
 }
