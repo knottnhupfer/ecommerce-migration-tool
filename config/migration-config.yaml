@@ -1,6 +1,7 @@
 # migration configuration
 ---
-source-system-name: magento2
+# source-system-name: magento2
+source-system-name: magento-19-db
 destination-system-name: prestashop17
 
 
