@@ -11,7 +11,7 @@ public final class CategoryMappingUtil {
     if (categoryId.equals(category.getId())) {
       return category;
     }
-    for (Category subCategory : category.getSubCategories()) {
+    for (Category subCategory : category.getChildrens()) {
       Category resCategory = retrieveCategoryById(subCategory, categoryId);
       if (resCategory != null) {
         return resCategory;

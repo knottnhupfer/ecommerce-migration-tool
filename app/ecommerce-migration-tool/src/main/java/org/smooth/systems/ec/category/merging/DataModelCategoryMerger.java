@@ -54,7 +54,7 @@ public class DataModelCategoryMerger implements IDataModelCategoryMerger {
 
   private void mergeCategoryAndSubcategories(Category category) {
     mergeCategory(category);
-    for (Category subCategory : category.getSubCategories()) {
+    for (Category subCategory : category.getChildrens()) {
       mergeCategoryAndSubcategories(subCategory);
     }
   }
@@ -93,7 +93,7 @@ public class DataModelCategoryMerger implements IDataModelCategoryMerger {
 
   private void initializeObjectIdMapper() {
   	log.debug("initializeObjectIdMapper()");
-  	String comment = "# defines the mapping from source category id to created category id in destination system";
-		idMapper = new ObjectIdMapper(config.getCategoriesMergingFile(), comment);
+		idMapper = new ObjectIdMapper(config.getCategoriesMergingFile());
+		idMapper.initializeIdMapperFromFile();
 	}
 }

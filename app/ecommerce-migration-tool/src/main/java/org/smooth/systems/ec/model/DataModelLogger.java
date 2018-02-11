@@ -93,7 +93,7 @@ public class DataModelLogger {
   private static void printCategories(List<Category> categories, int level, IObjectLogger logger) {
     for (Category category : categories) {
       printCategoryWithIndent(category, level, logger);
-      for (Category subCategory : category.getSubCategories()) {
+      for (Category subCategory : category.getChildrens()) {
         printCategories(Collections.singletonList(subCategory), level + 1, logger);
       }
     }

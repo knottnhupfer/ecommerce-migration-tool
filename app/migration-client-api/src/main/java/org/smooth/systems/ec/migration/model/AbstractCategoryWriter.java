@@ -8,7 +8,7 @@ import org.smooth.systems.utils.ErrorUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class AbstractCategoryWriter extends AbstractCategoryRecursiveProcessor {
+public abstract class AbstractCategoryWriter extends AbstractCategoryRecursiveProcessor<Category> {
 
   // TODO retrieve default parent id from application.properties
   private static final Long DEFAULT_ROOT_CATEGORY_ID = 1L;
@@ -19,11 +19,11 @@ public abstract class AbstractCategoryWriter extends AbstractCategoryRecursivePr
 
   protected AbstractCategoryWriter(MigrationConfiguration config) {
     this.config = config;
-    categoryIdMapper = new ObjectIdMapper(config.getCategoriesMergingFile());
+    categoryIdMapper = new ObjectIdMapper(config.getGeneratedCreatedCategoriesMappingFile());
   }
 
   @Override
-  protected void executeCategory(Category category, int level) {
+  protected void executeTreeNode(Category category, int level) {
     if (config.getCategoryIdsSkipping().contains(category.getId())) {
       log.error("Skipping category: {}", category.getId());
       return;
@@ -31,7 +31,7 @@ public abstract class AbstractCategoryWriter extends AbstractCategoryRecursivePr
     updateRootCategory(category, level);
     Long categoryId = writeCategory(category, level);
     categoryIdMapper.addMapping(category.getId(), categoryId);
-    log.info("Created new category with id:%d for source category with id:%d", categoryId, category.getId());
+    log.info("Created new category with id:{} for source category with id:{}", categoryId, category.getId());
   }
 
   private void updateRootCategory(Category category, int level) {
@@ -41,7 +41,7 @@ public abstract class AbstractCategoryWriter extends AbstractCategoryRecursivePr
       try {
         category.setParentId(categoryIdMapper.getMappedIdForId(category.getParentId()));
       } catch (NotFoundException e) {
-        ErrorUtil.throwAndLog(String.format("Unable to map parent category id:%d. Reason: %s", category.getParentId(), e.getMessage()), e);
+        ErrorUtil.throwAndLog(String.format("Unable to map parent category id:{}. Reason: {}", category.getParentId(), e.getMessage()), e);
       }
     }
   }

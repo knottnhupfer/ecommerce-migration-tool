@@ -43,7 +43,9 @@ public class ReadAndMergeController {
   }
 
   public void readCategoriesAndMerge() {
-    dataModel.setReadCategories(readCategoriesAndCreate());
+		List<Category> readCategories = readCategoriesAndCreate();
+		log.info("Read successfully {} root categories", readCategories.size());
+		dataModel.setReadCategories(readCategories);
     dataModelLogger.printReadCategories();
 
     modelMerger.mergeDataModel();
@@ -56,7 +58,8 @@ public class ReadAndMergeController {
   private List<Category> readCategoriesAndCreate() {
     try {
       MigrationSystemReader reader = factory.getSystemReaderForType(config.getSourceSystemName());
-      return reader.readAllCategories(retrieveCategoryConfig(config));
+			List<CategoryConfig> categoryReadConfigs = retrieveCategoryConfig(config);
+			return reader.readAllCategories(categoryReadConfigs);
     } catch (NotFoundException e) {
       log.error("Error while reading categories. Reason: {}", e.getMessage());
       throw new IllegalStateException(e.getMessage());

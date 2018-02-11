@@ -3,7 +3,6 @@ package org.smooth.systems.ec.utils.db.component;
 import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.api.CategoryConfig;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
-import org.smooth.systems.ec.client.util.ObjectStringMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.db.model.MagentoProduct;
@@ -66,14 +65,14 @@ public class ProductsMergeMappingListExecutor extends AbstractProductsForCategor
 
 		products.forEach(product -> {
 			String productSku = beautifyProductSku(product);
-			if(productMap.keySet().contains(productSku)) {
+			if (productMap.keySet().contains(productSku)) {
 				MagentoProduct matchingRootProduct = productMap.get(productSku);
 				productIdsMapper.addMapping(product.getId(), matchingRootProduct.getId());
 			}
 		});
 		products.removeIf(product -> productIdsMapper.keySet().contains(product.getId()));
 		log.info("{} not merged products", products.size());
-		if(!products.isEmpty()) {
+		if (!products.isEmpty()) {
 			log.error("Not merged products: {}", products);
 			throw new RuntimeException(String.format("Unable to merge %s products.", products.size()));
 		}
@@ -81,7 +80,7 @@ public class ProductsMergeMappingListExecutor extends AbstractProductsForCategor
 
 	private String beautifyProductSku(MagentoProduct product) {
 		String sku = product.getSku().trim();
-		if(sku.startsWith("_")) {
+		if (sku.startsWith("_")) {
 			sku = sku.substring(1);
 		}
 		return sku;
@@ -91,7 +90,7 @@ public class ProductsMergeMappingListExecutor extends AbstractProductsForCategor
 		log.debug("checkIfProductsAreValid({}, {})", info, products.size());
 		products.removeIf(product -> config.getProductIdsSkipping().contains(product.getId()));
 		List<MagentoProduct> invalidProducts = products.stream().filter(product -> product.getSku() == null || product.getSku().isEmpty()).collect(Collectors.toList());
-		if(!invalidProducts.isEmpty()) {
+		if (!invalidProducts.isEmpty()) {
 			String msg = String.format("%s contains %s invalid products.", info, products.size());
 			log.error(msg);
 			log.error("Invalid products: {}", invalidProducts);
@@ -108,7 +107,7 @@ public class ProductsMergeMappingListExecutor extends AbstractProductsForCategor
 
 	private void printoutProductWithEmptySKU(List<MagentoProduct> products, String prefix) {
 		products.forEach(product -> {
-			if(product.getSku() == null) {
+			if (product.getSku() == null) {
 				log.info("{}: NULL: id: {}, SKU: {}", prefix, product.getId(), product.getSku());
 			}
 		});

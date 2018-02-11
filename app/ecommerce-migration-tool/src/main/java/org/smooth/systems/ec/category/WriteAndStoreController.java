@@ -44,7 +44,7 @@ public class WriteAndStoreController {
 //      systemWriter.prepareDataModel(dataModel.getMergeCategories());
       systemWriter.writeCategories(dataModel.getMergeCategories(), true);
       ObjectIdMapper categoryIdMapper = systemWriter.getCategoriesObjectIdMapper();
-      categoryIdMapper.writeMappingToFile();
+      categoryIdMapper.writeMappingToFile("# defines the mapping from source category id to created category id in destination system");
       dataModelLogger.printIgnoredCategories();
     } catch (ObjectAlreadyExistsException e) {
       String msg = String.format("Unable to write categories to destination system. Reason: %s", e.getMessage());

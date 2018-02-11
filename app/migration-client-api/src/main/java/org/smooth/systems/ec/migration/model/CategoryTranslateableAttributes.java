@@ -17,6 +17,8 @@ public class CategoryTranslateableAttributes {
 
   private String metaTitle;
 
+	private String shortDescription;
+
   private String description;
 
   private String friendlyUrl;

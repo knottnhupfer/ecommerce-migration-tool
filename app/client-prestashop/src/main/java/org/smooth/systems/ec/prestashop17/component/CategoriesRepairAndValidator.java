@@ -7,10 +7,10 @@ import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.CategoryTranslateableAttributes;
 import org.springframework.util.Assert;
 
-public class CategoriesRepairAndValidator extends AbstractCategoryRecursiveProcessor {
+public class CategoriesRepairAndValidator extends AbstractCategoryRecursiveProcessor<Category> {
 
   @Override
-  protected void executeCategory(Category category, int level) {
+  protected void executeTreeNode(Category category, int level) {
     List<CategoryTranslateableAttributes> attributes = category.getAttributes();
     for (CategoryTranslateableAttributes attr : attributes) {
       if (attr.getFriendlyUrl() == null || attr.getFriendlyUrl().isEmpty()) {

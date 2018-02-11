@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class AbstractProductsForCategoryReader implements IActionExecuter {
 
-	@Autowired
-	protected MigrationConfiguration config;
+//	@Autowired
+//	protected MigrationConfiguration config;
 
 	@Autowired
 	protected CategoriesRepository categoriesRepo;
 
-	@Autowired
-	private ProductCategoryMappingRepository productsCategoryRepo;
+//	@Autowired
+//	private ProductCategoryMappingRepository productsCategoryRepo;
 
 	@Autowired
 	protected ProductCategoryMappingRepository productCategoryMappingRepo;
@@ -54,7 +54,7 @@ public abstract class AbstractProductsForCategoryReader implements IActionExecut
 
 	protected Long getCategoryIdForProductId(Long productId) {
 		log.debug("getCategoryIdForProductId({})", productId);
-		List<Long> categoryIds = productsCategoryRepo.getCategoryIdsforProductId(productId);
+		List<Long> categoryIds = productCategoryMappingRepo.getCategoryIdsforProductId(productId);
 		if (categoryIds.isEmpty()) {
 			String msg = String.format("No categoryIds found for productId:%s", productId);
 			log.error(msg);
