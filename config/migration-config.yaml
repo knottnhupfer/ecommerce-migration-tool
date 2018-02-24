@@ -8,6 +8,7 @@ destination-system-name: prestashop17
 ##
 ## Category mapping
 ##
+
 root-category-id: 2
 root-category-language: it
 additional-categories:
@@ -34,8 +35,15 @@ generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/mi
 ## Products mapping
 ##
 
+# brand mapping file
+products-brand-mapping: /home/david/workspace_alphaconcept/migration_tool/config/products-brands-mapping.properties
+
 # manual created product mapping file which maps alternative languages product id to root product id
 products-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/products-merging.properties
+
+# TODO: not done yet
+# generated mapping file which maps alternative languages source system product ids to a root category id of the source system
+generated-products-root-ids-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/generated-products-root-ids-merging.properties
 
 # generated mapping file which maps alternative languages source system product ids to a root category id of the source system
 generated-products-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/generated-products-merging.properties
