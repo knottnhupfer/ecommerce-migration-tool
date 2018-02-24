@@ -13,7 +13,7 @@ import lombok.Data;
 public class Product {
 
   public enum ProductType {
-    Simple, Configurable
+    Simple
   }
 
   public enum ProductVisibility {

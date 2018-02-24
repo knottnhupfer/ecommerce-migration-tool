@@ -1,19 +1,16 @@
 package org.smooth.systems.ec.magento19.db.component;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.smooth.systems.ec.client.api.CategoryConfig;
-import org.smooth.systems.ec.client.api.MigrationSystemReader;
-import org.smooth.systems.ec.magento19.db.Magento19DbConstants;
 import org.smooth.systems.ec.magento19.db.model.Magento19Category;
 import org.smooth.systems.ec.magento19.db.repository.CategoryRepository;
 import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on 09.02.18.

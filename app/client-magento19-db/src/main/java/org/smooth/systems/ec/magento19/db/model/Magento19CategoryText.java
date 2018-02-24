@@ -1,10 +1,7 @@
 package org.smooth.systems.ec.magento19.db.model;
 
-import lombok.Data;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on 09.02.18.
