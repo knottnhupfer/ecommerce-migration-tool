@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class Magento19DbCategoriesReader implements MigrationSystemReader {
+public class Magento19DbCategoriesReader {
 
 	@Autowired
 	private CategoryRepository categoryRepo;
@@ -28,12 +28,6 @@ public class Magento19DbCategoriesReader implements MigrationSystemReader {
 	@Autowired
 	private Magento19DbCategoriesPopulater categoriesPopulater;
 
-	@Override
-	public String getName() {
-		return Magento19DbConstants.MAGENTO19DB_SYSTEM_NAME;
-	}
-
-	@Override
 	public List<Category> readAllCategories(List<CategoryConfig> categories) {
 		log.info("readAllCategories({})", categories);
 		List<Category> retrievedCategories = new ArrayList<>();
@@ -92,29 +86,5 @@ public class Magento19DbCategoriesReader implements MigrationSystemReader {
 		});
 		log.trace("Converted to: {}", category);
 		return cat;
-	}
-
-	@Override
-	public List<User> readAllUsers() {
-		log.debug("readAllUsers()");
-		throw new RuntimeException("Not implemented yet");
-	}
-
-	@Override
-	public List<User> readWebUsers() {
-		log.debug("readWebUsers()");
-		throw new RuntimeException("Not implemented yet");
-	}
-
-	@Override
-	public List<User> readAdministrativeUsers() {
-		log.debug("readAdministrativeUsers()");
-		throw new RuntimeException("Not implemented yet");
-	}
-
-	@Override
-	public List<Product> readProductsOfCategory(Long categoryId, boolean searchSubcategories) {
-		log.debug("readProductsOfCategory()");
-		throw new RuntimeException("Not implemented yet");
 	}
 }

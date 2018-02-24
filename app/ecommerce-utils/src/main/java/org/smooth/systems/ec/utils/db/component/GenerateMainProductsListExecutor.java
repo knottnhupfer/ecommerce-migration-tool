@@ -4,15 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
-import org.smooth.systems.ec.utils.db.model.MagentoCategory;
-import org.smooth.systems.ec.utils.db.repository.CategoriesRepository;
-import org.smooth.systems.ec.utils.db.repository.ProductCategoryMappingRepository;
-import org.smooth.systems.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on 03.02.18.
@@ -32,7 +27,7 @@ public class GenerateMainProductsListExecutor extends AbstractProductsForCategor
 	@Override
 	public void execute() {
 		log.debug("execute()");
-		List<Long> rootProductIds = retrieveProductIdsForCateoryId(config.getRootCategoryId());
+		List<Long> rootProductIds = retrieveAllProductIdsForCateoryId(config.getRootCategoryId());
 		log.info("Retrieved {} product ids for root category id {}", rootProductIds.size(), config.getRootCategoryId());
 
 		ObjectIdMapper productsIdToCategoryMapper = new ObjectIdMapper(config.getGeneratedCreatedCategoriesMappingFile());

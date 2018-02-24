@@ -7,6 +7,7 @@ import org.smooth.systems.ec.magento19.db.Magento19Constants;
 import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,10 @@ import java.util.List;
 @Component
 @Profile(Magento19Constants.MAGENTO19_DB_PROFILE_NAME)
 public class Magento19DbObjectReader implements MigrationSystemReader {
+
+	@Autowired
+	private Magento19DbCategoriesReader categoriesReader;
+
 	@Override
 	public String getName() {
 		return Magento19Constants.MAGENTO19_DB_PROFILE_NAME;
@@ -40,7 +45,7 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 
 	@Override
 	public List<Category> readAllCategories(List<CategoryConfig> categories) {
-		throw new NotImplementedException();
+		return categoriesReader.readAllCategories(categories);
 	}
 
 	@Override

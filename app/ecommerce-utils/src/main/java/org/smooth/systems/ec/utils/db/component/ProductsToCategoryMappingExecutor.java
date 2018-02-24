@@ -67,7 +67,7 @@ public class ProductsToCategoryMappingExecutor implements IActionExecuter {
 		}
 		log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
 
-		List<MagentoCategory> categories = categoriesRepo.getByCategoryIds(categoryIds);
+		List<MagentoCategory> categories = categoriesRepo.getByCategoryIdsOrderedByLevel(categoryIds);
 		if (categories.isEmpty()) {
 			String msg = String.format("No categories found for productId:%s", productId);
 			log.error(msg);

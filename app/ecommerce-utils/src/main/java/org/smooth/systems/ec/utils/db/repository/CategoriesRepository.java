@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 public interface CategoriesRepository extends Repository<MagentoCategory, Long> {
 
   @Query("SELECT c FROM MagentoCategory c WHERE c.id IN (:categoryIds) ORDER BY level DESC")
-  List<MagentoCategory> getByCategoryIds(@Param("categoryIds") List<Long> categoryIds);
+  List<MagentoCategory> getByCategoryIdsOrderedByLevel(@Param("categoryIds") List<Long> categoryIds);
 
 	List<MagentoCategory> findByParentId(Long parentId);
 }

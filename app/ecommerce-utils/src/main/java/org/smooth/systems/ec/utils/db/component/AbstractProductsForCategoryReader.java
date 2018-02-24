@@ -1,11 +1,12 @@
 package org.smooth.systems.ec.utils.db.component;
 
 import lombok.extern.slf4j.Slf4j;
-import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.db.model.MagentoCategory;
+import org.smooth.systems.ec.utils.db.model.MagentoProduct;
 import org.smooth.systems.ec.utils.db.repository.CategoriesRepository;
 import org.smooth.systems.ec.utils.db.repository.ProductCategoryMappingRepository;
+import org.smooth.systems.ec.utils.db.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -18,20 +19,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class AbstractProductsForCategoryReader implements IActionExecuter {
 
-//	@Autowired
-//	protected MigrationConfiguration config;
+	@Autowired
+	protected ProductsRepository productsRepo;
 
 	@Autowired
 	protected CategoriesRepository categoriesRepo;
 
-//	@Autowired
-//	private ProductCategoryMappingRepository productsCategoryRepo;
-
 	@Autowired
 	protected ProductCategoryMappingRepository productCategoryMappingRepo;
 
-	protected List<Long> retrieveProductIdsForCateoryId(Long mainCategoryId) {
-		log.info("retrieveProductIdsForCateoryId({})", mainCategoryId);
+	protected List<Long> retrieveAllProductIdsForCateoryId(Long mainCategoryId) {
+		log.info("retrieveAllProductIdsForCateoryId({})", mainCategoryId);
 		List<Long> categoryIds = getSubCategoryIdsForCategoryId(mainCategoryId);
 		log.info("Retrieved category ids: {}", categoryIds);
 		return getProductsForCategoryIds(categoryIds);
@@ -62,7 +60,7 @@ public abstract class AbstractProductsForCategoryReader implements IActionExecut
 		}
 		log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
 
-		List<MagentoCategory> categories = categoriesRepo.getByCategoryIds(categoryIds);
+		List<MagentoCategory> categories = categoriesRepo.getByCategoryIdsOrderedByLevel(categoryIds);
 		if (categories.isEmpty()) {
 			String msg = String.format("No categories found for productId:%s", productId);
 			log.error(msg);
@@ -74,5 +72,12 @@ public abstract class AbstractProductsForCategoryReader implements IActionExecut
 		log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
 
 		return categories.get(0).getId();
+	}
+
+	protected List<MagentoProduct> getCategoryProducts(Long categoryId) {
+		log.info("getCategoryProducts({})", categoryId);
+		List<Long> rootProductIds = retrieveAllProductIdsForCateoryId(categoryId);
+		log.info("Retrieved {} product ids for category id {}", rootProductIds.size(), categoryId);
+		return productsRepo.getAllProductsForIds(rootProductIds);
 	}
 }

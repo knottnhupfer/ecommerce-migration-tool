@@ -34,7 +34,7 @@ public class ProductsMergeMappingListExecutor extends AbstractProductsForCategor
 
 	@Override
 	public String getActionName() {
-		return "merge-products";
+		return "products-mapping";
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ProductsMergeMappingListExecutor extends AbstractProductsForCategor
 			log.info("Merge category: {}", categoryConfig);
 			mergeProductIdsToRootProducts(categoryConfig);
 		}
-		productIdsMapper.writeMappingToFile(" mapping alternative language categoryId to rootCategoryId");
+		productIdsMapper.writeMappingToFile(" mapping alternative language productId to rootProductId");
 	}
 
 	private void initializeRootCategories() {
@@ -88,7 +88,8 @@ public class ProductsMergeMappingListExecutor extends AbstractProductsForCategor
 
 	private void checkIfProductsAreValid(String info, List<MagentoProduct> products) {
 		log.debug("checkIfProductsAreValid({}, {})", info, products.size());
-		products.removeIf(product -> config.getProductIdsSkipping().contains(product.getId()));
+		removingProductsToBeSkipped(products);
+
 		List<MagentoProduct> invalidProducts = products.stream().filter(product -> product.getSku() == null || product.getSku().isEmpty()).collect(Collectors.toList());
 		if (!invalidProducts.isEmpty()) {
 			String msg = String.format("%s contains %s invalid products.", info, products.size());
@@ -98,17 +99,19 @@ public class ProductsMergeMappingListExecutor extends AbstractProductsForCategor
 		}
 	}
 
-	private List<MagentoProduct> getCategoryProducts(Long categoryId) {
-		log.info("getCategoryProducts({})", categoryId);
-		List<Long> rootProductIds = retrieveProductIdsForCateoryId(categoryId);
-		log.info("Retrieved {} product ids for category id {}", rootProductIds.size(), categoryId);
-		return productsRepo.getAllProductsForIds(rootProductIds);
+	private void removingProductsToBeSkipped(List<MagentoProduct> products) {
+		List<MagentoProduct> productsToBeRemoved = products.stream().filter(product -> config.getProductIdsSkipping().contains(product.getId())).collect(Collectors.toList());
+		if(!productsToBeRemoved.isEmpty()) {
+			log.info("  Products to be skipped:");
+			products.forEach(product -> log.info("    ToBeSkipped: id: {}, SKU: {}", product.getId(), product.getSku()));
+		}
+		products.removeIf(product -> config.getProductIdsSkipping().contains(product.getId()));
 	}
 
 	private void printoutProductWithEmptySKU(List<MagentoProduct> products, String prefix) {
 		products.forEach(product -> {
 			if (product.getSku() == null) {
-				log.info("{}: NULL: id: {}, SKU: {}", prefix, product.getId(), product.getSku());
+				log.info("{}: id: {}, SKU: {}", prefix, product.getId(), product.getSku());
 			}
 		});
 	}
