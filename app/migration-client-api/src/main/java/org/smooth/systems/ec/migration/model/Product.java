@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Created by Smooth Systems Solutions
  */
 @Data
+@NoArgsConstructor
 public class Product {
 
   public enum ProductType {
@@ -26,7 +28,7 @@ public class Product {
 
   private LocalDateTime creationDate;
 
-  private long taxRuleId;
+  // private long taxRuleId;
 
   private Double salesPrice;
 
@@ -47,4 +49,11 @@ public class Product {
   private List<Long> relatedProducts = new ArrayList<>();
 
   private List<String> productImageUrls = new ArrayList<>();
+
+  public Product(Long id, String sku, LocalDateTime creationDate, ProductType type) {
+    this.id = id;
+    this.sku = sku;
+    this.type = type;
+    this.creationDate = creationDate;
+  }
 }

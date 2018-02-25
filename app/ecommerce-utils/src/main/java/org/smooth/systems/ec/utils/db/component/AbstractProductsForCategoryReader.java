@@ -1,11 +1,12 @@
 package org.smooth.systems.ec.utils.db.component;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.smooth.systems.ec.magento19.db.repository.ProductCategoryMappingRepository;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.db.model.MagentoCategory;
 import org.smooth.systems.ec.utils.db.model.MagentoProduct;
 import org.smooth.systems.ec.utils.db.repository.CategoriesRepository;
-import org.smooth.systems.ec.utils.db.repository.ProductCategoryMappingRepository;
 import org.smooth.systems.ec.utils.db.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 

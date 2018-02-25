@@ -6,7 +6,8 @@ import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 /**
- * Created by David Monichi <david.monichi@smooth-systems.solutions> on 24.02.18.
+ * Created by David Monichi <david.monichi@smooth-systems.solutions> on
+ * 24.02.18.
  */
 public interface ProductEavIndexRepository extends Repository<Magento19ProductIndexEav, Long> {
 

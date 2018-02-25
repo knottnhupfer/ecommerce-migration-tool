@@ -1,9 +1,23 @@
 package org.smooth.systems.ec.magento19.db.component;
 
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.smooth.systems.ec.client.util.ObjectStringToIdMapper;
+import org.smooth.systems.ec.configuration.MigrationConfiguration;
+import org.smooth.systems.ec.magento19.db.model.Magento19Category;
 import org.smooth.systems.ec.magento19.db.model.Magento19EavAttributeOption;
+import org.smooth.systems.ec.magento19.db.model.Magento19ProductDecimal;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductIndexEav;
+import org.smooth.systems.ec.magento19.db.model.Magento19ProductVisibility;
+import org.smooth.systems.ec.magento19.db.repository.CategoryRepository;
 import org.smooth.systems.ec.magento19.db.repository.EavAttributeOptionsRepository;
+import org.smooth.systems.ec.magento19.db.repository.ProductCategoryMappingRepository;
+import org.smooth.systems.ec.magento19.db.repository.ProductDecimalRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductEavIndexRepository;
+import org.smooth.systems.ec.magento19.db.repository.ProductVisibilityRepository;
+import org.smooth.systems.ec.migration.model.Product.ProductVisibility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -18,25 +32,115 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class Magento19DbProductFieldsProvider {
 
+  // table catalog_product_entity_decimal
+  public static Long PRODUCT_ATTRIBUTE_ID_PRODUCT_PRICE = 60L;
+  public static Long PRODUCT_ATTRIBUTE_ID_PRODUCT_WEIGHT = 65L;
+
+  public static Long DEFAULT_MANUFACTURER_ID = 2L;
+
+  public static ProductVisibility DEFAULT_PRODUCT_VISIBILITY = ProductVisibility.Everywhere;
+
+  @Autowired
+  private MigrationConfiguration config;
+
+  @Autowired
+  private CategoryRepository categoryRepo;
+  
+  @Autowired
+  private ProductDecimalRepository productDecimalRepo;
+
   @Autowired
   private ProductEavIndexRepository productEavIndexRepo;
 
   @Autowired
   private EavAttributeOptionsRepository eavAttributeRepo;
 
-  public String getBrandIdForProduct(Long productId) {
+  @Autowired
+  private ProductVisibilityRepository productVisibilityRepo;
+
+  @Autowired
+  private ProductCategoryMappingRepository productCategoryRepo;
+
+  private ObjectStringToIdMapper brandMapper;
+
+  @PostConstruct
+  public void initialize() {
+    brandMapper = new ObjectStringToIdMapper(config.getProductsBrandMappingFile(), DEFAULT_MANUFACTURER_ID);
+  }
+
+  public Long getBrandIdForProduct(Long productId) {
     Assert.notNull(productId, "productId is null");
     Magento19ProductIndexEav indexEav = productEavIndexRepo.findManufacturerEntryForProductId(productId);
     if (indexEav == null) {
-      log.warn("Unable to find product eav for productId: {}", productId);
-      return null;
+      log.debug("Unable to find product eav for productId: {}", productId);
+      return brandMapper.getDefaultValue();
     }
 
     Magento19EavAttributeOption productAttribute = eavAttributeRepo.findByOptionId(Long.parseLong(indexEav.getValue()));
     if (productAttribute == null) {
-      log.warn("Unable to find product index eav for productId: {}", productId);
-      return null;
+      log.debug("Unable to find product index eav for productId: {}", productId);
+      return brandMapper.getDefaultValue();
     }
-    return productAttribute.getValue();
+    return brandMapper.getMappedIdForIdOrDefault(productAttribute.getValue());
+  }
+
+  public ProductVisibility getProductVisibility(Long productId) {
+    Assert.notNull(productId, "productId is null");
+    Magento19ProductVisibility visibility = productVisibilityRepo.findById(productId);
+    if (visibility == null) {
+      log.trace("Visibility not found for productId: {}, use default product visibility: {}", productId, DEFAULT_PRODUCT_VISIBILITY);
+      return DEFAULT_PRODUCT_VISIBILITY;
+    }
+    return visibility.getVisibility();
+  }
+
+  public Double getProductSalesPrice(Long productId) {
+    Assert.notNull(productId, "productId is null");
+    Magento19ProductDecimal decimalAttribute = productDecimalRepo.findByProductIdAndAttributeId(productId,
+        PRODUCT_ATTRIBUTE_ID_PRODUCT_PRICE);
+    if (decimalAttribute == null) {
+      String msg = String.format("Unable to retrieve gross price for productId: {}", productId);
+      log.error(msg);
+      throw new IllegalStateException(msg);
+    }
+    Assert.notNull(decimalAttribute.getValue(), "price is null");
+    return decimalAttribute.getValue();
+  }
+
+  public Double getProductWeight(Long productId) {
+    Assert.notNull(productId, "productId is null");
+    Magento19ProductDecimal decimalAttribute = productDecimalRepo.findByProductIdAndAttributeId(productId,
+        PRODUCT_ATTRIBUTE_ID_PRODUCT_WEIGHT);
+    if (decimalAttribute == null) {
+      String msg = String.format("Unable to retrieve weight for productId: {}", productId);
+      log.error(msg);
+      throw new IllegalStateException(msg);
+    }
+    Assert.notNull(decimalAttribute.getValue(), "weight is null");
+    return decimalAttribute.getValue();
+  }
+
+  public Long getCategoryIdForProductId(Long productId) {
+    log.debug("getCategoryIdForProductId({})", productId);
+    List<Long> categoryIds = productCategoryRepo.getCategoryIdsforProductId(productId);
+    if (categoryIds.isEmpty()) {
+      String msg = String.format("No categoryIds found for productId:%s", productId);
+      log.error(msg);
+      throw new RuntimeException(msg);
+    }
+    log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
+
+    List<Magento19Category> categories = categoryRepo.getByCategoryIdsOrderedByLevel(categoryIds);
+    if (categories.isEmpty()) {
+      String msg = String.format("No categories found for productId:%s", productId);
+      log.error(msg);
+      throw new RuntimeException(msg);
+    }
+    if (categoryIds.size() != categories.size()) {
+      log.warn("Unable to fetch proper category size({}), found categories: {}", categoryIds.size(), categories);
+    }
+    log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
+
+    return categories.get(0).getId();
   }
 }
