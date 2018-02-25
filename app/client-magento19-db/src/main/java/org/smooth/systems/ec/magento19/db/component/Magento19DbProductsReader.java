@@ -2,9 +2,11 @@ package org.smooth.systems.ec.magento19.db.component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
-import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.magento19.db.model.Magento19Product;
+import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
+import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
 import org.smooth.systems.ec.magento19.db.repository.ProductRepository;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.Product.ProductType;
@@ -51,16 +53,21 @@ public class Magento19DbProductsReader {
     updateProductVisibility(product);
     updateProductManufacturer(product);
     updateDimensionAndShippingForProduct(product);
+    updateImagesUrls(product);
 
-    // product.getAttributes().add(getTranslateablAttributesForProduct(productId,
-    // langCode));
+    product.getAttributes().add(getTranslateablAttributesForProduct(productId, langCode));
     return product;
   }
 
   public ProductTranslateableAttributes getTranslateablAttributesForProduct(Long productId, String langCode) {
-    // private List<ProductTranslateableAttributes> attributes = new
-    // ArrayList<>();
-    throw new NotImplementedException();
+    ProductTranslateableAttributes attributes = new ProductTranslateableAttributes(langCode);
+    attributes.setDescription(productFieldsProvider.getTextAttribute(productId, Magento19ProductText.DESCRIPTION_ATTR_ID));
+    attributes.setFriendlyUrl(productFieldsProvider.getVarcharAttribute(productId, Magento19ProductVarchar.FRIENDLY_URL_ATTR_ID));
+    attributes.setName(productFieldsProvider.getVarcharAttribute(productId, Magento19ProductVarchar.NAME_ATTR_ID));
+    attributes.setShortDescription(productFieldsProvider.getTextAttribute(productId, Magento19ProductText.SHORT_DESCRIPTION_ATTR_ID));
+    String tagsList = productFieldsProvider.getTextAttribute(productId, Magento19ProductText.META_TAGS_ATTR_ID);
+    attributes.setTags(productFieldsProvider.getStringList(tagsList));
+    return attributes;
   }
 
   private void updateProductManufacturer(Product product) {
@@ -96,6 +103,15 @@ public class Magento19DbProductsReader {
     Long categoryId = productFieldsProvider.getCategoryIdForProductId(getId(product));
     product.getCategories().add(categoryId);
     logRetrievedValue("categoryId", product.getCategories(), product);
+  }
+
+  private void updateImagesUrls(Product product) {
+    String mainImageUrl = productFieldsProvider.getMainImageUrlOfProductId(getId(product));
+    List<String> imageUrls = productFieldsProvider.getImageUrlsOfProductId(getId(product));
+    imageUrls.remove(mainImageUrl);
+    imageUrls.add(0, mainImageUrl);
+    product.getProductImageUrls().addAll(imageUrls);
+    logRetrievedValue("imageUrls", product.getProductImageUrls(), product);
   }
 
   private Long getId(Product product) {

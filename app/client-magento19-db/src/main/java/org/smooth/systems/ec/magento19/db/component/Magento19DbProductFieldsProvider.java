@@ -1,6 +1,8 @@
 package org.smooth.systems.ec.magento19.db.component;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -10,12 +12,18 @@ import org.smooth.systems.ec.magento19.db.model.Magento19Category;
 import org.smooth.systems.ec.magento19.db.model.Magento19EavAttributeOption;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductDecimal;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductIndexEav;
+import org.smooth.systems.ec.magento19.db.model.Magento19ProductMediaEntry;
+import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
+import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductVisibility;
 import org.smooth.systems.ec.magento19.db.repository.CategoryRepository;
 import org.smooth.systems.ec.magento19.db.repository.EavAttributeOptionsRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductCategoryMappingRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductDecimalRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductEavIndexRepository;
+import org.smooth.systems.ec.magento19.db.repository.ProductMediaEntryRepository;
+import org.smooth.systems.ec.magento19.db.repository.ProductTextRepository;
+import org.smooth.systems.ec.magento19.db.repository.ProductVarcharRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductVisibilityRepository;
 import org.smooth.systems.ec.migration.model.Product.ProductVisibility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +53,18 @@ public class Magento19DbProductFieldsProvider {
 
   @Autowired
   private CategoryRepository categoryRepo;
-  
+
+  @Autowired
+  private ProductMediaEntryRepository mediaEntryRepo;
+
   @Autowired
   private ProductDecimalRepository productDecimalRepo;
+
+  @Autowired
+  private ProductTextRepository productTextRepo;
+
+  @Autowired
+  private ProductVarcharRepository productVarcharRepo;
 
   @Autowired
   private ProductEavIndexRepository productEavIndexRepo;
@@ -142,5 +159,41 @@ public class Magento19DbProductFieldsProvider {
     log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
 
     return categories.get(0).getId();
+  }
+
+  public List<String> getImageUrlsOfProductId(Long productId) {
+    log.debug("getImageUrlsOfProductId({})", productId);
+    List<Magento19ProductMediaEntry> entries = mediaEntryRepo.findByEntityId(productId);
+    return entries.stream().map(entry -> entry.getValue()).collect(Collectors.toList());
+  }
+
+  public String getMainImageUrlOfProductId(Long productId) {
+    log.debug("getMainImageUrlOfProductId({})", productId);
+    List<Magento19ProductVarchar> entry = productVarcharRepo.findByEntityIdAndAttributeId(productId,
+        Magento19ProductVarchar.MAIN_IMAGE_URL);
+    if (entry.isEmpty()) {
+      List<String> imageUrls = getImageUrlsOfProductId(productId);
+      return imageUrls.get(0);
+    }
+    return entry.get(0).getValue();
+  }
+
+  public String getTextAttribute(Long productId, Long attributeId) {
+    log.debug("getTextAttribute({}, {})", productId, attributeId);
+    Magento19ProductText entry = productTextRepo.findByEntityIdAndAttributeId(productId, attributeId);
+    Assert.notNull(entry, String.format("text attribute with id '%s' is null for product id '%s'", attributeId, productId));
+    return entry.getValue();
+  }
+
+  public String getVarcharAttribute(Long productId, Long attributeId) {
+    log.debug("getVarcharAttribute({}, {})", productId, attributeId);
+    List<Magento19ProductVarchar> entries = productVarcharRepo.findByEntityIdAndAttributeId(productId, attributeId);
+    Assert.notEmpty(entries, String.format("varchar attribute with id '%s' is null for product id '%s'", attributeId, productId));
+    return entries.get(0).getValue();
+  }
+
+  public List<String> getStringList(String commaSeparatedStringList) {
+    String[] tokens = commaSeparatedStringList.split(",");
+    return Arrays.stream(tokens).map(token -> token.trim()).collect(Collectors.toList());
   }
 }
