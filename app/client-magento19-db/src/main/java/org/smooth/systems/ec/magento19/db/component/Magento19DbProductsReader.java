@@ -14,6 +14,7 @@ import org.smooth.systems.ec.migration.model.Product.ProductVisibility;
 import org.smooth.systems.ec.migration.model.ProductDimensionAndShipping;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -41,6 +42,22 @@ public class Magento19DbProductsReader {
   @Autowired
   private Magento19DbProductFieldsProvider productFieldsProvider;
 
+  public Product getMergedProduct(List<Pair<Long, String>> productDefinitions) {
+    log.info("getProduct({})", productDefinitions);
+    Assert.notEmpty(productDefinitions, "no products to be merged");
+    Pair<Long, String> rootProduct = productDefinitions.get(0);
+    log.info("Create productId: {} with language: {}", rootProduct.getFirst(), rootProduct.getSecond());
+    Product product = getProduct(rootProduct.getFirst(), rootProduct.getSecond());
+    
+    List<Pair<Long, String>> toBeMergedList = productDefinitions.subList(1, productDefinitions.size());
+    toBeMergedList.forEach(productPair -> {
+      log.info("Merge productId: {} with language: {}", productPair.getFirst(), productPair.getSecond());
+      ProductTranslateableAttributes attributes = getTranslateablAttributesForProduct(productPair.getFirst(), productPair.getSecond());
+      product.getAttributes().add(attributes);
+    });
+    return product;
+  }
+
   public Product getProduct(Long productId, String langCode) {
     Assert.notNull(productId, "productId is null");
 
@@ -59,7 +76,7 @@ public class Magento19DbProductsReader {
     return product;
   }
 
-  public ProductTranslateableAttributes getTranslateablAttributesForProduct(Long productId, String langCode) {
+  private ProductTranslateableAttributes getTranslateablAttributesForProduct(Long productId, String langCode) {
     ProductTranslateableAttributes attributes = new ProductTranslateableAttributes(langCode);
     attributes.setDescription(productFieldsProvider.getTextAttribute(productId, Magento19ProductText.DESCRIPTION_ATTR_ID));
     attributes.setFriendlyUrl(productFieldsProvider.getVarcharAttribute(productId, Magento19ProductVarchar.FRIENDLY_URL_ATTR_ID));
@@ -123,5 +140,3 @@ public class Magento19DbProductsReader {
     log.trace("Retrieved product {}: {} for productId: {}", valueName, value, product.getId());
   }
 }
-
-// private List<String> productImageUrls = new ArrayList<>();

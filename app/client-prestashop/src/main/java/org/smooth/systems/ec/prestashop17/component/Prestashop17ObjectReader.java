@@ -47,8 +47,8 @@ public class Prestashop17ObjectReader extends AbstractPrestashop17Connector impl
   }
 
   @Override
-  public List<Product> readProductsOfCategory(Long categoryId, boolean searchSubcategories) {
-    log.debug("readProductsOfCategory({}, {})", categoryId, searchSubcategories);
+  public List<Product> readAllProducts(List<CategoryConfig> categories) {
+    log.debug("readAllProducts({})", categories);
     throw new RuntimeException("Not implemented yet");
   }
 }
