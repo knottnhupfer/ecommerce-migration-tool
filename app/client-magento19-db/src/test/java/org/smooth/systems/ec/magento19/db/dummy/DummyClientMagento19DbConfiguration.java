@@ -15,6 +15,7 @@ public class DummyClientMagento19DbConfiguration {
   public MigrationConfiguration createDummyMigrationConfiguration() {
     MigrationConfiguration config = new MigrationConfiguration();
     config.setProductsBrandMappingFile(getPwd() + "src/test/resources/config/products-brands-mapping.properties");
+    config.setGeneratedCreatedCategoriesMappingFile(getPwd() + "src/test/resources/config/generated-created-categories-mapping.properties");
     return config;
   }
 

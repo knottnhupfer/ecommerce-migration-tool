@@ -2,8 +2,14 @@ package org.smooth.systems.ec.magento19.db.component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.smooth.systems.ec.client.util.ObjectIdMapper;
+import org.smooth.systems.ec.configuration.MigrationConfiguration;
+import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.magento19.db.model.Magento19Product;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
@@ -42,6 +48,20 @@ public class Magento19DbProductsReader {
   @Autowired
   private Magento19DbProductFieldsProvider productFieldsProvider;
 
+  @Autowired
+  private MigrationConfiguration config;
+
+  // maps a categoryId from source system to a created categoryId at the destination system  
+  private ObjectIdMapper categoryIdMapper;
+
+  public void init() {
+    if(categoryIdMapper == null) {
+      String categoriesMappingFile = config.getGeneratedCreatedCategoriesMappingFile();
+      Assert.hasText(categoriesMappingFile, "generated-created-categories-mapping-file is empty");
+      categoryIdMapper = new ObjectIdMapper(categoriesMappingFile);
+    }
+  }
+
   public Product getMergedProduct(List<Pair<Long, String>> productDefinitions) {
     log.info("getProduct({})", productDefinitions);
     Assert.notEmpty(productDefinitions, "no products to be merged");
@@ -73,6 +93,9 @@ public class Magento19DbProductsReader {
     updateImagesUrls(product);
 
     product.getAttributes().add(getTranslateablAttributesForProduct(productId, langCode));
+
+    // update with destination system data
+    updateCategoryIdWithDestinationCategoryId(product);
     return product;
   }
 
@@ -129,6 +152,21 @@ public class Magento19DbProductsReader {
     imageUrls.add(0, mainImageUrl);
     product.getProductImageUrls().addAll(imageUrls);
     logRetrievedValue("imageUrls", product.getProductImageUrls(), product);
+  }
+
+  private void updateCategoryIdWithDestinationCategoryId(Product product) {
+    init();
+    Assert.notEmpty(product.getCategories(), "product categories are empty");
+    try {
+      Long origCategoryId = product.getCategories().get(0);
+      Long createdCategoryId = categoryIdMapper.getMappedIdForId(origCategoryId);
+      product.setCategories(Collections.singletonList(createdCategoryId));
+      log.trace("Updated category id {} to created category id {}", origCategoryId, createdCategoryId);
+    } catch (NotFoundException e) {
+      String msg = String.format("Unable to find created category for source ids %s", product.getCategories());
+      log.error(msg);
+      throw new IllegalStateException(msg);
+    }
   }
 
   private Long getId(Product product) {

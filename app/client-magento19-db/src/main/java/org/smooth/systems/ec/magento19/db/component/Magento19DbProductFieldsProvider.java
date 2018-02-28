@@ -80,12 +80,15 @@ public class Magento19DbProductFieldsProvider {
 
   private ObjectStringToIdMapper brandMapper;
 
-  @PostConstruct
   public void initialize() {
-    brandMapper = new ObjectStringToIdMapper(config.getProductsBrandMappingFile(), DEFAULT_MANUFACTURER_ID);
+    if(brandMapper == null) {
+      log.info("Initialize Magento19DbProductFieldsProvider with brands mapping file: {}", config.getProductsBrandMappingFile());
+      brandMapper = new ObjectStringToIdMapper(config.getProductsBrandMappingFile(), DEFAULT_MANUFACTURER_ID);
+    }
   }
 
   public Long getBrandIdForProduct(Long productId) {
+    initialize();
     Assert.notNull(productId, "productId is null");
     Magento19ProductIndexEav indexEav = productEavIndexRepo.findManufacturerEntryForProductId(productId);
     if (indexEav == null) {

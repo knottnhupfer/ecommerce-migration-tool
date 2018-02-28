@@ -1,19 +1,21 @@
 package org.smooth.systems.ec.magento19.db.component;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.smooth.systems.ec.magento19.db.model.Magento19Product;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductVisibility;
-import org.smooth.systems.ec.magento19.db.repository.ProductDecimalRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductVisibilityRepository;
 import org.smooth.systems.ec.migration.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.util.Pair;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +41,14 @@ public class Magento19DbProductUtilsTest {
   @Autowired
   private Magento19DbProductsReader productRetriever;
 
-  @Autowired
-  private ProductDecimalRepository productDecimalRepo;
-
   @Test
   public void simpleRetrieveRootCategories() {
     assertNotNull(productFieldsProvider);
     Long brandIdForProduct = productFieldsProvider.getBrandIdForProduct(3717L);
+    log.info("Product brand id: {}", brandIdForProduct);
+
+    brandIdForProduct = productFieldsProvider.getBrandIdForProduct(78L);
+    log.info("Product brand id: {}", brandIdForProduct);
   }
 
   @Test
@@ -95,5 +98,16 @@ public class Magento19DbProductUtilsTest {
 
     product = productRetriever.getProduct(78L, "it");
     log.info("Product: {}", product);
+  }
+
+  @Test
+  public void productMergingRetrieverTest() {
+    List<Pair<Long, String>> asList = Arrays.asList(Pair.of(2302L, "it"), Pair.of(2784L, "de"));
+    Product mergedProduct = productRetriever.getMergedProduct(asList);
+    log.info("Merged product: {}", mergedProduct);
+
+    asList = Arrays.asList(Pair.of(2498L, "it"), Pair.of(2785L, "de"));
+    mergedProduct = productRetriever.getMergedProduct(asList);
+    log.info("Merged product: {}", mergedProduct);
   }
 }
