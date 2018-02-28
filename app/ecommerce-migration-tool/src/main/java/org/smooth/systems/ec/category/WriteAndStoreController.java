@@ -8,7 +8,6 @@ import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.model.DataModelLogger;
 import org.smooth.systems.ec.model.MigrationCategoryModel;
-import org.smooth.systems.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
