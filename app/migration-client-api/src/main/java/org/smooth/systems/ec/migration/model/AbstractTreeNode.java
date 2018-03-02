@@ -1,6 +1,5 @@
 package org.smooth.systems.ec.migration.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
