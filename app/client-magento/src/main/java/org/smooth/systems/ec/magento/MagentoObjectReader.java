@@ -70,8 +70,8 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
   }
 
   @Override
-  public List<Product> readProductsOfCategory(Long categoryId, boolean searchSubcategories) {
-    log.debug("readProductsOfCategory({}, {})", categoryId, searchSubcategories);
+  public List<Product> readAllProducts(List<CategoryConfig> categories) {
+    log.debug("readAllProducts({})", categories);
     throw new RuntimeException("Not implemented yet");
   }
 }

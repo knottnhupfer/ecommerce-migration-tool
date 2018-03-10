@@ -1,5 +1,8 @@
 package org.smooth.systems.ec.prestashop17.client;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
@@ -54,6 +57,18 @@ public class Prestashop17ClientTest {
     Category resCategory = client.writeCategory(category);
     System.out.println("Category: " + category);
     System.out.println("Category: " + resCategory);
+  }
+
+  @Test
+  public void uploadProductImage() {
+    Long testProductId = 1L;
+    File image1 = new File("src/test/resources/images/test_image_1.jpg");
+    File image2 = new File("src/test/resources/images/test_image_2.jpg");
+    assertTrue(image1.isFile());
+    assertTrue(image2.isFile());
+
+    client.uploadProductImage(testProductId, image1);    
+    client.uploadProductImage(testProductId, image2);
   }
 
   private CategoryAttribute createTranslatableAttributes(String... values) {

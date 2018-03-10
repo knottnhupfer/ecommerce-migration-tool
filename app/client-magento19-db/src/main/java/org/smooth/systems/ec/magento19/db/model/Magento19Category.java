@@ -22,22 +22,6 @@ public class Magento19Category implements AbstractTreeNode<Magento19Category> {
 	private Long level;
 
 	private Long parentId;
-//	private boolean enabled;
-
-	// TEXT
-//	private String metaKeywords;
-
-
-
-//	private String description;
-
-
-//	private String metaDescription;
-
-	// VARCHAR
-//	private String name;
-//	private String friendlyUrl;
-
 
 	@Transient
 	private List<Magento19Category> childrens = new ArrayList<>();

@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on 09.02.18.
  */
+@Slf4j
 @Component
 @Profile(Magento19Constants.MAGENTO19_DB_PROFILE_NAME)
 public class Magento19DbObjectReader implements MigrationSystemReader {
@@ -48,8 +51,9 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 		return categoriesReader.readAllCategories(categories);
 	}
 
-	@Override
-	public List<Product> readProductsOfCategory(Long categoryId, boolean searchSubcategories) {
-		throw new NotImplementedException();
-	}
+  @Override
+  public List<Product> readAllProducts(List<CategoryConfig> categories) {
+    log.debug("readAllProducts({})", categories);
+    throw new RuntimeException("Not implemented yet");
+  }
 }

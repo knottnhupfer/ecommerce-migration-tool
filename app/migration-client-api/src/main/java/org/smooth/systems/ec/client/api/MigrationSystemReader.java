@@ -49,5 +49,7 @@ public interface MigrationSystemReader extends RegisterableComponent {
    *          otherwise sub categories will be skipped.
    * @return list of products of the specified category
    */
-  public List<Product> readProductsOfCategory(Long categoryId, boolean searchSubcategories);
+//  public List<Product> readProductsOfCategory(Long categoryId, boolean searchSubcategories);
+  
+  public List<Product> readAllProducts(List<CategoryConfig> categories);
 }

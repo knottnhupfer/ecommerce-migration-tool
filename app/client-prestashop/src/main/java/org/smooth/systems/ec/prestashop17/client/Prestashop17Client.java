@@ -1,16 +1,27 @@
 package org.smooth.systems.ec.prestashop17.client;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.prestashop17.model.Category;
+import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
+import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
 import org.smooth.systems.ec.prestashop17.model.Language;
+import org.smooth.systems.ec.prestashop17.model.Product;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.Data;
@@ -19,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 public class Prestashop17Client {
+
+  public static final String URL_PRODUCT_IMAGE = "/images/products/%d";
 
   private final String baseUrl;
 
@@ -88,6 +101,28 @@ public class Prestashop17Client {
     return postedCategory;
   }
 
+  public Category writeProduct(Product product) {
+    throw new NotImplementedException();
+  }
+
+  public UploadedImage uploadProductImage(Long productId, File imageUrl) {
+    Assert.notNull(productId, "productId is null");
+    Assert.notNull(imageUrl, "imageUrl is null");
+
+    String urlImageUpload = getProductImageUrl(productId);
+    log.debug("uploadProductImage({}, {})", urlImageUpload, imageUrl.getAbsolutePath());
+
+    LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+    map.add("image", new FileSystemResource(imageUrl));
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+    HttpEntity<LinkedMultiValueMap<String, Object>> request = new HttpEntity<LinkedMultiValueMap<String, Object>>(map, headers);
+    ResponseEntity<ImageUploadResponse> result = client.exchange(urlImageUpload, HttpMethod.POST, request, ImageUploadResponse.class);
+    log.info("Uploaded image: {}", result.getBody());
+    return result.getBody().getUploadedImage();
+  }
+
   public void printCategory(CategoryWrapper catWrapper) {
     try {
       JAXBContext jaxbContext = JAXBContext.newInstance(CategoryWrapper.class);
@@ -97,5 +132,9 @@ public class Prestashop17Client {
     } catch (Exception e) {
       log.error("Error while marshalling class: {}", CategoryWrapper.class.getName(), e);
     }
+  }
+
+  private String getProductImageUrl(Long productId) {
+    return String.format(baseUrl + URL_PRODUCT_IMAGE, productId);
   }
 }

@@ -12,11 +12,12 @@ import javax.persistence.Table;
  * attribute_id ... 47 == full url store dependent, storeId == 0
  */
 @Entity
-@Table(name="catalog_category_entity_varchar")
-public class Magento19CategoryVarchar extends Magento19Attributes {
+@Table(name="catalog_product_entity_varchar")
+public class Magento19ProductVarchar extends Magento19Attributes {
 
-	public static final Long NAME_ATTR_ID = 31L;
-	public static final Long FRIENDLY_URL_ATTR_ID = 33L;
-	public static final Long SUB_TITLE_ATTR_ID = 36L;
-	public static final Long FULL_URL_ATTR_ID = 47L; // not used probably but nice for checks later on
+	public static final Long NAME_ATTR_ID = 56L;
+	public static final Long FRIENDLY_URL_ATTR_ID = 83L; // 82 without .html
+	public static final Long META_TITLE_ATTR_ID = 67L;
+	public static final Long META_DESCRIPTION_ATTR_ID = 69L;
+	public static final Long MAIN_IMAGE_URL = 70L;
 }

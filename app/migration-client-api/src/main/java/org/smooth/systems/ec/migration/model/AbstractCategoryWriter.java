@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractCategoryWriter extends AbstractCategoryRecursiveProcessor<Category> {
 
   // TODO retrieve default parent id from application.properties
-  private static final Long DEFAULT_ROOT_CATEGORY_ID = 1L;
+  private static final Long DEFAULT_ROOT_CATEGORY_ID = 2L;
 
   private final MigrationConfiguration config;
 

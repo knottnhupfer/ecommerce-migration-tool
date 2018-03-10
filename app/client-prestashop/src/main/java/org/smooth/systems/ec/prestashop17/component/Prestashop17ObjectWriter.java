@@ -24,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @ConditionalOnProperty(prefix = Prestashop17Constants.PRESTASHOP17_CONFIG_PREFIX, name = MigrationClientConstants.MIGRATION_CLIENT_BASE_URL)
 public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector implements MigrationSystemWriter {
 
+  public static final Long PRESTASHOP_ROOT_CATEGORY_ID = 2L;
+
   private final Prestashop17Client client;
 
   private final MigrationConfiguration config;
@@ -73,7 +75,9 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
     validator.executeRecursive(rootCategory);
 
     categoryWriter = new CategoryWriter();
-    categoryWriter.executeRecursive(rootCategory);
+    rootCategory.getChildrens().forEach(category -> {
+      categoryWriter.executeRecursive(category);
+    });
   }
 
   @Override
@@ -105,7 +109,7 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
     @Override
     protected Long writeCategory(Category category, int level) {
       org.smooth.systems.ec.prestashop17.model.Category cat = CategoryMapper.convertCategoryToSystemModel(languagesCache, category,
-          counter == 0);
+          false);
       log.info("Write category[{}]: {}", ++counter, cat);
       org.smooth.systems.ec.prestashop17.model.Category createdCategory = client.writeCategory(cat);
       return createdCategory.getId();

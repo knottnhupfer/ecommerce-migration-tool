@@ -1,4 +1,4 @@
-package org.smooth.systems.ec.utils.db.model;
+package org.smooth.systems.ec.magento19.db.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="catalog_category_product")
-public class MagentoProductCategoryMapping {
+public class Magento19ProductCategoryMapping {
 
   @Id
   @Column(name = "entity_id")

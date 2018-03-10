@@ -42,6 +42,9 @@ public class MigrationConfiguration {
 	@JsonProperty("generated-created-categories-mapping-file")
 	private String generatedCreatedCategoriesMappingFile;
 
+	@JsonProperty("products-brand-mapping")
+	private String productsBrandMappingFile;
+
 	@JsonProperty("products-merging-file")
 	private String productsMergingFile;
 

@@ -11,10 +11,10 @@ import javax.persistence.Table;
  * attribute_id ... 38 == description
  */
 @Entity
-@Table(name="catalog_category_entity_text")
-public class Magento19CategoryText extends Magento19Attributes {
+@Table(name="catalog_product_entity_text")
+public class Magento19ProductText extends Magento19Attributes {
 
-	public static final Long DESCRIPTION_ATTR_ID = 34L;
-	public static final Long META_TAGS_ATTR_ID = 37L;
-	public static final Long META_DESCRIPTION_ATTR_ID = 38L;
+	public static final Long DESCRIPTION_ATTR_ID = 57L;
+	public static final Long SHORT_DESCRIPTION_ATTR_ID = 58L;
+	public static final Long META_TAGS_ATTR_ID = 68L;
 }
