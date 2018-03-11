@@ -1,5 +1,7 @@
 package org.smooth.systems.ec.prestashop17.client;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -7,10 +9,16 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.prestashop17.model.Category;
-import org.smooth.systems.ec.prestashop17.model.CategoryAttribute;
+import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
 import org.smooth.systems.ec.prestashop17.model.Language;
+import org.smooth.systems.ec.prestashop17.model.PrestashopLangAttribute;
+import org.smooth.systems.ec.prestashop17.model.Tag;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Prestashop17ClientTest {
 
   private Prestashop17Client client;
@@ -61,19 +69,47 @@ public class Prestashop17ClientTest {
 
   @Test
   public void uploadProductImage() {
-    Long testProductId = 1L;
-    File image1 = new File("src/test/resources/images/test_image_1.jpg");
     File image2 = new File("src/test/resources/images/test_image_2.jpg");
-    assertTrue(image1.isFile());
     assertTrue(image2.isFile());
-
-    client.uploadProductImage(testProductId, image1);    
-    client.uploadProductImage(testProductId, image2);
+    UploadedImage uploadedImage = client.uploadProductImage(PrestashopConstantsTests.EXISTING_PRODUCT_ID, image2);
+    assertNotNull(uploadedImage);
+    assertNotNull(uploadedImage.getId());
+    assertEquals(PrestashopConstantsTests.EXISTING_PRODUCT_ID, uploadedImage.getProductId());
   }
 
-  private CategoryAttribute createTranslatableAttributes(String... values) {
+  @Test
+  public void createProductTest() {
+
+    // Product product = new Product();
+    //// product.set
+    //
+    // File image2 = new File("src/test/resources/images/test_image_2.jpg");
+    // assertTrue(image2.isFile());
+    // UploadedImage uploadedImage =
+    // client.uploadProductImage(PrestashopConstantsTests.EXISTING_PRODUCT_ID,
+    // image2);
+    // assertNotNull(uploadedImage);
+    // assertNotNull(uploadedImage.getId());
+    // assertEquals(PrestashopConstantsTests.EXISTING_PRODUCT_ID,
+    // uploadedImage.getProductId());
+    throw new NotImplementedException();
+  }
+
+  @Test
+  public void tagsTest() {
+    List<Tag> tagsList = client.getTags();
+    log.info("Read tags are: {}", tagsList);
+    Long newTagId = client.createNewTag(PrestashopConstantsTests.EXISTING_LANG_ID, "tag1");
+    log.info("Created tag with id: {}", newTagId);
+
+    List<Tag> updatedTagsList = client.getTags();
+    log.info("Updated tags list: {}", updatedTagsList);
+    assertEquals(tagsList.size() + 1, updatedTagsList.size());
+  }
+
+  private PrestashopLangAttribute createTranslatableAttributes(String... values) {
     int index = 1;
-    CategoryAttribute attr = new CategoryAttribute();
+    PrestashopLangAttribute attr = new PrestashopLangAttribute();
     for (String value : values) {
       attr.addAttribute(new Long(index++), value);
     }
