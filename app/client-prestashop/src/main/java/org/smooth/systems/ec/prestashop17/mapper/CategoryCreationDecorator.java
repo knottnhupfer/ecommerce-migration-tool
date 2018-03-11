@@ -3,7 +3,7 @@ package org.smooth.systems.ec.prestashop17.mapper;
 import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.CategoryTranslateableAttributes;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
-import org.smooth.systems.ec.prestashop17.model.CategoryAttribute;
+import org.smooth.systems.ec.prestashop17.model.PrestashopLangAttribute;
 import org.smooth.systems.ec.prestashop17.model.LanguageAttribute;
 
 public class CategoryCreationDecorator extends Category {
@@ -21,21 +21,21 @@ public class CategoryCreationDecorator extends Category {
     category.setDisplay(display);
   }
 
-  public void setNames(CategoryAttribute attributes) {
+  public void setNames(PrestashopLangAttribute attributes) {
     for (LanguageAttribute attribute : attributes.getValues()) {
       CategoryTranslateableAttributes attr = getTranslatableAttributesForLang(attribute.getId());
       attr.setName(getValueOrEmptyString(attribute.getValue()));
     }
   }
 
-  public void setDescriptions(CategoryAttribute attributes) {
+  public void setDescriptions(PrestashopLangAttribute attributes) {
     for (LanguageAttribute attribute : attributes.getValues()) {
       CategoryTranslateableAttributes attr = getTranslatableAttributesForLang(attribute.getId());
       attr.setName(getValueOrEmptyString(attribute.getValue()));
     }
   }
 
-  public void setFriendlyUrls(CategoryAttribute attributes) {
+  public void setFriendlyUrls(PrestashopLangAttribute attributes) {
     for (LanguageAttribute attribute : attributes.getValues()) {
       CategoryTranslateableAttributes attr = getTranslatableAttributesForLang(attribute.getId());
       attr.setName(getValueOrEmptyString(attribute.getValue()));

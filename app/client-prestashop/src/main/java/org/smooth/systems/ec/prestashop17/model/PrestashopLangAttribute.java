@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CategoryAttribute {
+public class PrestashopLangAttribute {
 
   @XmlElement(name = "language")
   private List<LanguageAttribute> values = new ArrayList<>();

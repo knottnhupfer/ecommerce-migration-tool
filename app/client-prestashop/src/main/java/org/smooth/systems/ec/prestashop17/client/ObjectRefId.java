@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-class LanguageRef {
+class ObjectRefId {
 
   @XmlAttribute(name = "id")
   private Long id;

@@ -1,27 +1,19 @@
 package org.smooth.systems.ec.prestashop17.client;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.smooth.systems.ec.prestashop17.model.Tag;
 
 import lombok.Data;
 
 @Data
 @XmlRootElement(name = "prestashop")
 @XmlAccessorType(XmlAccessType.FIELD)
-class Languages {
+class TagWrapper {
 
-  @XmlElement(name = "languages")
-  private LanguagesWrapper wrapper;
-
-  @Data
-  @XmlAccessorType(XmlAccessType.FIELD)
-  static class LanguagesWrapper {
-    
-    @XmlElement(name = "language")
-    private List<ObjectRefId> languages;
-  }
+  @XmlElement(name = "tag")
+  private Tag tag;
 }

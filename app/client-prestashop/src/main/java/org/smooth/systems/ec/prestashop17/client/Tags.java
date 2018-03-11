@@ -12,16 +12,16 @@ import lombok.Data;
 @Data
 @XmlRootElement(name = "prestashop")
 @XmlAccessorType(XmlAccessType.FIELD)
-class Languages {
+class Tags {
 
-  @XmlElement(name = "languages")
-  private LanguagesWrapper wrapper;
+  @XmlElement(name = "tags")
+  private TagsWrapper wrapper;
 
   @Data
   @XmlAccessorType(XmlAccessType.FIELD)
-  static class LanguagesWrapper {
-    
-    @XmlElement(name = "language")
-    private List<ObjectRefId> languages;
+  static class TagsWrapper {
+
+    @XmlElement(name = "tag")
+    private List<ObjectRefId> tagReferences;
   }
 }

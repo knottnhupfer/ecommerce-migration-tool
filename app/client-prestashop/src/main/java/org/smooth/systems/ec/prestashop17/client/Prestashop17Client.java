@@ -13,6 +13,7 @@ import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
 import org.smooth.systems.ec.prestashop17.model.Language;
 import org.smooth.systems.ec.prestashop17.model.Product;
+import org.smooth.systems.ec.prestashop17.model.Tag;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,9 @@ public class Prestashop17Client {
 
   public static final String URL_PRODUCT_IMAGE = "/images/products/%d";
 
+  public static final String URL_TAGS = "/tags";
+  public static final String URL_TAG = "/tags/%d";
+
   private final String baseUrl;
 
   private final RestTemplate client;
@@ -46,14 +50,39 @@ public class Prestashop17Client {
   }
 
   public List<Language> getLanguages() {
+    log.info("getLanguages()");
     ResponseEntity<Languages> response = client.getForEntity(baseUrl + "/languages/", Languages.class);
     Languages languages = response.getBody();
     List<Language> res = new ArrayList<>();
-    for (LanguageRef langRef : languages.getWrapper().getLanguages()) {
+    for (ObjectRefId langRef : languages.getWrapper().getLanguages()) {
       ResponseEntity<LanguageWrapper> responseLang = client.getForEntity(baseUrl + "/languages/" + langRef.getId(), LanguageWrapper.class);
       res.add(responseLang.getBody().getLanguage());
     }
     return res;
+  }
+
+  public List<Tag> getTags() {
+    String tagsUrl = baseUrl + URL_TAGS;
+    log.info("getTags({})", tagsUrl);
+    ResponseEntity<Tags> response = client.getForEntity(tagsUrl, Tags.class);
+    Tags tags = response.getBody();
+    List<Tag> res = new ArrayList<>();
+    for (ObjectRefId tagRef : tags.getWrapper().getTagReferences()) {
+      String tagUrl = baseUrl + String.format(URL_TAG, tagRef.getId());
+      ResponseEntity<TagWrapper> responseLang = client.getForEntity(tagUrl, TagWrapper.class);
+      res.add(responseLang.getBody().getTag());
+    }
+    return res;
+  }
+
+  public Long createNewTag(Long langId, String tagName) {
+    log.debug("createNewTag({}, {})", langId, tagName);
+    TagWrapper wrapper = new TagWrapper();
+    wrapper.setTag(new Tag(langId, tagName));
+    String tagUrl = baseUrl + URL_TAGS;
+    ResponseEntity<String> response = client.postForEntity(tagUrl, wrapper, String.class);
+    log.info("Created tag: {}", response.getBody());
+    return 0L;
   }
 
   public List<CategoryRef> getCategoriesMetaData() {
