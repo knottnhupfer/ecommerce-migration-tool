@@ -14,6 +14,7 @@ import org.smooth.systems.ec.prestashop17.model.Category;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
 import org.smooth.systems.ec.prestashop17.model.Language;
 import org.smooth.systems.ec.prestashop17.model.PrestashopLangAttribute;
+import org.smooth.systems.ec.prestashop17.model.Product;
 import org.smooth.systems.ec.prestashop17.model.Tag;
 
 import lombok.extern.slf4j.Slf4j;
@@ -75,6 +76,13 @@ public class Prestashop17ClientTest {
     assertNotNull(uploadedImage);
     assertNotNull(uploadedImage.getId());
     assertEquals(PrestashopConstantsTests.EXISTING_PRODUCT_ID, uploadedImage.getProductId());
+  }
+
+  @Test
+  public void getProductTest() {
+    Product product = client.getProduct(PrestashopConstantsTests.EXISTING_PRODUCT_ID);
+    log.info("Product: {}", product);
+    log.info("ProductAssociations: {}", product.getAssociations());
   }
 
   @Test

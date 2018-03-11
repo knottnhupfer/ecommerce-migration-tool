@@ -37,6 +37,9 @@ public class Prestashop17Client {
   public static final String URL_TAGS = "/tags";
   public static final String URL_TAG = "/tags/%d";
 
+  public static final String URL_PRODUCTS = "/products";
+  public static final String URL_PRODUCT = "/products/%d";
+
   private final String baseUrl;
 
   private final RestTemplate client;
@@ -115,6 +118,14 @@ public class Prestashop17Client {
 
   public void removeCategory(Long categoryId) {
     client.delete(baseUrl + "/categories/" + categoryId);
+  }
+
+  public Product getProduct(Long productId) {
+    String url = baseUrl + String.format(URL_PRODUCT, productId);
+    log.debug("getProduct({})", url);
+    ResponseEntity<ProductWrapper> response = client.getForEntity(url, ProductWrapper.class);
+    ProductWrapper categoryWrapper = response.getBody();
+    return categoryWrapper.getProduct();
   }
 
   public Category writeCategory(Category category) {
