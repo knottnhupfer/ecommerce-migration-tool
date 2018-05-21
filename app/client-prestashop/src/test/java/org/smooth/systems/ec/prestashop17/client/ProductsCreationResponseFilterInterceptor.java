@@ -25,7 +25,7 @@ public class ProductsCreationResponseFilterInterceptor implements ClientHttpRequ
         if(request.getMethod() == HttpMethod.POST && response.getStatusCode() == HttpStatus.CREATED && request.getURI().toString().endsWith("/api/products")) {
           String filteredBody = extractFilteredResponseBody(response);
           traceResponse(response, filteredBody);
-          return new HttpClientCustomResponseWrapper(response, filteredBody);
+          return new HttpClientCustomeResponseWrapper(response, filteredBody);
         }
         return response;
     }
