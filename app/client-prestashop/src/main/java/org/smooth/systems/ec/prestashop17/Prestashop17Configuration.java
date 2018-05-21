@@ -3,6 +3,7 @@ package org.smooth.systems.ec.prestashop17;
 import org.smooth.systems.ec.client.api.MigrationClientConstants;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
+import org.smooth.systems.ec.prestashop17.client.ProductsCreationResponseFilterInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,8 @@ public class Prestashop17Configuration {
   @Bean
   public Prestashop17Client createClient(Prestashop17ConnectorConfiguration config) {
     log.info("createClient({})", config);
-    return new Prestashop17Client(config.getBaseUrl(), config.getAuthToken());
+    Prestashop17Client prestashop17Client = new Prestashop17Client(config.getBaseUrl(), config.getAuthToken());
+    prestashop17Client.getClient().getInterceptors().add(new ProductsCreationResponseFilterInterceptor());
+    return prestashop17Client;
   }
 }

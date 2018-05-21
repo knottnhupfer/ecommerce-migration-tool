@@ -9,13 +9,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 
-public class HttpClientCustomResponseWrapper implements ClientHttpResponse {
+public class HttpClientCustomeResponseWrapper implements ClientHttpResponse {
 
   private final ClientHttpResponse response;
 
   private final String filteredResponse;
 
-  public HttpClientCustomResponseWrapper(ClientHttpResponse response, String filteredResponse) {
+  public HttpClientCustomeResponseWrapper(ClientHttpResponse response, String filteredResponse) {
     this.response = response;
     this.filteredResponse = filteredResponse;
   }

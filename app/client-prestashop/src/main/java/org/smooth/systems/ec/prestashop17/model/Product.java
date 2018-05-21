@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,15 +21,11 @@ public class Product {
   @XmlElement(name = "id")
   private Long id;
 
-//  @XmlElement(name = "categories")
-//  private Long productId;
-//  sfdfsd
-
   @XmlElement(name = "associations")
-  private ProductAssociations associations;
+  private ProductAssociations associations = new ProductAssociations();
 
   @XmlElement(name = "reference")
-  private String sku;
+  private String reference;
 
   @XmlElement(name = "weight")
   private String weight;
@@ -56,6 +52,21 @@ public class Product {
   @XmlElement(name = "link_rewrite")
   private PrestashopLangAttribute friendlyUrls;
 
+  /**
+   * Initialized with default value
+   */
+  @XmlElement(name = "state")
+  private Long state = 1L;
+
+  @XmlElement(name = "active")
+  private Long active = 1L;
+
+  @XmlElement(name = "indexed")
+  private Long indexed = 1L;
+  
+  @XmlElement(name = "show_price")
+  private Long showPrice = 1L;
+
   @XmlElement(name = "id_tax_rules_group")
   private Long taxRuleGroup = 1L;
 
@@ -65,11 +76,19 @@ public class Product {
 
   @JsonIgnore
   public void addCategoryId(Long categoryId) {
-    throw new NotImplementedException();
+    Assert.notNull(categoryId, "categoryId is null");
+    ProductCategory productCategory = new ProductCategory(categoryId);
+    if(!associations.getCategories().contains(productCategory)) {      
+      associations.getCategories().add(productCategory);
+    }
   }
 
   @JsonIgnore
   public void addTagId(Long tagId) {
-    throw new NotImplementedException();
+    Assert.notNull(tagId, "tagId is null");
+    ProductTag productTag = new ProductTag(tagId);
+    if(!associations.getTags().contains(productTag)) {      
+      associations.getTags().add(productTag);
+    }
   }
 }

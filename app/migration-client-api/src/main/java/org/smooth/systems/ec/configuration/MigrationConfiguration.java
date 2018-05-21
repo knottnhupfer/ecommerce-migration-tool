@@ -48,6 +48,9 @@ public class MigrationConfiguration {
 	@JsonProperty("products-merging-file")
 	private String productsMergingFile;
 
+	// @JsonProperty("generated-active-products-file")
+	// private String generatedActiveProductsFile;
+
 	@JsonProperty("generated-products-merging-file")
 	private String generatedProductsMergingFile;
 

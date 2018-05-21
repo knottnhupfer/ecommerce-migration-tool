@@ -1,13 +1,14 @@
 package org.smooth.systems.ec.prestashop17.client;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.prestashop17.model.Category;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
@@ -50,6 +51,10 @@ public class Prestashop17Client {
     client = new RestTemplate();
     client.getInterceptors().add(new BasicAuthorizationInterceptor(authToken, "invalid"));
     log.info("Initialized client for url: {}", baseUrl);
+  }
+
+  public RestTemplate getClient() {
+    return client;
   }
 
   public List<Language> getLanguages() {
@@ -130,19 +135,48 @@ public class Prestashop17Client {
 
   public Category writeCategory(Category category) {
     log.debug("writeCategory({})", category);
+    
     CategoryWrapper catWrapper = new CategoryWrapper();
     catWrapper.setCategory(category);
     catWrapper.getCategory().setId(null);
     printCategory(catWrapper);
 
-    ResponseEntity<CategoryWrapper> response = client.postForEntity(baseUrl + "/categories/", catWrapper, CategoryWrapper.class);
+    ResponseEntity<String> responseString = client.postForEntity(baseUrl + "/categories", catWrapper, String.class);
+    log.info("Response: {}", responseString);
+    
+    
+    ResponseEntity<CategoryWrapper> response = client.postForEntity(baseUrl + "/categories", catWrapper, CategoryWrapper.class);
     Category postedCategory = response.getBody().getCategory();
     log.info("Wrote category: {}", postedCategory);
     return postedCategory;
   }
 
-  public Category writeProduct(Product product) {
-    throw new NotImplementedException();
+  public Product writeProduct(Product product) {
+    log.debug("writeProduct({})", product);
+    product.setId(null);
+    ProductWrapper productWrapper = new ProductWrapper();
+    productWrapper.setProduct(product);
+    
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_XML);
+    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_XML));
+    
+    printProduct(productWrapper);
+    
+    String requestContent = productToString(productWrapper);
+//    ResponseEntity<String> response = client.postForEntity(baseUrl + URL_PRODUCTS, requestContent, String.class);
+//    log.info("Response: {}", response);
+    ResponseEntity<ProductWrapper> response = client.postForEntity(baseUrl + URL_PRODUCTS, requestContent, ProductWrapper.class);
+    Product postedProduct = response.getBody().getProduct();
+    log.info("Wrote product: {}", postedProduct);
+    product.setId(postedProduct.getId());
+    return product;
+  }
+
+  public void deleteProduct(Long productId) {
+    log.debug("deleteProduct({})", productId);
+    client.delete(baseUrl + String.format(URL_PRODUCT, productId));
+    log.info("Removed product with id: {}", productId);
   }
 
   public UploadedImage uploadProductImage(Long productId, File imageUrl) {
@@ -173,6 +207,31 @@ public class Prestashop17Client {
       log.error("Error while marshalling class: {}", CategoryWrapper.class.getName(), e);
     }
   }
+
+  public void printProduct(ProductWrapper prodWrapper) {
+    try {
+      JAXBContext jaxbContext = JAXBContext.newInstance(ProductWrapper.class);
+      Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+      jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+      jaxbMarshaller.marshal(prodWrapper, System.out);
+    } catch (Exception e) {
+      log.error("Error while marshalling class: {}", ProductWrapper.class.getName(), e);
+    }
+  }
+
+  public String productToString(ProductWrapper prodWrapper) {
+    try {
+      JAXBContext jaxbContext = JAXBContext.newInstance(ProductWrapper.class);
+      Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+      jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+      StringWriter sw = new StringWriter();
+      jaxbMarshaller.marshal(prodWrapper, sw);
+      return sw.toString();
+    } catch (Exception e) {
+      log.error("Error while marshalling class: {}", ProductWrapper.class.getName(), e);
+      throw new RuntimeException(e);
+    }
+  }  
 
   private String getProductImageUrl(Long productId) {
     return String.format(baseUrl + URL_PRODUCT_IMAGE, productId);
