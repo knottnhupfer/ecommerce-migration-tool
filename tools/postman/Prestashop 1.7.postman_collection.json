@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "c2c917cb-aa5d-4acd-946c-1bf53f312278",
+		"name": "Prestashop 1.7",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic requests",
+			"description": "",
+			"item": [
+				{
+					"name": "Retrieve all webservices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://{{prestashop_url}}/api/",
+							"protocol": "http",
+							"host": [
+								"{{prestashop_url}}"
+							],
+							"path": [
+								"api",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve all languages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://prestashop.local/api/languages",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"languages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve all tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://prestashop.local/api/tags",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve single language",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://prestashop.local/api/languages/1",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"languages",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve single tag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://prestashop.local/api/tags/1",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve single product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://prestashop.local/api/products/1",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve single category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://prestashop.local/api/categories/1",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Manipulation Requests",
+			"description": "",
+			"item": [
+				{
+					"name": "Add new tag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<TagWrapper>\n\t<tag><id/>\n\t\t<name>tag1</name>\n\t\t<id_lang>1</id_lang>\n\t</tag>\n</TagWrapper>"
+						},
+						"url": {
+							"raw": "http://prestashop.local/api/tags",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <category>\n        <id_parent>2</id_parent>\n        <is_root_category>0</is_root_category>\n        <active>1</active>\n        <name>\n            <language id=\"3\">Illuminazione a LED</language>\n            <language id=\"2\">LED Beleuchtung</language>\n            <language id=\"1\">LED Beleuchtung</language>\n        </name>\n        <description>\n            <language id=\"3\"></language>\n            <language id=\"2\">LED Beleuchtung, Lampen, Leuchtmittel und Scheinwerfer</language>\n            <language id=\"1\"></language>\n        </description>\n        <link_rewrite>\n            <language id=\"3\">illuminazione-a-led</language>\n            <language id=\"2\">led-beleuchtung</language>\n            <language id=\"1\">illuminazione-a-led</language>\n        </link_rewrite>\n    </category>\n</prestashop>"
+						},
+						"url": {
+							"raw": "http://prestashop.local/api/categories",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "WUIHXDKPX2WNUUBLAG6BLZ8FIAX6PM6P",
+				"type": "string"
+			}
+		]
+	}
+}
