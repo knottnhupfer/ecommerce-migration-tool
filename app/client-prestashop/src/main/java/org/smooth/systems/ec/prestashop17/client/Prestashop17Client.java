@@ -9,12 +9,14 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 import org.smooth.systems.ec.prestashop17.model.Category;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
 import org.smooth.systems.ec.prestashop17.model.Language;
 import org.smooth.systems.ec.prestashop17.model.Product;
 import org.smooth.systems.ec.prestashop17.model.Tag;
+import org.smooth.systems.ec.prestashop17.util.Prestashop17ClientUtil;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -80,7 +82,7 @@ public class Prestashop17Client {
     ResponseEntity<Tags> response = client.getForEntity(tagsUrl, Tags.class);
     Tags tags = response.getBody();
     List<Tag> res = new ArrayList<>();
-     for (ObjectRefId tagRef : tags.getTags()) {
+    for (ObjectRefId tagRef : tags.getTags()) {
       String tagUrl = baseUrl + String.format(URL_TAG, tagRef.getId());
       ResponseEntity<TagWrapper> responseLang = client.getForEntity(tagUrl, TagWrapper.class);
       res.add(responseLang.getBody().getTag());
@@ -138,18 +140,17 @@ public class Prestashop17Client {
     return categoryWrapper.getProduct();
   }
 
-  public Category writeCategory(Category category) {
+  public Category writeCategory(PrestashopLanguageTranslatorCache languagesCache, Category category) {
     log.debug("writeCategory({})", category);
-
     CategoryWrapper catWrapper = new CategoryWrapper();
     catWrapper.setCategory(category);
     catWrapper.getCategory().setId(null);
-    printCategory(catWrapper);
 
-    ResponseEntity<String> responseString = client.postForEntity(baseUrl + "/categories", catWrapper, String.class);
-    log.info("Response: {}", responseString);
+    Prestashop17ClientUtil.fillUpEmptyAttributesInCategory(languagesCache, category);
 
-    ResponseEntity<CategoryWrapper> response = client.postForEntity(baseUrl + "/categories", catWrapper, CategoryWrapper.class);
+    String requestBody = Prestashop17ClientUtil.convertToUTF8(objectToString(catWrapper, CategoryWrapper.class));
+    log.info("Request:\n{}", requestBody);
+    ResponseEntity<CategoryWrapper> response = client.postForEntity(baseUrl + "/categories", requestBody, CategoryWrapper.class);
     Category postedCategory = response.getBody().getCategory();
     log.info("Wrote category: {}", postedCategory);
     return postedCategory;
@@ -199,16 +200,31 @@ public class Prestashop17Client {
     return result.getBody().getUploadedImage();
   }
 
-  public void printCategory(CategoryWrapper catWrapper) {
+  private <T> String objectToString(T objectWrapper, Class<T> clazz) {
     try {
-      JAXBContext jaxbContext = JAXBContext.newInstance(CategoryWrapper.class);
+      JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
       Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
       jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-      jaxbMarshaller.marshal(catWrapper, System.out);
+      StringWriter sw = new StringWriter();
+      jaxbMarshaller.marshal(objectWrapper, sw);
+      return sw.toString();
     } catch (Exception e) {
-      log.error("Error while marshalling class: {}", CategoryWrapper.class.getName(), e);
+      log.error("Error while marshalling class: {}", ProductWrapper.class.getName(), e);
+      throw new RuntimeException(e);
     }
   }
+
+  // private <T> void printProduct(T objectWrapper, Class<T> clazz) {
+  // try {
+  // JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+  // Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+  // jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+  // jaxbMarshaller.marshal(objectWrapper, System.out);
+  // } catch (Exception e) {
+  // log.error("Error while marshalling class: {}",
+  // ProductWrapper.class.getName(), e);
+  // }
+  // }
 
   public void printProduct(ProductWrapper prodWrapper) {
     try {

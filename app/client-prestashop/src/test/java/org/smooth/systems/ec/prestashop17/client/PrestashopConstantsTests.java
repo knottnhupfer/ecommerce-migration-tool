@@ -11,5 +11,5 @@ public interface PrestashopConstantsTests {
 
   public static final Long EXISTING_PRODUCT_ID = 1L;
 
-  public static final Long EXISTING_CATEGORY_ID = 79L;
+  public static final Long EXISTING_CATEGORY_ID = 147L;
 }

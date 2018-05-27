@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 import org.smooth.systems.ec.prestashop17.model.Category;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
 import org.smooth.systems.ec.prestashop17.model.Language;
@@ -24,7 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Prestashop17ClientTest {
 
+  public static final Long EXISTING_CATEGORY_ID = 1L;
+
   private Prestashop17Client client;
+
+  private PrestashopLanguageTranslatorCache langCache;
 
   @Before
   public void setup() {
@@ -71,18 +76,18 @@ public class Prestashop17ClientTest {
 
   @Test
   public void writeSingleCategory() {
+    initializeLanguageCache();
     Category category = new Category();
     category.setId(14L);
     category.setActive(1L);
-    category.setParentId(79L);
+    category.setIsRootCategory(1L);
+    category.setParentId(EXISTING_CATEGORY_ID);
 
-    category.setNames(createTranslatableAttributes("Testt en 1", "Testt de 1", "Testt it 1"));
+    category.setNames(createTranslatableAttributes("LED Beleuchtung für Geschäfte", "Testt de 1", "Testt it 1"));
     category.setDescriptions(createTranslatableAttributes("", "", ""));
     category.setFriendlyUrls(createTranslatableAttributes("test1", "test1", "test1"));
 
-    Category resCategory = client.writeCategory(category);
-    System.out.println("Category: " + category);
-    System.out.println("Category: " + resCategory);
+    client.writeCategory(langCache, category);
   }
 
   @Test
@@ -133,7 +138,8 @@ public class Prestashop17ClientTest {
     client.writeProduct(product);
     // Product createdProduct = client.writeProduct(product);
     // log.info("Product: {}", createdProduct);
-    // log.info("ProductAssociations: {}", createdProduct.getAssociations());
+    // log.info("ProductAssociations: {}",
+    // createdProduct.getAssociations());
   }
 
   @Test
@@ -167,6 +173,13 @@ public class Prestashop17ClientTest {
     return attr;
   }
 
+  private void initializeLanguageCache() {
+    if (langCache == null) {
+      PrestashopLanguageTranslatorCache prestashopLanguageTranslatorCache = new PrestashopLanguageTranslatorCache(client);
+      prestashopLanguageTranslatorCache.initialize();
+      langCache = prestashopLanguageTranslatorCache;
+    }
+  }
   // public static PrestashopLangAttribute createAttributes(String...
   // attributes) {
   // assertTrue(attributes.length >= 0 && attributes.length <= 3);

@@ -21,6 +21,9 @@ public class Product {
   @XmlElement(name = "id")
   private Long id;
 
+  @XmlElement(name = "low_stock_alert")
+  private Long lowStockAlert = 0L;
+
   @XmlElement(name = "associations")
   private ProductAssociations associations = new ProductAssociations();
 
