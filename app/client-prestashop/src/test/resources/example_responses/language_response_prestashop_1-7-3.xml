@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+    <language>
+        <id>1</id>
+        <name>English (English)</name>
+        <iso_code>en</iso_code>
+        <locale>en-US</locale>
+        <language_code>en-us</language_code>
+        <active>1</active>
+        <is_rtl>0</is_rtl>
+        <date_format_lite>m/d/Y</date_format_lite>
+        <date_format_full>m/d/Y H:i:s</date_format_full>
+    </language>
+</prestashop>

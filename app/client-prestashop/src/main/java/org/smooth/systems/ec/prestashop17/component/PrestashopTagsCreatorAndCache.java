@@ -51,7 +51,7 @@ public class PrestashopTagsCreatorAndCache {
     log.info("initializeTagsMapping()");
     List<Tag> tags = client.getTags();
     tags.forEach(tag -> {
-      String langCode = langCache.getLangCode(tag.getLangId());
+      String langCode = langCache.getLangCode(tag.getIdLang());
       String key = getUniqueIdentifier(langCode, tag.getName());
       tagToIdMapping.put(key, tag.getId());
     });

@@ -34,7 +34,7 @@ public class PrestashopLanguageTranslatorCache {
   public void initialize() {
     List<Language> languages = client.getLanguages();
     for (Language language : languages) {
-      String code = language.getLanguageCode().substring(0, 2);
+      String code = language.getIsoCode().substring(0, 2);
       codeToIdMapping.put(code, language.getId());
       idToCodeMapping.put(language.getId(), code);
     }

@@ -59,10 +59,15 @@ public class Prestashop17Client {
 
   public List<Language> getLanguages() {
     log.info("getLanguages()");
+
+    ResponseEntity<String> stringResponse = client.getForEntity(baseUrl + "/languages/", String.class);
+    String body = stringResponse.getBody();
+    log.info("Result:\n{}", body);
+
     ResponseEntity<Languages> response = client.getForEntity(baseUrl + "/languages/", Languages.class);
     Languages languages = response.getBody();
     List<Language> res = new ArrayList<>();
-    for (ObjectRefId langRef : languages.getWrapper().getLanguages()) {
+    for (ObjectRefId langRef : languages.getLanguages()) {
       ResponseEntity<LanguageWrapper> responseLang = client.getForEntity(baseUrl + "/languages/" + langRef.getId(), LanguageWrapper.class);
       res.add(responseLang.getBody().getLanguage());
     }
@@ -75,7 +80,7 @@ public class Prestashop17Client {
     ResponseEntity<Tags> response = client.getForEntity(tagsUrl, Tags.class);
     Tags tags = response.getBody();
     List<Tag> res = new ArrayList<>();
-    for (ObjectRefId tagRef : tags.getWrapper().getTagReferences()) {
+     for (ObjectRefId tagRef : tags.getTags()) {
       String tagUrl = baseUrl + String.format(URL_TAG, tagRef.getId());
       ResponseEntity<TagWrapper> responseLang = client.getForEntity(tagUrl, TagWrapper.class);
       res.add(responseLang.getBody().getTag());
@@ -86,7 +91,7 @@ public class Prestashop17Client {
   public Long createNewTag(Long langId, String tagName) {
     log.debug("createNewTag({}, {})", langId, tagName);
     TagWrapper wrapper = new TagWrapper();
-    wrapper.setTag(new Tag(langId, tagName));
+    wrapper.setTag(Tag.builder().name(tagName).idLang(langId).build());
     String tagUrl = baseUrl + URL_TAGS;
     ResponseEntity<String> response = client.postForEntity(tagUrl, wrapper, String.class);
     log.info("Created tag: {}", response.getBody());
@@ -135,7 +140,7 @@ public class Prestashop17Client {
 
   public Category writeCategory(Category category) {
     log.debug("writeCategory({})", category);
-    
+
     CategoryWrapper catWrapper = new CategoryWrapper();
     catWrapper.setCategory(category);
     catWrapper.getCategory().setId(null);
@@ -143,8 +148,7 @@ public class Prestashop17Client {
 
     ResponseEntity<String> responseString = client.postForEntity(baseUrl + "/categories", catWrapper, String.class);
     log.info("Response: {}", responseString);
-    
-    
+
     ResponseEntity<CategoryWrapper> response = client.postForEntity(baseUrl + "/categories", catWrapper, CategoryWrapper.class);
     Category postedCategory = response.getBody().getCategory();
     log.info("Wrote category: {}", postedCategory);
@@ -156,16 +160,14 @@ public class Prestashop17Client {
     product.setId(null);
     ProductWrapper productWrapper = new ProductWrapper();
     productWrapper.setProduct(product);
-    
+
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_XML);
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_XML));
-    
+
     printProduct(productWrapper);
-    
+
     String requestContent = productToString(productWrapper);
-//    ResponseEntity<String> response = client.postForEntity(baseUrl + URL_PRODUCTS, requestContent, String.class);
-//    log.info("Response: {}", response);
     ResponseEntity<ProductWrapper> response = client.postForEntity(baseUrl + URL_PRODUCTS, requestContent, ProductWrapper.class);
     Product postedProduct = response.getBody().getProduct();
     log.info("Wrote product: {}", postedProduct);
@@ -231,7 +233,7 @@ public class Prestashop17Client {
       log.error("Error while marshalling class: {}", ProductWrapper.class.getName(), e);
       throw new RuntimeException(e);
     }
-  }  
+  }
 
   private String getProductImageUrl(Long productId) {
     return String.format(baseUrl + URL_PRODUCT_IMAGE, productId);

@@ -2,20 +2,21 @@ package org.smooth.systems.ec.prestashop17.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Language {
 
-  @XmlElement(name = "id")
   private Long id;
 
-  @XmlElement(name = "name")
   private String name;
 
-  @XmlElement(name = "language_code")
-  private String languageCode;
+  @JsonProperty("iso_code")
+  private String isoCode;
 }

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,15 +32,30 @@ public class Prestashop17ClientTest {
   }
 
   @Test
-  public void fetchLanguages() {
+  public void fetchBasicTypes() {
     List<Language> languages = client.getLanguages();
     System.out.println("Languages: " + languages);
+    assertEquals(3, languages.size());
 
     List<Category> categories = client.getCategories();
     System.out.println("Categories: " + categories);
 
     Category cat = client.getCategory(1L);
     System.out.println("Category: " + cat);
+  }
+
+  @Test
+  public void fetchLanguages() {
+    List<Language> languages = client.getLanguages();
+    System.out.println("Languages: " + languages);
+    assertEquals(3, languages.size());
+
+    List<Language> lang = languages.stream().filter(elem -> "en".equals(elem.getIsoCode())).collect(Collectors.toList());
+    assertEquals(1, lang.size());
+    lang = languages.stream().filter(elem -> "de".equals(elem.getIsoCode())).collect(Collectors.toList());
+    assertEquals(1, lang.size());
+    lang = languages.stream().filter(elem -> "it".equals(elem.getIsoCode())).collect(Collectors.toList());
+    assertEquals(1, lang.size());
   }
 
   @Test
@@ -133,6 +149,7 @@ public class Prestashop17ClientTest {
   public void tagsTest() {
     List<Tag> tagsList = client.getTags();
     log.info("Read tags are: {}", tagsList);
+
     Long newTagId = client.createNewTag(PrestashopConstantsTests.EXISTING_LANG_ID, "tag1");
     log.info("Created tag with id: {}", newTagId);
 

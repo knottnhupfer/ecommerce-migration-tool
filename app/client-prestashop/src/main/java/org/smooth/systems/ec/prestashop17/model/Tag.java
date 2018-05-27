@@ -2,29 +2,26 @@ package org.smooth.systems.ec.prestashop17.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tag {
 
-  @XmlElement(name = "id")
   private Long id;
 
-  @XmlElement(name = "name")
   private String name;
 
-  @XmlElement(name = "id_lang")
-  private Long langId;
-
-  public Tag(Long languageId, String name) {
-    this.name = name;
-    this.langId = languageId;
-  }
+  @JsonProperty("id_lang")
+  private Long idLang;
 }

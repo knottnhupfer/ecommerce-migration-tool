@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+    <tags>
+        <tag id="1" xlink:href="http://prestashop.local/api/tags/1"/>
+        <tag id="2" xlink:href="http://prestashop.local/api/tags/2"/>
+    </tags>
+</prestashop>
