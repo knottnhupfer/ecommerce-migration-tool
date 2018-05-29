@@ -44,8 +44,4 @@ public class ToolConfiguration {
 			String.format("Unable to find argument with name: %s", argsName));
 		return optionValues.get(0);
 	}
-
-//	protected Boolean isArgumentSet(ApplicationArguments args, String argsName) {
-//		return args.containsOption(argsName);
-//	}
 }
