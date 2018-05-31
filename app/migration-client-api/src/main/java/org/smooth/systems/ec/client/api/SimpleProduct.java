@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.client.api;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * 31.05.18.
  */
 @Data
+@Builder
 public class SimpleProduct {
 
   private Long productId;
