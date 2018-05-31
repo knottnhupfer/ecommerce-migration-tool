@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.smooth.systems.ec.category.merging.IDataModelCategoryMerger;
-import org.smooth.systems.ec.client.api.CategoryConfig;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
+import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
@@ -43,9 +43,9 @@ public class ReadAndMergeController {
   }
 
   public void readCategoriesAndMerge() {
-		List<Category> readCategories = readCategoriesAndCreate();
-		log.info("Read successfully {} root categories", readCategories.size());
-		dataModel.setReadCategories(readCategories);
+    List<Category> readCategories = readCategoriesAndCreate();
+    log.info("Read successfully {} root categories", readCategories.size());
+    dataModel.setReadCategories(readCategories);
     dataModelLogger.printReadCategories();
 
     modelMerger.mergeDataModel();
@@ -58,18 +58,18 @@ public class ReadAndMergeController {
   private List<Category> readCategoriesAndCreate() {
     try {
       MigrationSystemReader reader = factory.getSystemReaderForType(config.getSourceSystemName());
-			List<CategoryConfig> categoryReadConfigs = retrieveCategoryConfig(config);
-			return reader.readAllCategories(categoryReadConfigs);
+      List<SimpleCategory> categoryReadConfigs = retrieveCategoryConfig(config);
+      return reader.readAllCategories(categoryReadConfigs);
     } catch (NotFoundException e) {
       log.error("Error while reading categories. Reason: {}", e.getMessage());
       throw new IllegalStateException(e.getMessage());
     }
   }
 
-  private List<CategoryConfig> retrieveCategoryConfig(MigrationConfiguration config) {
-    List<CategoryConfig> res = new ArrayList<>();
-    res.add(new CategoryConfig(config.getRootCategoryId(), config.getRootCategoryLanguage()));
-    config.getAdditionalCategories().forEach(cat -> res.add(new CategoryConfig(cat.getCategoryId(), cat.getCategoryLanguage())));
+  private List<SimpleCategory> retrieveCategoryConfig(MigrationConfiguration config) {
+    List<SimpleCategory> res = new ArrayList<>();
+    res.add(new SimpleCategory(config.getRootCategoryId(), config.getRootCategoryLanguage()));
+    config.getAdditionalCategories().forEach(cat -> res.add(new SimpleCategory(cat.getCategoryId(), cat.getCategoryLanguage())));
     return res;
   }
 }

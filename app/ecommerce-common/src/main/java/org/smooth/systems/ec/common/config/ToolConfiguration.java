@@ -1,18 +1,19 @@
 package org.smooth.systems.ec.common.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.utils.ErrorUtil;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
@@ -44,8 +45,4 @@ public class ToolConfiguration {
 			String.format("Unable to find argument with name: %s", argsName));
 		return optionValues.get(0);
 	}
-
-//	protected Boolean isArgumentSet(ApplicationArguments args, String argsName) {
-//		return args.containsOption(argsName);
-//	}
 }

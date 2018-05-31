@@ -31,6 +31,11 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 	public EcommerceUtilRunner(List<IActionExecuter> actionsList) {
 		for (IActionExecuter action : actionsList) {
 			log.info("Add action: {}", action.getActionName());
+			if(actions.containsKey(action.getActionName())) {
+				log.error("Action with name '{}' already exists.", action.getActionName());
+				log.error("Registered action: {}, new action: {}", actions.get(action.getActionName()), action);
+				throw new RuntimeException(String.format("Action with name '%s' already exists.", action.getActionName()));
+			}
 			actions.put(action.getActionName(), action);
 		}
 	}

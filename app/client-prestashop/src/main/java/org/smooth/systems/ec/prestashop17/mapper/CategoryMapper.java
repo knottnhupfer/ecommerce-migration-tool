@@ -5,7 +5,7 @@ import java.util.List;
 import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.CategoryTranslateableAttributes;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
-import org.smooth.systems.ec.prestashop17.model.CategoryAttribute;
+import org.smooth.systems.ec.prestashop17.model.PrestashopLangAttribute;
 import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,8 +53,8 @@ public final class CategoryMapper {
     cat.setFriendlyUrls(category.getFriendlyUrls());
   }
 
-  private static CategoryAttribute createNamesCategories(PrestashopLanguageTranslatorCache langCache, Category category) {
-    CategoryAttribute attribute = new CategoryAttribute();
+  private static PrestashopLangAttribute createNamesCategories(PrestashopLanguageTranslatorCache langCache, Category category) {
+    PrestashopLangAttribute attribute = new PrestashopLangAttribute();
     List<CategoryTranslateableAttributes> attributes = category.getAttributes();
     for (CategoryTranslateableAttributes attr : attributes) {
       attribute.addAttribute(langCache.getLangId(attr.getLangCode()), attr.getName());
@@ -62,8 +62,8 @@ public final class CategoryMapper {
     return attribute;
   }
 
-  private static CategoryAttribute createDescriptionsCategories(PrestashopLanguageTranslatorCache langCache, Category category) {
-    CategoryAttribute attribute = new CategoryAttribute();
+  private static PrestashopLangAttribute createDescriptionsCategories(PrestashopLanguageTranslatorCache langCache, Category category) {
+    PrestashopLangAttribute attribute = new PrestashopLangAttribute();
     List<CategoryTranslateableAttributes> attributes = category.getAttributes();
     for (CategoryTranslateableAttributes attr : attributes) {
       attribute.addAttribute(langCache.getLangId(attr.getLangCode()), attr.getDescription());
@@ -71,8 +71,8 @@ public final class CategoryMapper {
     return attribute;
   }
 
-  private static CategoryAttribute createFriendlyUrlsCategories(PrestashopLanguageTranslatorCache langCache, Category category) {
-    CategoryAttribute attribute = new CategoryAttribute();
+  private static PrestashopLangAttribute createFriendlyUrlsCategories(PrestashopLanguageTranslatorCache langCache, Category category) {
+    PrestashopLangAttribute attribute = new PrestashopLangAttribute();
     List<CategoryTranslateableAttributes> attributes = category.getAttributes();
     for (CategoryTranslateableAttributes attr : attributes) {
       attribute.addAttribute(langCache.getLangId(attr.getLangCode()), attr.getFriendlyUrl());

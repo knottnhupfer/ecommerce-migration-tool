@@ -77,17 +77,17 @@ The main configuration file **migration-config.yaml** looks like following:
 
 #### Categories merging configuration file: category-mapping.properties
 
-Let's assume we have on our source system category trees for an english and italian categories root tree as following:
+Let's assume we have on our source system category trees for an italian and german categories root tree as following:
 
 ```
-  # English categories
-  1: English categories
-    2: Men
-      4: Pants
-      5: Shoes
-    3: Women
-      6: Pants
-      7: Shoes
+  # Italian categories
+  1: Italian categories
+    2: Uomini
+      4: Pantaloni
+      5: Scarpe
+    3: Donne
+      6: Pantaloni
+      7: Scarpe
 
   # German categories
   11: German categories
@@ -121,7 +121,7 @@ For the example above to merge german categories to english categories the mappi
 
 ### Map products to main multilanguage product
 
-To generate a mapping file for merge products from secondary languages to the main languages this command needs to be called. Currently we assume that the secondary languages are represanted with the same sku as the main product only with a "_" as prefix. Additional mapper needs to be added if this is not in your case like this.
+To generate a mapping file for merge products from secondary languages to the main languages this command needs to be called. Currently we assume that the secondary languages are represanted with the same sku as the main product only with a "_" as prefix. Additional mapper needs to be added if in your case the mapping is differently (TODO: add documentation in developer guide and link it here).
 
 ```
 java <JAR-FILE-NAME-TODO>.jar --products-mapping --config=<PATH-TO-CONFIGURATION>/migration-config.yaml

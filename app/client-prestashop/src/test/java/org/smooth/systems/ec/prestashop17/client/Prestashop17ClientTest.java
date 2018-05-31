@@ -1,19 +1,35 @@
 package org.smooth.systems.ec.prestashop17.client;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 import org.smooth.systems.ec.prestashop17.model.Category;
-import org.smooth.systems.ec.prestashop17.model.CategoryAttribute;
+import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
 import org.smooth.systems.ec.prestashop17.model.Language;
+import org.smooth.systems.ec.prestashop17.model.PrestashopLangAttribute;
+import org.smooth.systems.ec.prestashop17.model.Product;
+import org.smooth.systems.ec.prestashop17.model.Product.Visibility;
+import org.smooth.systems.ec.prestashop17.model.Tag;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Prestashop17ClientTest {
 
+  public static final Long EXISTING_CATEGORY_ID = 1L;
+
   private Prestashop17Client client;
+
+  private PrestashopLanguageTranslatorCache langCache;
 
   @Before
   public void setup() {
@@ -21,15 +37,30 @@ public class Prestashop17ClientTest {
   }
 
   @Test
-  public void fetchLanguages() {
+  public void fetchBasicTypes() {
     List<Language> languages = client.getLanguages();
     System.out.println("Languages: " + languages);
+    assertEquals(3, languages.size());
 
     List<Category> categories = client.getCategories();
     System.out.println("Categories: " + categories);
 
     Category cat = client.getCategory(1L);
     System.out.println("Category: " + cat);
+  }
+
+  @Test
+  public void fetchLanguages() {
+    List<Language> languages = client.getLanguages();
+    System.out.println("Languages: " + languages);
+    assertEquals(3, languages.size());
+
+    List<Language> lang = languages.stream().filter(elem -> "en".equals(elem.getIsoCode())).collect(Collectors.toList());
+    assertEquals(1, lang.size());
+    lang = languages.stream().filter(elem -> "de".equals(elem.getIsoCode())).collect(Collectors.toList());
+    assertEquals(1, lang.size());
+    lang = languages.stream().filter(elem -> "it".equals(elem.getIsoCode())).collect(Collectors.toList());
+    assertEquals(1, lang.size());
   }
 
   @Test
@@ -45,38 +76,118 @@ public class Prestashop17ClientTest {
 
   @Test
   public void writeSingleCategory() {
+    initializeLanguageCache();
     Category category = new Category();
     category.setId(14L);
     category.setActive(1L);
-    category.setParentId(12L);
+    category.setIsRootCategory(1L);
+    category.setParentId(EXISTING_CATEGORY_ID);
 
-    category.setNames(createTranslatableAttributes("Testt en 1", "Testt de 1", "Testt it 1"));
+    category.setNames(createTranslatableAttributes("LED Beleuchtung für Geschäfte", "Testt de 1", "Testt it 1"));
     category.setDescriptions(createTranslatableAttributes("", "", ""));
     category.setFriendlyUrls(createTranslatableAttributes("test1", "test1", "test1"));
 
-    Category resCategory = client.writeCategory(category);
-    System.out.println("Category: " + category);
-    System.out.println("Category: " + resCategory);
+    client.writeCategory(langCache, category);
   }
 
   @Test
   public void uploadProductImage() {
-    Long testProductId = 1L;
-    File image1 = new File("src/test/resources/images/test_image_1.jpg");
     File image2 = new File("src/test/resources/images/test_image_2.jpg");
-    assertTrue(image1.isFile());
     assertTrue(image2.isFile());
-
-    client.uploadProductImage(testProductId, image1);    
-    client.uploadProductImage(testProductId, image2);
+    UploadedImage uploadedImage = client.uploadProductImage(PrestashopConstantsTests.EXISTING_PRODUCT_ID, image2);
+    assertNotNull(uploadedImage);
+    assertNotNull(uploadedImage.getId());
+    assertEquals(PrestashopConstantsTests.EXISTING_PRODUCT_ID, uploadedImage.getProductId());
   }
 
-  private CategoryAttribute createTranslatableAttributes(String... values) {
+  @Test
+  public void getProductTest() {
+    Product product = client.getProduct(PrestashopConstantsTests.EXISTING_PRODUCT_ID);
+    log.info("Product: {}", product);
+    log.info("ProductAssociations: {}", product.getAssociations());
+  }
+
+  @Test
+  public void createProductTest() {
+    Product product = new Product();
+    String random_string = UUID.randomUUID().toString().substring(16);
+
+    product.setPrice(23.6);
+    product.setWeight("7.5");
+    product.setReference("sku_created_" + random_string);
+    product.setVisibility(Visibility.both);
+    product.setManufacturerId(PrestashopConstantsTests.EXISTING_BRAND_ID);
+
+    // product.addTagId(PrestashopConstantsTests.EXISTING_TAG_ID_1);
+    // product.addTagId(PrestashopConstantsTests.EXISTING_TAG_ID_2);
+    product.addCategoryId(PrestashopConstantsTests.EXISTING_CATEGORY_ID);
+
+    PrestashopLangAttribute descriptions = createTranslatableAttributes("description", "Beschreibung", "descrizione");
+    product.setDescriptions(descriptions);
+
+    PrestashopLangAttribute friendlyUrls = createTranslatableAttributes(random_string + "-en", random_string + "-de",
+        random_string + "-it");
+    product.setFriendlyUrls(friendlyUrls);
+
+    PrestashopLangAttribute names = createTranslatableAttributes("English product", "Deutsch Produkt", "Prodotto italiano");
+    product.setNames(names);
+
+    PrestashopLangAttribute shortDescriptions = createTranslatableAttributes("short description", "Beschreibung kurz", "descrizione corta");
+    product.setShortDescriptions(shortDescriptions);
+
+    client.writeProduct(product);
+    // Product createdProduct = client.writeProduct(product);
+    // log.info("Product: {}", createdProduct);
+    // log.info("ProductAssociations: {}",
+    // createdProduct.getAssociations());
+  }
+
+  @Test
+  public void removeProductsTest() {
+    Long[] productIds = { 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L };
+    // Long[] productIds = {7L, 8L, 9L, 10L, 11L, 12L};
+    for (Long productId : productIds) {
+      client.deleteProduct(productId);
+    }
+  }
+
+  @Test
+  public void tagsTest() {
+    List<Tag> tagsList = client.getTags();
+    log.info("Read tags are: {}", tagsList);
+
+    Long newTagId = client.createNewTag(PrestashopConstantsTests.EXISTING_LANG_ID, "tag1");
+    log.info("Created tag with id: {}", newTagId);
+
+    List<Tag> updatedTagsList = client.getTags();
+    log.info("Updated tags list: {}", updatedTagsList);
+    assertEquals(tagsList.size() + 1, updatedTagsList.size());
+  }
+
+  private PrestashopLangAttribute createTranslatableAttributes(String... values) {
     int index = 1;
-    CategoryAttribute attr = new CategoryAttribute();
+    PrestashopLangAttribute attr = new PrestashopLangAttribute();
     for (String value : values) {
       attr.addAttribute(new Long(index++), value);
     }
     return attr;
   }
+
+  private void initializeLanguageCache() {
+    if (langCache == null) {
+      PrestashopLanguageTranslatorCache prestashopLanguageTranslatorCache = new PrestashopLanguageTranslatorCache(client);
+      prestashopLanguageTranslatorCache.initialize();
+      langCache = prestashopLanguageTranslatorCache;
+    }
+  }
+  // public static PrestashopLangAttribute createAttributes(String...
+  // attributes) {
+  // assertTrue(attributes.length >= 0 && attributes.length <= 3);
+  // Long langIndex = 0L;
+  // PrestashopLangAttribute result = new PrestashopLangAttribute();
+  // for(String attr : attributes) {
+  // result.addAttribute(langIndex++, attr);
+  // }
+  // return result;
+  // }
 }

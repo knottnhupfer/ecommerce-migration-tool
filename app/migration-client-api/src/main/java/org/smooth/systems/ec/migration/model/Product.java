@@ -50,10 +50,10 @@ public class Product {
 
   private List<String> productImageUrls = new ArrayList<>();
 
-  public Product(Long id, String sku, LocalDateTime creationDate, ProductType type) {
+  public Product(Long id, String sku, LocalDateTime creationDate) {
     this.id = id;
     this.sku = sku;
-    this.type = type;
+    this.type = ProductType.Simple;
     this.creationDate = creationDate;
   }
 }

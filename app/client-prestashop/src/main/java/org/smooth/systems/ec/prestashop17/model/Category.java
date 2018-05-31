@@ -23,11 +23,11 @@ public class Category {
   private Long active;
 
   @XmlElement(name = "name")
-  private CategoryAttribute names;
+  private PrestashopLangAttribute names;
 
   @XmlElement(name = "description")
-  private CategoryAttribute descriptions;
+  private PrestashopLangAttribute descriptions;
 
   @XmlElement(name = "link_rewrite")
-  private CategoryAttribute friendlyUrls;
+  private PrestashopLangAttribute friendlyUrls;
 }

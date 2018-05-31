@@ -111,7 +111,7 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
       org.smooth.systems.ec.prestashop17.model.Category cat = CategoryMapper.convertCategoryToSystemModel(languagesCache, category,
           false);
       log.info("Write category[{}]: {}", ++counter, cat);
-      org.smooth.systems.ec.prestashop17.model.Category createdCategory = client.writeCategory(cat);
+      org.smooth.systems.ec.prestashop17.model.Category createdCategory = client.writeCategory(languagesCache, cat);
       return createdCategory.getId();
     }
   }

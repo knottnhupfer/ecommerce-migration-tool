@@ -21,4 +21,4 @@ modules.xml
 application.log
 data/
 app/logs/
-config/generated/*.properties
+config/generated/migration/*.properties

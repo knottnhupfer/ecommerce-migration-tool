@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+	<languages>
+		<language id="1" xlink:href="http://prestashop.local/api/languages/1" />
+		<language id="2" xlink:href="http://prestashop.local/api/languages/2" />
+		<language id="3" xlink:href="http://prestashop.local/api/languages/3" />
+	</languages>
+</prestashop>

@@ -4,6 +4,7 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>client-magento19-db</artifactId>
+	<name>E-Commerce Java magento19 db client</name>
 
 	<parent>
 		<groupId>org.smooth.systems.ecommerce</groupId>

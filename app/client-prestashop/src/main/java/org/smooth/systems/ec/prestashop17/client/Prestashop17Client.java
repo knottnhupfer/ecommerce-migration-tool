@@ -1,18 +1,22 @@
 package org.smooth.systems.ec.prestashop17.client;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 import org.smooth.systems.ec.prestashop17.model.Category;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
 import org.smooth.systems.ec.prestashop17.model.Language;
 import org.smooth.systems.ec.prestashop17.model.Product;
+import org.smooth.systems.ec.prestashop17.model.Tag;
+import org.smooth.systems.ec.prestashop17.util.Prestashop17ClientUtil;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +37,12 @@ public class Prestashop17Client {
 
   public static final String URL_PRODUCT_IMAGE = "/images/products/%d";
 
+  public static final String URL_TAGS = "/tags";
+  public static final String URL_TAG = "/tags/%d";
+
+  public static final String URL_PRODUCTS = "/products";
+  public static final String URL_PRODUCT = "/products/%d";
+
   private final String baseUrl;
 
   private final RestTemplate client;
@@ -45,15 +55,49 @@ public class Prestashop17Client {
     log.info("Initialized client for url: {}", baseUrl);
   }
 
+  public RestTemplate getClient() {
+    return client;
+  }
+
   public List<Language> getLanguages() {
+    log.info("getLanguages()");
+
+    ResponseEntity<String> stringResponse = client.getForEntity(baseUrl + "/languages/", String.class);
+    String body = stringResponse.getBody();
+    log.info("Result:\n{}", body);
+
     ResponseEntity<Languages> response = client.getForEntity(baseUrl + "/languages/", Languages.class);
     Languages languages = response.getBody();
     List<Language> res = new ArrayList<>();
-    for (LanguageRef langRef : languages.getWrapper().getLanguages()) {
+    for (ObjectRefId langRef : languages.getLanguages()) {
       ResponseEntity<LanguageWrapper> responseLang = client.getForEntity(baseUrl + "/languages/" + langRef.getId(), LanguageWrapper.class);
       res.add(responseLang.getBody().getLanguage());
     }
     return res;
+  }
+
+  public List<Tag> getTags() {
+    String tagsUrl = baseUrl + URL_TAGS;
+    log.info("getTags({})", tagsUrl);
+    ResponseEntity<Tags> response = client.getForEntity(tagsUrl, Tags.class);
+    Tags tags = response.getBody();
+    List<Tag> res = new ArrayList<>();
+    for (ObjectRefId tagRef : tags.getTags()) {
+      String tagUrl = baseUrl + String.format(URL_TAG, tagRef.getId());
+      ResponseEntity<TagWrapper> responseLang = client.getForEntity(tagUrl, TagWrapper.class);
+      res.add(responseLang.getBody().getTag());
+    }
+    return res;
+  }
+
+  public Long createNewTag(Long langId, String tagName) {
+    log.debug("createNewTag({}, {})", langId, tagName);
+    TagWrapper wrapper = new TagWrapper();
+    wrapper.setTag(Tag.builder().name(tagName).idLang(langId).build());
+    String tagUrl = baseUrl + URL_TAGS;
+    ResponseEntity<String> response = client.postForEntity(tagUrl, wrapper, String.class);
+    log.info("Created tag: {}", response.getBody());
+    return 0L;
   }
 
   public List<CategoryRef> getCategoriesMetaData() {
@@ -88,21 +132,54 @@ public class Prestashop17Client {
     client.delete(baseUrl + "/categories/" + categoryId);
   }
 
-  public Category writeCategory(Category category) {
+  public Product getProduct(Long productId) {
+    String url = baseUrl + String.format(URL_PRODUCT, productId);
+    log.debug("getProduct({})", url);
+    ResponseEntity<ProductWrapper> response = client.getForEntity(url, ProductWrapper.class);
+    ProductWrapper categoryWrapper = response.getBody();
+    return categoryWrapper.getProduct();
+  }
+
+  public Category writeCategory(PrestashopLanguageTranslatorCache languagesCache, Category category) {
     log.debug("writeCategory({})", category);
     CategoryWrapper catWrapper = new CategoryWrapper();
     catWrapper.setCategory(category);
     catWrapper.getCategory().setId(null);
-    printCategory(catWrapper);
 
-    ResponseEntity<CategoryWrapper> response = client.postForEntity(baseUrl + "/categories/", catWrapper, CategoryWrapper.class);
+    Prestashop17ClientUtil.fillUpEmptyAttributesInCategory(languagesCache, category);
+
+    String requestBody = Prestashop17ClientUtil.convertToUTF8(objectToString(catWrapper, CategoryWrapper.class));
+    log.info("Request:\n{}", requestBody);
+    ResponseEntity<CategoryWrapper> response = client.postForEntity(baseUrl + "/categories", requestBody, CategoryWrapper.class);
     Category postedCategory = response.getBody().getCategory();
     log.info("Wrote category: {}", postedCategory);
     return postedCategory;
   }
 
-  public Category writeProduct(Product product) {
-    throw new NotImplementedException();
+  public Product writeProduct(Product product) {
+    log.debug("writeProduct({})", product);
+    product.setId(null);
+    ProductWrapper productWrapper = new ProductWrapper();
+    productWrapper.setProduct(product);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_XML);
+    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_XML));
+
+    printProduct(productWrapper);
+
+    String requestContent = productToString(productWrapper);
+    ResponseEntity<ProductWrapper> response = client.postForEntity(baseUrl + URL_PRODUCTS, requestContent, ProductWrapper.class);
+    Product postedProduct = response.getBody().getProduct();
+    log.info("Wrote product: {}", postedProduct);
+    product.setId(postedProduct.getId());
+    return product;
+  }
+
+  public void deleteProduct(Long productId) {
+    log.debug("deleteProduct({})", productId);
+    client.delete(baseUrl + String.format(URL_PRODUCT, productId));
+    log.info("Removed product with id: {}", productId);
   }
 
   public UploadedImage uploadProductImage(Long productId, File imageUrl) {
@@ -123,14 +200,54 @@ public class Prestashop17Client {
     return result.getBody().getUploadedImage();
   }
 
-  public void printCategory(CategoryWrapper catWrapper) {
+  private <T> String objectToString(T objectWrapper, Class<T> clazz) {
     try {
-      JAXBContext jaxbContext = JAXBContext.newInstance(CategoryWrapper.class);
+      JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
       Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
       jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-      jaxbMarshaller.marshal(catWrapper, System.out);
+      StringWriter sw = new StringWriter();
+      jaxbMarshaller.marshal(objectWrapper, sw);
+      return sw.toString();
     } catch (Exception e) {
-      log.error("Error while marshalling class: {}", CategoryWrapper.class.getName(), e);
+      log.error("Error while marshalling class: {}", ProductWrapper.class.getName(), e);
+      throw new RuntimeException(e);
+    }
+  }
+
+  // private <T> void printProduct(T objectWrapper, Class<T> clazz) {
+  // try {
+  // JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+  // Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+  // jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+  // jaxbMarshaller.marshal(objectWrapper, System.out);
+  // } catch (Exception e) {
+  // log.error("Error while marshalling class: {}",
+  // ProductWrapper.class.getName(), e);
+  // }
+  // }
+
+  public void printProduct(ProductWrapper prodWrapper) {
+    try {
+      JAXBContext jaxbContext = JAXBContext.newInstance(ProductWrapper.class);
+      Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+      jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+      jaxbMarshaller.marshal(prodWrapper, System.out);
+    } catch (Exception e) {
+      log.error("Error while marshalling class: {}", ProductWrapper.class.getName(), e);
+    }
+  }
+
+  public String productToString(ProductWrapper prodWrapper) {
+    try {
+      JAXBContext jaxbContext = JAXBContext.newInstance(ProductWrapper.class);
+      Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+      jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+      StringWriter sw = new StringWriter();
+      jaxbMarshaller.marshal(prodWrapper, sw);
+      return sw.toString();
+    } catch (Exception e) {
+      log.error("Error while marshalling class: {}", ProductWrapper.class.getName(), e);
+      throw new RuntimeException(e);
     }
   }
 

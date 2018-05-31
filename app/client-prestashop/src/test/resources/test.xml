@@ -1,0 +1,85 @@
+<ProductWrapper>
+	<product>
+		<id />
+		<associations>
+			<categories>
+				<categories>
+					<categoryId>79</categoryId>
+				</categories>
+			</categories>
+			<tags />
+		</associations>
+		<reference>sku_created_40-a4ae-61cc0873d93a</reference>
+		<weight>7.5</weight>
+		<manufacturerId>1</manufacturerId>
+		<price>23.6</price>
+		<visibility>both</visibility>
+		<names>
+			<values>
+				<values>
+					<id>1</id>
+					<value>English product</value>
+				</values>
+				<values>
+					<id>2</id>
+					<value>Deutsch Produkt</value>
+				</values>
+				<values>
+					<id>3</id>
+					<value>Prodotto italiano</value>
+				</values>
+			</values>
+		</names>
+		<descriptions>
+			<values>
+				<values>
+					<id>1</id>
+					<value>description</value>
+				</values>
+				<values>
+					<id>2</id>
+					<value>Beschreibung</value>
+				</values>
+				<values>
+					<id>3</id>
+					<value>descrizione</value>
+				</values>
+			</values>
+		</descriptions>
+		<shortDescriptions>
+			<values>
+				<values>
+					<id>1</id>
+					<value>short description</value>
+				</values>
+				<values>
+					<id>2</id>
+					<value>Beschreibung kurz</value>
+				</values>
+				<values>
+					<id>3</id>
+					<value>descrizione corta</value>
+				</values>
+			</values>
+		</shortDescriptions>
+		<friendlyUrls>
+			<values>
+				<values>
+					<id>1</id>
+					<value>40-a4ae-61cc0873d93a-en</value>
+				</values>
+				<values>
+					<id>2</id>
+					<value>40-a4ae-61cc0873d93a-de</value>
+				</values>
+				<values>
+					<id>3</id>
+					<value>40-a4ae-61cc0873d93a-it</value>
+				</values>
+			</values>
+		</friendlyUrls>
+		<indexed>1</indexed>
+		<showPrice>1</showPrice>
+		<taxRuleGroup>1</taxRuleGroup>
+	</product>
+</ProductWrapper>

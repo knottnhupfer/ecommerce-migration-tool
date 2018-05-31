@@ -3,7 +3,8 @@ package org.smooth.systems.ec.magento;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.smooth.systems.ec.client.api.CategoryConfig;
+import org.smooth.systems.ec.client.api.SimpleCategory;
+import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.magento.mapper.MagentoCategoryConvert;
 import org.smooth.systems.ec.migration.model.Category;
@@ -50,12 +51,12 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
   }
 
   @Override
-  public List<Category> readAllCategories(List<CategoryConfig> categoriesConfig) {
+  public List<Category> readAllCategories(List<SimpleCategory> categoriesConfig) {
     log.info("readAllCategories({})", categoriesConfig);
     MagentoClient client = getClient();
 
     List<Category> res = new ArrayList<>();
-    for (CategoryConfig config : categoriesConfig) {
+    for (SimpleCategory config : categoriesConfig) {
       log.info("Read root category with id: {}", config.getCategoryId());
       com.github.chen0040.magento.models.Category category = client.categories().getRootCategoryById(config.getCategoryId());
       Assert.notNull(category, "Root category retrieving failed");
@@ -70,8 +71,14 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
   }
 
   @Override
-  public List<Product> readAllProducts(List<CategoryConfig> categories) {
-    log.debug("readAllProducts({})", categories);
+  public List<Product> readAllProductsForCategories(List<SimpleCategory> categories) {
+    log.debug("readAllProductsForCategories({})", categories);
+    throw new RuntimeException("Not implemented yet");
+  }
+
+  @Override
+  public List<Product> readAllProducts(List<SimpleProduct> products) {
+    log.debug("readAllProducts({})", products);
     throw new RuntimeException("Not implemented yet");
   }
 }

@@ -1,0 +1,56 @@
+<CategoryWrapper>
+	<category>
+		<id />
+		<parentId>1</parentId>
+		<isRootCategory>1</isRootCategory>
+		<active>1</active>
+		<names>
+			<values>
+				<values>
+					<id>1</id>
+					<value>Testt en 1</value>
+				</values>
+				<values>
+					<id>2</id>
+					<value>Testt de 1</value>
+				</values>
+				<values>
+					<id>3</id>
+					<value>Testt it 1</value>
+				</values>
+			</values>
+		</names>
+		<descriptions>
+			<values>
+				<values>
+					<id>1</id>
+					<value></value>
+				</values>
+				<values>
+					<id>2</id>
+					<value></value>
+				</values>
+				<values>
+					<id>3</id>
+					<value></value>
+				</values>
+			</values>
+		</descriptions>
+		<friendlyUrls>
+			<values>
+				<values>
+					<id>1</id>
+					<value>test1</value>
+				</values>
+				<values>
+					<id>2</id>
+					<value>test1</value>
+				</values>
+				<values>
+					<id>3</id>
+					<value>test1</value>
+				</values>
+			</values>
+		</friendlyUrls>
+	</category>
+</CategoryWrapper>

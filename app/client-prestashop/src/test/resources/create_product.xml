@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<prestashop>
+    <product>
+        <associations>
+            <categories>
+                <category>
+                    <id>79</id>
+                </category>
+            </categories>
+            <tags/>
+        </associations>
+        <reference>sku_created_fa-a89d-0b27cdab413c</reference>
+        <weight>7.5</weight>
+        <id_manufacturer>1</id_manufacturer>
+        <price>23.6</price>
+        <visibility>both</visibility>
+        <name>
+            <language id="1">English product</language>
+            <language id="2">Deutsch Produkt</language>
+            <language id="3">Prodotto italiano</language>
+        </name>
+        <description>
+            <language id="1">description</language>
+            <language id="2">Beschreibung</language>
+            <language id="3">descrizione</language>
+        </description>
+        <description_short>
+            <language id="1">short description</language>
+            <language id="2">Beschreibung kurz</language>
+            <language id="3">descrizione corta</language>
+        </description_short>
+        <link_rewrite>
+            <language id="1">fa-a89d-0b27cdab413c-en</language>
+            <language id="2">fa-a89d-0b27cdab413c-de</language>
+            <language id="3">fa-a89d-0b27cdab413c-it</language>
+        </link_rewrite>
+        <state>1</state>
+        <indexed>1</indexed>
+        <show_price>1</show_price>
+        <id_tax_rules_group>1</id_tax_rules_group>
+    </product>
+</prestashop>

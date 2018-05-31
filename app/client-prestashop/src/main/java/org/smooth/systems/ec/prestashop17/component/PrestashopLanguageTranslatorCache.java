@@ -3,6 +3,7 @@ package org.smooth.systems.ec.prestashop17.component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -34,7 +35,7 @@ public class PrestashopLanguageTranslatorCache {
   public void initialize() {
     List<Language> languages = client.getLanguages();
     for (Language language : languages) {
-      String code = language.getLanguageCode().substring(0, 2);
+      String code = language.getIsoCode().substring(0, 2);
       codeToIdMapping.put(code, language.getId());
       idToCodeMapping.put(language.getId(), code);
     }
@@ -52,5 +53,9 @@ public class PrestashopLanguageTranslatorCache {
     Assert.notNull(code,
         String.format("Unable to map prestashop langId '%d' to code. Available ids are: %s", id, idToCodeMapping.keySet()));
     return code;
+  }
+
+  public Set<Long> getLangIds() {
+	  return idToCodeMapping.keySet();
   }
 }
