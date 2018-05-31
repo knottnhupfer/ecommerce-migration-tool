@@ -5,8 +5,6 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
@@ -15,7 +13,6 @@ import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
 import org.smooth.systems.ec.magento19.db.repository.ProductRepository;
 import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.Product.ProductType;
 import org.smooth.systems.ec.migration.model.Product.ProductVisibility;
 import org.smooth.systems.ec.migration.model.ProductDimensionAndShipping;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
@@ -83,7 +80,7 @@ public class Magento19DbProductsReader {
 
     Magento19Product retrievedProduct = productRepo.findById(productId);
     LocalDateTime creationDate = LocalDateTime.ofInstant(retrievedProduct.getCreatedAt().toInstant(), ZoneId.systemDefault());
-    Product product = new Product(retrievedProduct.getId(), retrievedProduct.getSku(), creationDate, ProductType.Simple);
+    Product product = new Product(retrievedProduct.getId(), retrievedProduct.getSku(), creationDate);
 
     updateProductPrice(product);
     updateMainCategoryId(product);

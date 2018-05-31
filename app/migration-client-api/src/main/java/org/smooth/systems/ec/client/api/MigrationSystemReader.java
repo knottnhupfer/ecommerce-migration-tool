@@ -36,7 +36,7 @@ public interface MigrationSystemReader extends RegisterableComponent {
    *          TODO
    * @return list of root categories which includes sub categories as well
    */
-  public List<Category> readAllCategories(List<CategoryConfig> categories);
+  public List<Category> readAllCategories(List<SimpleCategory> categories);
 
   /**
    * Retrieves a complete list of products of a specific category incl. sub
@@ -51,5 +51,7 @@ public interface MigrationSystemReader extends RegisterableComponent {
    */
 //  public List<Product> readProductsOfCategory(Long categoryId, boolean searchSubcategories);
   
-  public List<Product> readAllProducts(List<CategoryConfig> categories);
+  public List<Product> readAllProductsForCategories(List<SimpleCategory> categories);
+
+  public List<Product> readAllProducts(List<SimpleProduct> products);
 }

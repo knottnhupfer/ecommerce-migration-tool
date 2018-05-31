@@ -2,7 +2,8 @@ package org.smooth.systems.ec.prestashop17.component;
 
 import java.util.List;
 
-import org.smooth.systems.ec.client.api.CategoryConfig;
+import org.smooth.systems.ec.client.api.SimpleCategory;
+import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.client.api.MigrationClientConstants;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.migration.model.Category;
@@ -40,15 +41,21 @@ public class Prestashop17ObjectReader extends AbstractPrestashop17Connector impl
   }
 
   @Override
-  public List<Category> readAllCategories(List<CategoryConfig> categories) {
+  public List<Category> readAllCategories(List<SimpleCategory> categories) {
     log.debug("readAllCategories({})", categories);
     
     throw new RuntimeException("Not implemented yet");
   }
 
   @Override
-  public List<Product> readAllProducts(List<CategoryConfig> categories) {
-    log.debug("readAllProducts({})", categories);
+  public List<Product> readAllProductsForCategories(List<SimpleCategory> categories) {
+    log.debug("readAllProductsForCategories({})", categories);
+    throw new RuntimeException("Not implemented yet");
+  }
+
+  @Override
+  public List<Product> readAllProducts(List<SimpleProduct> products) {
+    log.debug("readAllProducts({})", products);
     throw new RuntimeException("Not implemented yet");
   }
 }

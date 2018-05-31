@@ -3,7 +3,7 @@ package org.smooth.systems.ec.magento19.db.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.smooth.systems.ec.client.api.CategoryConfig;
+import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.magento19.db.model.Magento19Category;
 import org.smooth.systems.ec.magento19.db.repository.CategoryRepository;
 import org.smooth.systems.ec.migration.model.Category;
@@ -25,7 +25,7 @@ public class Magento19DbCategoriesReader {
 	@Autowired
 	private Magento19DbCategoriesPopulater categoriesPopulater;
 
-	public List<Category> readAllCategories(List<CategoryConfig> categories) {
+	public List<Category> readAllCategories(List<SimpleCategory> categories) {
 		log.info("readAllCategories({})", categories);
 		List<Category> retrievedCategories = new ArrayList<>();
 		categories.forEach(config -> {
