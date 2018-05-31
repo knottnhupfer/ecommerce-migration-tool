@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.List;
 
-import org.smooth.systems.ec.client.api.CategoryConfig;
+import org.smooth.systems.ec.client.api.SimpleCategory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +28,7 @@ public class MigrationConfiguration {
 	private String rootCategoryLanguage;
 
 	@JsonProperty("additional-categories")
-	private List<CategoryConfig> additionalCategories;
+	private List<SimpleCategory> additionalCategories;
 
 	@JsonProperty("categories-merging-file")
 	private String categoriesMergingFile;

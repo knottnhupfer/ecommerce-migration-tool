@@ -1,27 +1,28 @@
-package org.smooth.systems.ec.utils.db.component;
+package org.smooth.systems.ec.utils.migration.action;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
+import org.smooth.systems.ec.utils.db.component.AbstractProductsForCategoryReader;
 import org.smooth.systems.ec.utils.db.model.MagentoProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * Created by David Monichi <david.monichi@smooth-systems.solutions> on 03.02.18.
+ * Created by David Monichi <david.monichi@smooth-systems.solutions> on 29.05.18.
  */
 @Slf4j
 @Component
-public class SourceSystemProductsMergerExecutor extends AbstractProductsForCategoryReader implements IActionExecuter {
+public class MergeProductsExecutorOld extends AbstractProductsForCategoryReader implements IActionExecuter {
 
   @Autowired
   private MigrationConfiguration config;
@@ -32,20 +33,26 @@ public class SourceSystemProductsMergerExecutor extends AbstractProductsForCateg
 
   @Override
   public String getActionName() {
-    return "products-mapping";
+    return "products-migrate-old";
   }
 
   @Override
   public void execute() {
     log.trace("execute()");
-    initializeRootCategories();
-    log.info("Mapping will be written to file: {}", config.getGeneratedProductsMergingFile());
+    log.info("Read product merging mapping from: {}", config.getGeneratedProductsMergingFile());
+    productIdsMapper = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
+    // FIXME read all product lists from generated products merging file
+    List<Long> productsToBeMigrated = Arrays.asList(2220L); // mapping -> 3079
 
-    for (SimpleCategory categoryConfig : config.getAdditionalCategories()) {
-      log.info("Merge category: {}", categoryConfig);
-      mergeProductIdsToRootProducts(categoryConfig);
-    }
-    productIdsMapper.writeMappingToFile(" mapping additional language productId to rootProductId (both ids are present in the source system)");
+
+//    initializeRootCategories();
+
+
+//    for (CategoryConfig categoryConfig : config.getAdditionalCategories()) {
+//      log.info("Merge category: {}", categoryConfig);
+//      mergeProductIdsToRootProducts(categoryConfig);
+//    }
+//    productIdsMapper.writeMappingToFile(" mapping additional language productId to rootProductId (both ids are present in the source system)");
   }
 
   private void initializeRootCategories() {

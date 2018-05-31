@@ -1,30 +1,36 @@
-package org.smooth.systems.ec.utils.db.component;
+package org.smooth.systems.ec.utils.migration.action;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
+import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
+import org.smooth.systems.ec.utils.db.component.AbstractProductsForCategoryReader;
 import org.smooth.systems.ec.utils.db.model.MagentoProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * Created by David Monichi <david.monichi@smooth-systems.solutions> on 03.02.18.
+ * Created by David Monichi <david.monichi@smooth-systems.solutions> on
+ * 29.05.18.
  */
 @Slf4j
 @Component
-public class SourceSystemProductsMergerExecutor extends AbstractProductsForCategoryReader implements IActionExecuter {
+public class MergeProductsExecutor extends AbstractProductsForCategoryReader implements IActionExecuter {
 
   @Autowired
   private MigrationConfiguration config;
+
+  @Autowired
+  private MigrationSystemReaderAndWriterFactory readerWriterFactory;
 
   private Map<String, MagentoProduct> productMap = new HashMap<>();
 
@@ -32,20 +38,25 @@ public class SourceSystemProductsMergerExecutor extends AbstractProductsForCateg
 
   @Override
   public String getActionName() {
-    return "products-mapping";
+    return "products-migrate";
   }
 
   @Override
   public void execute() {
     log.trace("execute()");
-    initializeRootCategories();
-    log.info("Mapping will be written to file: {}", config.getGeneratedProductsMergingFile());
+    log.info("Read product merging mapping from: {}", config.getGeneratedProductsMergingFile());
+    productIdsMapper = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
+    // FIXME read all product lists from generated products merging file
+    List<Long> productsToBeMigrated = Arrays.asList(2220L); // mapping -> 3079
 
-    for (SimpleCategory categoryConfig : config.getAdditionalCategories()) {
-      log.info("Merge category: {}", categoryConfig);
-      mergeProductIdsToRootProducts(categoryConfig);
-    }
-    productIdsMapper.writeMappingToFile(" mapping additional language productId to rootProductId (both ids are present in the source system)");
+    // initializeRootCategories();
+
+    // for (CategoryConfig categoryConfig : config.getAdditionalCategories()) {
+    // log.info("Merge category: {}", categoryConfig);
+    // mergeProductIdsToRootProducts(categoryConfig);
+    // }
+    // productIdsMapper.writeMappingToFile(" mapping additional language
+    // productId to rootProductId (both ids are present in the source system)");
   }
 
   private void initializeRootCategories() {
@@ -74,7 +85,8 @@ public class SourceSystemProductsMergerExecutor extends AbstractProductsForCateg
     if (!products.isEmpty()) {
       log.error("Not merged products: {}", products);
       // FIXME: F101, check code in trello
-      // throw new RuntimeException(String.format("Unable to merge %s products.", products.size()));
+      // throw new RuntimeException(String.format("Unable to merge %s
+      // products.", products.size()));
     }
   }
 
@@ -87,7 +99,8 @@ public class SourceSystemProductsMergerExecutor extends AbstractProductsForCateg
   }
 
   /**
-   * Removes products which should be ignored by configuration and validates that the rest of products do have a sku not null and not empty.
+   * Removes products which should be ignored by configuration and validates
+   * that the rest of products do have a sku not null and not empty.
    *
    * @param info
    * @param products
@@ -96,7 +109,8 @@ public class SourceSystemProductsMergerExecutor extends AbstractProductsForCateg
     log.debug("filterProductsWithProductsToBeIgnoredAndValidateProducts({}, {})", info, products.size());
     removingProductsToBeSkipped(products);
 
-    List<MagentoProduct> invalidProducts = products.stream().filter(product -> product.getSku() == null || product.getSku().isEmpty()).collect(Collectors.toList());
+    List<MagentoProduct> invalidProducts = products.stream().filter(product -> product.getSku() == null || product.getSku().isEmpty())
+        .collect(Collectors.toList());
     if (!invalidProducts.isEmpty()) {
       String msg = String.format("%s contains %s invalid products.", info, invalidProducts.size());
       log.error(msg);
@@ -107,8 +121,10 @@ public class SourceSystemProductsMergerExecutor extends AbstractProductsForCateg
 
   private void removingProductsToBeSkipped(List<MagentoProduct> products) {
     List<Long> ignoringProductsIds = config.getProductIdsSkipping();
-    List<MagentoProduct> productsToBeRemoved = products.stream().filter(product -> ignoringProductsIds.contains(product.getId())).collect(Collectors.toList());
-    log.info("Found {} to ignore while migration, {} ids are configured to be ignored.", productsToBeRemoved.size(), ignoringProductsIds.size());
+    List<MagentoProduct> productsToBeRemoved = products.stream().filter(product -> ignoringProductsIds.contains(product.getId()))
+        .collect(Collectors.toList());
+    log.info("Found {} to ignore while migration, {} ids are configured to be ignored.", productsToBeRemoved.size(),
+        ignoringProductsIds.size());
     Assert.isTrue(ignoringProductsIds.size() >= productsToBeRemoved.size(), "check ignoring ids >= foudn products to ignore");
 
     int startSize = products.size();

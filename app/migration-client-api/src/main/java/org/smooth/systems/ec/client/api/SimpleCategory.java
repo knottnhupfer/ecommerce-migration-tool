@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CategoryConfig {
+public class SimpleCategory {
 
   @JsonProperty("category-id")
   private Long categoryId;

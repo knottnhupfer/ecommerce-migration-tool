@@ -1,6 +1,8 @@
 package org.smooth.systems.ec.utils.db.component;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Properties;
+
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.magento19.db.repository.ProductCategoryMappingRepository;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
@@ -8,10 +10,8 @@ import org.smooth.systems.ec.utils.db.model.MagentoCategory;
 import org.smooth.systems.ec.utils.db.repository.CategoriesRepository;
 import org.smooth.systems.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on 03.02.18.
