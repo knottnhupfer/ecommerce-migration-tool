@@ -123,8 +123,8 @@ public class MigrateProductsExecutor extends AbstractProductsForCategoryReader i
 
   private List<Product> fillUpProductsWithMissingLanguage(List<Product> productList) {
     // TODO: check if all products are filled with 2 languages
-    // TODO: what to do with only Italian products
-    // TODO: what to do with only German products
+    // TODO: what to do with only Italian products, not in list
+    // TODO: what to do with only German products, not in list and filtered earlier
     throw new NotImplementedException();
   }
 
