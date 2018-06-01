@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
+import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
@@ -59,9 +60,8 @@ public class MigrateProductsExecutor extends AbstractProductsForCategoryReader i
 	 *
 	 * <ul>
 	 * <li>key ... product id source system</li>
-	 * <li>value ... product id</li>
+	 * <li>value ... product id destination system</li>
 	 * </ul>
-	 * destination system
 	 */
 	private ObjectIdMapper productIdsMigration;
 
@@ -83,15 +83,15 @@ public class MigrateProductsExecutor extends AbstractProductsForCategoryReader i
 
 		List<Product> mergedProducts = mergeProductsLanguageAttributes(productList);
 		log.info("Successfully merged {} products", mergedProducts.size());
-		log.info("Merged Products:");
+		log.trace("Merged Products:");
 		for (Product prod : mergedProducts) {
-			log.info("  - " + prod);
+			log.trace("   " + prod);
 		}
 
 		List<Product> filledUpProducts = fillUpProductsWithMissingLanguage(mergedProducts);
-		log.info("Successfully filled up products");
+		log.info("Successfully filled up {} products", filledUpProducts.size());
 
-		uploadProductsAndUpdateMapping(filledUpProducts);
+		uploadProductsAndWriteMapping(filledUpProducts);
 		log.info("Successfully migrated all products");
 	}
 
@@ -134,7 +134,7 @@ public class MigrateProductsExecutor extends AbstractProductsForCategoryReader i
 		Assert.isTrue(product.getAttributes().size() == 1 && mainProdInfo.getLangIso().equals(product.getAttributes().get(0).getLangCode()),
 			"invalid attributes configuration");
 
-		for(SimpleProduct altProductInfo : productData.getAlternativeProducts()) {
+		for (SimpleProduct altProductInfo : productData.getAlternativeProducts()) {
 			Assert.isTrue(!product.getAttributes().stream().filter(attr -> attr.getLangCode().equals(altProductInfo.getLangIso())).findAny().isPresent(),
 				String.format("Duplicated attribute language for language: %s", altProductInfo.getLangIso()));
 			Product altProduct = productsCache.getProductById(altProductInfo.getProductId());
@@ -150,16 +150,25 @@ public class MigrateProductsExecutor extends AbstractProductsForCategoryReader i
 		// TODO: check if all products are filled with 2 languages
 		// TODO: what to do with only Italian products, not in list
 		// TODO: what to do with only German products, not in list and filtered earlier
-		throw new NotImplementedException();
+		// throw new NotImplementedException();
+		log.warn("Not mapped italian and german products are currently skipped.");
+		return productList;
 	}
 
-	private void uploadProductsAndUpdateMapping(List<Product> filledUpProducts) {
-		throw new NotImplementedException();
+	private void uploadProductsAndWriteMapping(List<Product> productsToBeWrittern) {
+		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
+		for (Product product : productsToBeWrittern) {
+			Long srcProdId = product.getId();
+			Product writtenProduct = writer.writeProduct(product);
+			productIdsMigration.addMapping(srcProdId, writtenProduct.getId());
+		}
+		productIdsMigration.writeMappingToFile("Mapping file which maps product ids from source system to product ids to destination system");
 	}
 
 	private void initialize() {
 		log.info("Read product merging mapping from: {}", config.getGeneratedProductsMergingFile());
 		productIdsSourceSystem = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
 		productIdsSourceSystem.initializeIdMapperFromFile();
+		productIdsMigration = new ObjectIdMapper(config.getGeneratedProductsMigrationFile());
 	}
 }

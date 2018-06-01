@@ -54,6 +54,9 @@ public class MigrationConfiguration {
 	@JsonProperty("generated-products-merging-file")
 	private String generatedProductsMergingFile;
 
+	@JsonProperty("generated-products-migration-file")
+	private String generatedProductsMigrationFile;
+
 	@JsonProperty("product-ids-skipping")
 	private List<Long> productIdsSkipping;
 
@@ -85,5 +88,7 @@ public class MigrationConfiguration {
 		productsMergingFile = config.productsMergingFile;
 		generatedProductsMergingFile = config.generatedProductsMergingFile;
 		productIdsSkipping = config.productIdsSkipping != null ? config.productIdsSkipping : Collections.emptyList();
+
+		generatedProductsMigrationFile = config.getGeneratedProductsMigrationFile();
 	}
 }

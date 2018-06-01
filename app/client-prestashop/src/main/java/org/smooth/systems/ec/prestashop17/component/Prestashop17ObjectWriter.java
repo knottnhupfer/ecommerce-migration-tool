@@ -6,9 +6,11 @@ import org.smooth.systems.ec.client.api.MigrationClientConstants;
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
+import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.AbstractCategoryWriter;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
@@ -91,7 +93,12 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
     return null;
   }
 
-  @Override
+	@Override
+	public Product writeProduct(Product product) {
+		throw new NotImplementedException();
+	}
+
+	@Override
   public void repairAndValidateData() {
 
     // TODO check all category data

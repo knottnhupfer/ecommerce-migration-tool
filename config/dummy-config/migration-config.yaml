@@ -73,3 +73,9 @@ product-ids-skipping:
   - 3301    # skip DE SKU == null
   - 3323    # skip DE SKU == null
   - 3718    # skip DE SKU == null
+
+
+
+# generated mapping file which maps alternative languages source system product ids to a root category id of the source system
+# main product id source system = product id destination system
+generated-products-migration-file: D:\workspace_alphaconcept\ecommerce-migration-tool\config\dummy-config\dummy-generated-products-migration.properties

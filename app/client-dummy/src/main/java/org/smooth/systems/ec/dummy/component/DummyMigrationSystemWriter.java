@@ -1,16 +1,19 @@
 package org.smooth.systems.ec.dummy.component;
 
+import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.dummy.DummyConstants;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @Component
 public class DummyMigrationSystemWriter implements MigrationSystemWriter {
 
@@ -47,6 +50,13 @@ public class DummyMigrationSystemWriter implements MigrationSystemWriter {
 	@Override
 	public ObjectIdMapper getProductsObjectIdMapper() {
 		throw new NotImplementedException();
+	}
+
+	@Override
+	public Product writeProduct(Product product) {
+		log.info("writeProduct({})", product);
+		product.setId(product.getId() % 100 + 5000);
+		return product;
 	}
 
 	@Override
