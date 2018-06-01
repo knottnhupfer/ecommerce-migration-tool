@@ -1,0 +1,75 @@
+# migration configuration
+---
+# source-system-name: magento2
+source-system-name: test-dummy
+destination-system-name: test-dummy
+
+
+## ############################################################################
+## ============================================================================
+##
+## Category mapping
+##
+## ============================================================================
+
+root-category-id: 2
+root-category-language: it
+additional-categories:
+  -
+    category-id: 26
+    category-language: de
+
+# manual created mapping file which maps alternative languages category id to main category id (sub categories of the root category)
+categories-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/categories-merging.properties
+
+# list of category ids which do not need to be mapped to root category ex. additional category
+# anyway all categories needs to be mapped so that eventual products can be mapped
+category-ids-merging-ignore-list:
+  - 53
+  - 127
+  - 128
+  - 126
+  - 78
+category-ids-skipping:
+#  - 50
+
+# maps root category ids of the source system to category ids on the destination system
+#
+# sourceCategoryId = destinationCategoryId
+generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/migration/generated-created-categories-mapping.properties
+
+
+
+## ############################################################################
+## ============================================================================
+##
+## Products mapping
+##
+## ============================================================================
+
+# manual created brand mapping file
+products-brand-mapping: D:\workspace_alphaconcept\ecommerce-migration-tool\config\dummy-config\dummy-products-brands-mapping.properties
+
+# TODO: currently not used ...
+# manual created product mapping file which maps alternative languages product id to root product id
+# products-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/products-merging.properties
+
+# TODO: not done yet
+# generated mapping file which maps alternative languages source system product ids to a root category id of the source system
+# generated-products-root-ids-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/generated-products-root-ids-merging.properties
+
+# generated mapping file which maps alternative languages source system product ids to a root category id of the source system
+generated-products-merging-file: D:\workspace_alphaconcept\ecommerce-migration-tool\config\dummy-config\dummy-generated-products-merging.properties
+
+product-ids-skipping:
+  - 926     # skip IT SKU == null
+  - 3159    # skip IT SKU == null
+  - 3263    # skip IT SKU == null
+  - 3483    # skip IT SKU == null
+  - 3490    # skip IT SKU == null
+  - 3616    # skip IT SKU == null
+  - 423     # skip DE SKU == null
+  - 2917    # skip DE SKU == null
+  - 3301    # skip DE SKU == null
+  - 3323    # skip DE SKU == null
+  - 3718    # skip DE SKU == null

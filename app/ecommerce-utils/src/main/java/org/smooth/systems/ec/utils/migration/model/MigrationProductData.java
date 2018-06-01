@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.smooth.systems.ec.client.api.SimpleProduct;
@@ -22,13 +23,14 @@ public class MigrationProductData {
 
   public MigrationProductData(SimpleProduct... products) {
     Assert.isTrue(products.length >= 1, "there must be at least one product");
-    List<SimpleProduct> productsList = Arrays.asList(products);
+		List<SimpleProduct> productsList = new ArrayList<>(Arrays.asList(products));
     mainProduct = productsList.remove(0);
     alternativeProducts = productsList;
   }
 
   public List<SimpleProduct> getAsFullList() {
-    List<SimpleProduct> res = Arrays.asList(mainProduct);
+		List<SimpleProduct> res = new ArrayList<>();
+		res.add(mainProduct);
     res.addAll(alternativeProducts);
     return res;
   }
