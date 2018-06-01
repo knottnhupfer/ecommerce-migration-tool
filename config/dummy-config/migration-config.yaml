@@ -36,7 +36,7 @@ category-ids-skipping:
 # maps root category ids of the source system to category ids on the destination system
 #
 # sourceCategoryId = destinationCategoryId
-generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/migration/generated-created-categories-mapping.properties
+generated-created-categories-mapping-file: D:\workspace_alphaconcept\ecommerce-migration-tool\config\dummy-config\dummy-generated-created-categories-mapping.properties
 
 
 
