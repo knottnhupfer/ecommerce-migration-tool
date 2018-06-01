@@ -84,6 +84,11 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
 		attribute.setName("name_" + isoCode + "_" + id);
 		attribute.setFriendlyUrl("friendly_url_" + isoCode + "_" + id);
 		attribute.setDescription("description_" + isoCode + "_" + id);
+
+		List<Long> categoryIds = new ArrayList<>();
+		categoryIds.add(new Long(id));
+		product.setCategories(categoryIds);
+
 		List<ProductTranslateableAttributes> attributes = new ArrayList<>();
 		attributes.add(attribute);
 		product.setAttributes(attributes);

@@ -19,7 +19,7 @@ public class ProductsCache {
   private ProductsCache() {
   }
 
-  public static ProductsCache buildProductsCache(MigrationSystemReader reader, List<SimpleProduct> productsInfo) {
+  public static ProductsCache createProductsCache(MigrationSystemReader reader, List<SimpleProduct> productsInfo) {
     ProductsCache cache = new ProductsCache();
     cache.initializeProductsCache(reader, productsInfo);
     return cache;

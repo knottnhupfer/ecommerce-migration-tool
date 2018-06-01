@@ -5,22 +5,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
-import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
-import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.db.component.AbstractProductsForCategoryReader;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.smooth.systems.ec.utils.migration.model.MigrationProductData;
+import org.smooth.systems.ec.utils.migration.util.ProductMigrationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -88,6 +85,9 @@ public class MigrateProductsExecutor extends AbstractProductsForCategoryReader i
 			log.trace("   " + prod);
 		}
 
+		ProductMigrationUtils.updateCategoryIdWithDestinationSystemCategoryId(config, mergedProducts);
+		log.info("Products category updated");
+
 		List<Product> filledUpProducts = fillUpProductsWithMissingLanguage(mergedProducts);
 		log.info("Successfully filled up {} products", filledUpProducts.size());
 
@@ -98,7 +98,7 @@ public class MigrateProductsExecutor extends AbstractProductsForCategoryReader i
 	private void initializeProductsCache(List<MigrationProductData> productList) {
 		List<SimpleProduct> collect = new ArrayList<>();
 		productList.stream().map(data -> data.getAsFullList()).collect(Collectors.toList()).stream().forEach(x -> collect.addAll(x));
-		productsCache = ProductsCache.buildProductsCache(readerWriterFactory.getMigrationReader(), collect);
+		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), collect);
 	}
 
 	private List<MigrationProductData> generateProductsList(String mainLangCode, String alternativeLangCode) {
