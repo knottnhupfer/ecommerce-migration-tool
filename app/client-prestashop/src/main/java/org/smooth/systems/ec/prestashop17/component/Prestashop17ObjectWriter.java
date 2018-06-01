@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.prestashop17.component;
 
+import java.io.File;
 import java.util.List;
 
 import org.smooth.systems.ec.client.api.MigrationClientConstants;
@@ -95,6 +96,11 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
 	@Override
 	public Product writeProduct(Product product) {
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public void uploadProductImages(Long prodId, File productImage) {
 		throw new NotImplementedException();
 	}
 

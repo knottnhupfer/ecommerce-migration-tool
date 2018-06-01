@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.client.api;
 
+import java.io.File;
 import java.util.List;
 
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
@@ -68,4 +69,6 @@ public interface MigrationSystemWriter extends RegisterableComponent {
   ObjectIdMapper getProductsObjectIdMapper();
 
 	Product writeProduct(Product product);
+
+	void uploadProductImages(Long prodId, File productImage);
 }

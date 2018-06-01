@@ -11,7 +11,6 @@ import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.stereotype.Component;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
@@ -53,7 +52,7 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
 		List<Product> products = new ArrayList<>();
 		for(SimpleProduct productInfo : productsInfo) {
 			if(!dummyProducts.containsKey(productInfo.getProductId())) {
-				throw new InvalidStateException("Unable to find product for id: " + productInfo.getProductId());
+				throw new IllegalStateException("Unable to find product for id: " + productInfo.getProductId());
 			}
 			products.add(dummyProducts.get(productInfo.getProductId()));
 		}
@@ -88,6 +87,12 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
 		List<Long> categoryIds = new ArrayList<>();
 		categoryIds.add(new Long(id));
 		product.setCategories(categoryIds);
+
+		List<String> urls = new ArrayList<>();
+		urls.add(String.format("/%d/%d.jpg", id, 1));
+		urls.add(String.format("/%d/%d.jpg", id, 2));
+		urls.add(String.format("/%d/%d.jpg", id, 3));
+		product.setProductImageUrls(urls);
 
 		List<ProductTranslateableAttributes> attributes = new ArrayList<>();
 		attributes.add(attribute);

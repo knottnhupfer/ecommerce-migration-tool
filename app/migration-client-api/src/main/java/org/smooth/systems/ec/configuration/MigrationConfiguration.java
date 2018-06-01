@@ -54,11 +54,14 @@ public class MigrationConfiguration {
 	@JsonProperty("generated-products-merging-file")
 	private String generatedProductsMergingFile;
 
+	@JsonProperty("product-ids-skipping")
+	private List<Long> productIdsSkipping;
+
 	@JsonProperty("generated-products-migration-file")
 	private String generatedProductsMigrationFile;
 
-	@JsonProperty("product-ids-skipping")
-	private List<Long> productIdsSkipping;
+	@JsonProperty("products-images-directory")
+	private String productsImagesDirectory;
 
 	@Override
 	public String toString() {
@@ -85,6 +88,7 @@ public class MigrationConfiguration {
 			: Collections.emptyList();
 		categoryIdsSkipping = config.categoryIdsSkipping != null ? config.categoryIdsSkipping : Collections.emptyList();
 
+		productsImagesDirectory = config.getProductsImagesDirectory();
 		productsMergingFile = config.productsMergingFile;
 		generatedProductsMergingFile = config.generatedProductsMergingFile;
 		productIdsSkipping = config.productIdsSkipping != null ? config.productIdsSkipping : Collections.emptyList();

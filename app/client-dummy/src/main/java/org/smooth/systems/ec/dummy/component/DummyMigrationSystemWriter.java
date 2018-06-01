@@ -11,6 +11,7 @@ import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 
 @Slf4j
@@ -57,6 +58,11 @@ public class DummyMigrationSystemWriter implements MigrationSystemWriter {
 		log.info("writeProduct({})", product);
 		product.setId(product.getId() % 100 + 5000);
 		return product;
+	}
+
+	@Override
+	public void uploadProductImages(Long prodId, File productImage) {
+		log.info("Write image {} for product with id {}", productImage, prodId);
 	}
 
 	@Override

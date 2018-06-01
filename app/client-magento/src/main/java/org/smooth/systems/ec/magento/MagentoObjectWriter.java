@@ -1,11 +1,13 @@
 package org.smooth.systems.ec.magento;
 
+import java.io.File;
 import java.util.List;
 
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -52,4 +54,14 @@ public class MagentoObjectWriter extends AbstractMagentoConnector implements Mig
   public ObjectIdMapper getProductsObjectIdMapper() {
     throw new RuntimeException("Not implemented yet");
   }
+
+	@Override
+	public Product writeProduct(Product product) {
+		throw new RuntimeException("Not implemented yet");
+	}
+
+	@Override
+	public void uploadProductImages(Long prodId, File productImage) {
+		throw new RuntimeException("Not implemented yet");
+	}
 }

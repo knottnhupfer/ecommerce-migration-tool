@@ -30,37 +30,10 @@ import org.springframework.util.Assert;
  */
 @Slf4j
 @Component
-public class MigrateProductsExecutor extends AbstractProductsForCategoryReader implements IActionExecuter {
-
-	@Autowired
-	private MigrationConfiguration config;
+public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter implements IActionExecuter {
 
 	@Autowired
 	private MigrationSystemReaderAndWriterFactory readerWriterFactory;
-
-	private ProductsCache productsCache;
-
-	/**
-	 * Maps the product id from the alternative language to the product id of the
-	 * main language id (only source system)
-	 *
-	 * <ul>
-	 * <li>key ... product id german language source system</li>
-	 * <li>value ... main product id source system (italian language)</li>
-	 * </ul>
-	 */
-	private ObjectIdMapper productIdsSourceSystem;
-
-	/**
-	 * Maps the product id from the source system to the product id of the
-	 * uploaded product
-	 *
-	 * <ul>
-	 * <li>key ... product id source system</li>
-	 * <li>value ... product id destination system</li>
-	 * </ul>
-	 */
-	private ObjectIdMapper productIdsMigration;
 
 	@Override
 	public String getActionName() {
@@ -163,12 +136,5 @@ public class MigrateProductsExecutor extends AbstractProductsForCategoryReader i
 			productIdsMigration.addMapping(srcProdId, writtenProduct.getId());
 		}
 		productIdsMigration.writeMappingToFile("Mapping file which maps product ids from source system to product ids to destination system");
-	}
-
-	private void initialize() {
-		log.info("Read product merging mapping from: {}", config.getGeneratedProductsMergingFile());
-		productIdsSourceSystem = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
-		productIdsSourceSystem.initializeIdMapperFromFile();
-		productIdsMigration = new ObjectIdMapper(config.getGeneratedProductsMigrationFile());
 	}
 }

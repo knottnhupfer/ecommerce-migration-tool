@@ -53,6 +53,7 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 		log.info("Execute action '{}'", actionParam);
 		IActionExecuter action = actions.get(actionParam);
 		action.execute();
+		System.exit(0);
 	}
 
 	private void initialize(ApplicationArguments args) {
