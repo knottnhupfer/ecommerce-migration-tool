@@ -14,7 +14,8 @@ java ecommerce-utils-1.0.0-SNAPSHOT.jar <action> --config=configuration-file>
 For merging categories the required command looks like following:
 
 ```
-java ecommerce-utils-1.0.0-SNAPSHOT.jar --merge-categories --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
+java ecommerce-utils-1.0.0-SNAPSHOT.jar --merge-categories \
+              --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
 ```
 
 ### Merging products
@@ -32,7 +33,8 @@ describe how the mapping will be generated ...
 
 Generates a mapping list from the alternative language product id to the main product id.
 ```
-java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-mapping --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
+java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-mapping \
+              --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
 ```
 
 As result a file configured as variable `generated-products-merging-file`, will be written which contains the mapping. This file contains the mapping as following:
@@ -45,7 +47,8 @@ Following pre-prepared files must be done before calling this command:
 + `generated-created-categories-mapping-file` containing the mapping from source category id to destination category id
 + `generated-products-merging-file` containing the product mapping for merging
 ```
-java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-migrate --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
+java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-migrate \
+              --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
 ```
 Following steps will be processed when merging and uploading the products:
 + Merges the products from the source system, using the `alternative_language_product_id` and merging the tanslatable attributes into the main product.
@@ -71,7 +74,8 @@ Preparation steps:
 + images must be download to local file system and path configured as variable `products-images-directory`
 
 ```
-java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-image-migrate --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
+java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-image-migrate \
+              --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
 ```
 
 Following steps will be processed when uploading images:
@@ -99,7 +103,8 @@ The connection details will be configured in the **application.properties** due 
 ### Migrating and merging categories to new system
 
 ```
-  java <JAR-FILE-NAME-TODO>.jar --merge-categories --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
+java <JAR-FILE-NAME-TODO>.jar --merge-categories \
+              --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
 ```
 
 The main configuration file **migration-config.yaml** looks like following:

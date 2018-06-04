@@ -100,21 +100,21 @@ public class Prestashop17Client {
     return 0L;
   }
 
-  public List<CategoryRef> getCategoriesMetaData() {
+  public List<ObjectRefId> getCategoriesMetaData() {
     log.debug("getCategoriesMetaData()");
     ResponseEntity<Categories> response = client.getForEntity(baseUrl + "/categories/", Categories.class);
     Categories categories = response.getBody();
-    log.trace("Retrieved {} category references", categories.getWrapper().getCategoryRefs().size());
-    return categories.getWrapper().getCategoryRefs();
+    log.trace("Retrieved {} category references", categories.getCategories().size());
+    return categories.getCategories();
   }
 
   public List<Category> getCategories() {
     log.debug("getCategories()");
-    List<CategoryRef> categoryRefs = getCategoriesMetaData();
+    List<ObjectRefId> categoryRefs = getCategoriesMetaData();
     log.trace("Retrieved {} categories", categoryRefs.size());
 
     List<Category> resCategory = new ArrayList<>();
-    for (CategoryRef catRef : categoryRefs) {
+    for (ObjectRefId catRef : categoryRefs) {
       Category category = getCategory(catRef.getId());
       resCategory.add(category);
     }

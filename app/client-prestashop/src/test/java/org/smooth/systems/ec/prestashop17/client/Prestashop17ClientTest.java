@@ -65,11 +65,11 @@ public class Prestashop17ClientTest {
 
   @Test
   public void removeAllCategories() {
-    List<CategoryRef> categoriesMetaData = client.getCategoriesMetaData();
-    for (CategoryRef categoryRef : categoriesMetaData) {
+    List<ObjectRefId> categoriesMetaData = client.getCategoriesMetaData();
+    for (ObjectRefId categoryRef : categoriesMetaData) {
       if (categoryRef.getId().compareTo(12L) > 0) {
         System.out.println("Remove category: " + categoryRef.getId());
-        client.removeCategory(categoryRef.getId());
+//        client.removeCategory(categoryRef.getId());
       }
     }
   }

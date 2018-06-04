@@ -3,11 +3,12 @@ package org.smooth.systems.ec.utils.migration.action;
 import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
+import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public abstract class AbstractProductsMigrationExecuter {
+public abstract class AbstractProductsMigrationExecuter implements IActionExecuter {
 
 	@Autowired
 	protected MigrationConfiguration config;

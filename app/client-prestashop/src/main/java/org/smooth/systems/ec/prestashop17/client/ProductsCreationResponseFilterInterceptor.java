@@ -42,7 +42,11 @@ public class ProductsCreationResponseFilterInterceptor implements ClientHttpRequ
 		log.debug("URI         : {}", request.getURI());
 		log.debug("Method      : {}", request.getMethod());
 		log.debug("Headers     : {}", request.getHeaders());
-		log.debug("Request body: {}", new String(body, "UTF-8"));
+		if(request.getURI().toString().startsWith("http://prestashop.local/api/images/products/")) {
+			log.debug("Request body: <image>");
+		} else {
+			log.debug("Request body: {}", new String(body, "UTF-8"));
+		}
 		log.debug("==========================request end================================================");
 	}
 

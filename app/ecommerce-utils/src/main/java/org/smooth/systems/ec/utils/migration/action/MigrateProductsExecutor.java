@@ -7,14 +7,11 @@ import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.SimpleProduct;
-import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
-import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
-import org.smooth.systems.ec.utils.db.api.IActionExecuter;
-import org.smooth.systems.ec.utils.db.component.AbstractProductsForCategoryReader;
+import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.smooth.systems.ec.utils.migration.model.MigrationProductData;
 import org.smooth.systems.ec.utils.migration.util.ProductMigrationUtils;
@@ -30,14 +27,14 @@ import org.springframework.util.Assert;
  */
 @Slf4j
 @Component
-public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter implements IActionExecuter {
+public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 
 	@Autowired
 	private MigrationSystemReaderAndWriterFactory readerWriterFactory;
 
 	@Override
 	public String getActionName() {
-		return "products-migrate";
+		return EcommerceUtilsActions.PRODUCTS_MIGRATION;
 	}
 
 	@Override

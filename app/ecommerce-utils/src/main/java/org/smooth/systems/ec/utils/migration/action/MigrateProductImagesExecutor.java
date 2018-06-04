@@ -5,9 +5,8 @@ import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.exceptions.NotFoundException;
-import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.utils.db.api.IActionExecuter;
+import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.smooth.systems.ec.utils.migration.model.MigrationProductImagesObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +23,14 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecuter implements IActionExecuter {
+public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecuter {
 
 	@Autowired
 	private MigrationSystemReaderAndWriterFactory readerWriterFactory;
 
 	@Override
 	public String getActionName() {
-		return "products-image-migrate";
+		return EcommerceUtilsActions.PRODUCTS_IMAGE_MIGRATION;
 	}
 
 	@Override

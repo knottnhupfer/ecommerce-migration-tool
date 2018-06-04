@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
+import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.db.model.MagentoProduct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class SourceSystemProductsMergerExecutor extends AbstractProductsForCateg
 
   @Override
   public String getActionName() {
-    return "products-mapping";
+    return EcommerceUtilsActions.PRODUCTS_MAPPING;
   }
 
   @Override

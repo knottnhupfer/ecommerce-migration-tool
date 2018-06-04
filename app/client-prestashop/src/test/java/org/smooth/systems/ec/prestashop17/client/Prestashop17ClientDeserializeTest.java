@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
 import org.smooth.systems.ec.prestashop17.model.Language;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -69,10 +70,22 @@ public class Prestashop17ClientDeserializeTest {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/categories_response_prestashop_1-7-3.xml");
     Categories categories = xmlMapper.readValue(inputFile, Categories.class);
-    log.info("Languages: {}", categories);
+    log.info("Categories: {}", categories);
     assertNotNull(categories.getCategories());
     assertEquals(70, categories.getCategories().size());
     assertEquals(new Long(1), categories.getCategories().get(0).getId());
     assertEquals(new Long(108), categories.getCategories().get(10).getId());
+  }
+
+  @Test
+  public void deserializeImageUploadResponse() throws JsonParseException, JsonMappingException, IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    File inputFile = new File("src/test/resources/example_responses/upload_product_image_prestashop_1-7-3.xml");
+    ImageUploadResponse imageUploadResponse = xmlMapper.readValue(inputFile, ImageUploadResponse.class);
+    log.info("ImageUploadResponse: {}", imageUploadResponse);
+    assertNotNull(imageUploadResponse.getUploadedImage());
+    assertEquals(new Long(4), imageUploadResponse.getUploadedImage().getId());
+    assertEquals(new Long(2), imageUploadResponse.getUploadedImage().getProductId());
+    assertEquals(new Long(3), imageUploadResponse.getUploadedImage().getPosition());
   }
 }
