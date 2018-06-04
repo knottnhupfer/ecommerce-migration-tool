@@ -18,11 +18,67 @@ java ecommerce-utils-1.0.0-SNAPSHOT.jar --merge-categories --config=<PATH-TO-CON
 ```
 
 ### Merging products
-For merging products the required command looks like following:
+For merging products from the source system to the destination system first of all all products needs to be merged. This currently assumes that the source system has 2 languages which will be merged into a single language with multilanguage attributes (TODO see chapter internal data model development description).
+
+
+#### Prepare products merging on source system
+
+---
+**TODO**
+
+describe how the mapping will be generated ...
+
+---
+
+Generates a mapping list from the alternative language product id to the main product id.
+```
+java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-mapping --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
+```
+
+As result a file configured as variable `generated-products-merging-file`, will be written which contains the mapping. This file contains the mapping as following:
+```
+alternative_language_product_id = main_product_id
+```
+
+#### Merge and upload products to destination system
+Following pre-prepared files must be done before calling this command:
++ `generated-created-categories-mapping-file` containing the mapping from source category id to destination category id
++ `generated-products-merging-file` containing the product mapping for merging
+```
+java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-migrate --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
+```
+Following steps will be processed when merging and uploading the products:
++ Merges the products from the source system, using the `alternative_language_product_id` and merging the tanslatable attributes into the main product.
++ Replace the category id from the source system with the newly generated category id created on the destination system.
++ Uploading teh products to the destinatin system
++ Storing the mapping product id from the destination system
+
+As result a file defined in `generated-products-migration-file` will be written which contains the mapping from `main_category_id_source_system` to created `main_category_id_destination_system`.
+
+---
+**Important**
+
++ Brand id must already be mapped.
++ Currently only products are mapped where both languages exists.
+
+---
+
+#### Upload product images to destination system
+
+Only the images from the main system will be uploaded to the destination system. Images from alternative languages will be skipped.
+
+Preparation steps:
++ images must be download to local file system and path configured as variable `products-images-directory`
 
 ```
-java ecommerce-utils-1.0.0-SNAPSHOT.jar --merge-products --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
+java ecommerce-utils-1.0.0-SNAPSHOT.jar --products-image-migrate --config=<PATH-TO-CONFIGURATION>/migration-config.yaml
 ```
+
+Following steps will be processed when uploading images:
++ Reads destination products from main products in `generated-products-merging-file`
++ Reads the image paths from the source system
++ Maps the created product_id_source_system to product_id_destination_system
++ uploads the images from the local file system to the destination system
 
 ## Prepare connectors configuration
 
