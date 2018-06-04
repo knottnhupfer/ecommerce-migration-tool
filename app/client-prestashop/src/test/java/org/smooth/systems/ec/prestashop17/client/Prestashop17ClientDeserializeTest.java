@@ -63,4 +63,16 @@ public class Prestashop17ClientDeserializeTest {
      assertEquals(new Long(1), tags.getTags().get(0).getId());
      assertEquals(new Long(2), tags.getTags().get(1).getId());
   }
+
+  @Test
+  public void deserializeCategoriesResponse() throws JsonParseException, JsonMappingException, IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    File inputFile = new File("src/test/resources/example_responses/categories_response_prestashop_1-7-3.xml");
+    Categories categories = xmlMapper.readValue(inputFile, Categories.class);
+    log.info("Languages: {}", categories);
+    assertNotNull(categories.getCategories());
+    assertEquals(70, categories.getCategories().size());
+    assertEquals(new Long(1), categories.getCategories().get(0).getId());
+    assertEquals(new Long(108), categories.getCategories().get(10).getId());
+  }
 }
