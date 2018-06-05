@@ -72,7 +72,12 @@ public abstract class ObjectMapper<K, V> {
   }
 
   public void initializeIdMapperFromFile() {
-    log.info("Initialize categories mapping with file: {}", file.getAbsolutePath());
+    log.info("Initialize mapping with file: {}", file.getAbsolutePath());
+    if(!file.isFile()) {
+      String msg = String.format("%s is not a valid file.", file.getAbsolutePath());
+      log.error(msg);
+      throw new IllegalStateException(msg);
+    }
     Properties categoryMappingProperties = FileUtils.readPropertiesFromFile(file.getAbsolutePath());
     Set<Object> keySet = categoryMappingProperties.keySet();
     for (Object key : keySet) {

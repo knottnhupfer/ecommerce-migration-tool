@@ -10,6 +10,7 @@ import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.migration.model.User;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -97,7 +98,7 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
 		List<ProductTranslateableAttributes> attributes = new ArrayList<>();
 		attributes.add(attribute);
 		product.setAttributes(attributes);
-		log.info("Created dummy project: {}", product);
+//		log.info("Created dummy project: {}", product);
 		return product;
 	}
 }

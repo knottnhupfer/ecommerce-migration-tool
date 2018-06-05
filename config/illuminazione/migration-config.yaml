@@ -20,7 +20,7 @@ additional-categories:
     category-language: de
 
 # manual created mapping file which maps alternative languages category id to main category id (sub categories of the root category)
-categories-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/categories-merging.properties
+categories-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/categories-merging.properties
 
 # list of category ids which do not need to be mapped to root category ex. additional category
 # anyway all categories needs to be mapped so that eventual products can be mapped
@@ -36,7 +36,7 @@ category-ids-skipping:
 # maps root category ids of the source system to category ids on the destination system
 #
 # sourceCategoryId = destinationCategoryId
-generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/migration/generated-created-categories-mapping.properties
+generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/generated-created-categories-mapping.properties
 
 
 
@@ -48,7 +48,7 @@ generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/mi
 ## ============================================================================
 
 # manual created brand mapping file
-products-brand-mapping: /home/david/workspace_alphaconcept/migration_tool/config/products-brands-mapping.properties
+products-brand-mapping: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/products-brands-mapping.properties
 
 # TODO: currently not used ...
 # manual created product mapping file which maps alternative languages product id to root product id
@@ -59,7 +59,7 @@ products-brand-mapping: /home/david/workspace_alphaconcept/migration_tool/config
 # generated-products-root-ids-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/generated-products-root-ids-merging.properties
 
 # generated mapping file which maps alternative languages source system product ids to a root category id of the source system
-generated-products-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/generated-products-merging.properties
+generated-products-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/generated-products-merging.properties
 
 product-ids-skipping:
   - 926     # skip IT SKU == null
@@ -73,3 +73,11 @@ product-ids-skipping:
   - 3301    # skip DE SKU == null
   - 3323    # skip DE SKU == null
   - 3718    # skip DE SKU == null
+
+
+# generated mapping file which maps alternative languages source system product ids to a root category id of the source system
+# main product id source system = product id destination system
+generated-products-migration-file: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/generated-products-migration.properties
+
+# absolute path to the images files
+products-images-directory: /home/david/workspace_alphaconcept/migration_tool/config/dummy-config/images/
