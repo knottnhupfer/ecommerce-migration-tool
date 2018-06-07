@@ -8,5 +8,5 @@ import org.springframework.data.repository.Repository;
  */
 public interface ProductTextRepository extends Repository<Magento19ProductText, Long> {
 
-  Magento19ProductText findByEntityIdAndAttributeId(Long productId, Long attributeId);
+  Magento19ProductText findByEntityIdAndAttributeIdAndStoreId(Long productId, Long attributeId, Long storeId);
 }

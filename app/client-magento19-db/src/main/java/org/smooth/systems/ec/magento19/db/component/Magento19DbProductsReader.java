@@ -91,9 +91,6 @@ public class Magento19DbProductsReader {
     updateImagesUrls(product);
 
     product.getAttributes().add(getTranslateablAttributesForProduct(productId, langCode));
-
-    // update with destination system data
-    updateCategoryIdWithDestinationCategoryId(product);
     return product;
   }
 
@@ -152,20 +149,20 @@ public class Magento19DbProductsReader {
     logRetrievedValue("imageUrls", product.getProductImageUrls(), product);
   }
 
-  private void updateCategoryIdWithDestinationCategoryId(Product product) {
-    init();
-    Assert.notEmpty(product.getCategories(), "product categories are empty");
-    try {
-      Long origCategoryId = product.getCategories().get(0);
-      Long createdCategoryId = categoryIdMapper.getMappedIdForId(origCategoryId);
-      product.setCategories(Collections.singletonList(createdCategoryId));
-      log.trace("Updated category id {} to created category id {}", origCategoryId, createdCategoryId);
-    } catch (NotFoundException e) {
-      String msg = String.format("Unable to find created category for source ids %s", product.getCategories());
-      log.error(msg);
-      throw new IllegalStateException(msg);
-    }
-  }
+//  private void updateCategoryIdWithDestinationCategoryId(Product product) {
+//    init();
+//    Assert.notEmpty(product.getCategories(), "product categories are empty");
+//    try {
+//      Long origCategoryId = product.getCategories().get(0);
+//      Long createdCategoryId = categoryIdMapper.getMappedIdForId(origCategoryId);
+//      product.setCategories(Collections.singletonList(createdCategoryId));
+//      log.trace("Updated category id {} to created category id {}", origCategoryId, createdCategoryId);
+//    } catch (NotFoundException e) {
+//      String msg = String.format("Unable to find created category for source ids %s", product.getCategories());
+//      log.error(msg);
+//      throw new IllegalStateException(msg);
+//    }
+//  }
 
   private Long getId(Product product) {
     Assert.notNull(product.getId(), "productId is null");

@@ -181,7 +181,7 @@ public class Magento19DbProductFieldsProvider {
 
   public String getTextAttribute(Long productId, Long attributeId) {
     log.debug("getTextAttribute({}, {})", productId, attributeId);
-    Magento19ProductText entry = productTextRepo.findByEntityIdAndAttributeId(productId, attributeId);
+    Magento19ProductText entry = productTextRepo.findByEntityIdAndAttributeIdAndStoreId(productId, attributeId, new Long(0));
     Assert.notNull(entry, String.format("text attribute with id '%s' is null for product id '%s'", attributeId, productId));
     return entry.getValue();
   }

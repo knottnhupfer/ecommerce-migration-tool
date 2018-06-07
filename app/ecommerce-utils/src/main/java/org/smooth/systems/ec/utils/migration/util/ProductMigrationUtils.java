@@ -17,14 +17,20 @@ public final class ProductMigrationUtils {
 		ObjectIdMapper idMapper = new ObjectIdMapper(config.getGeneratedCreatedCategoriesMappingFile());
 		idMapper.initializeIdMapperFromFile();
 		for(Product prod : mergedProducts) {
-			List<Long> dstCategoryIds = prod.getCategories().stream().map(catId -> {
-				try {
-					return idMapper.getMappedIdForId(catId);
-				} catch (NotFoundException e) {
-					throw new IllegalStateException();
+			List<Long> dstCategoryIds = prod.getCategories().stream().map(
+				catId -> {
+					return mapCategoryId(idMapper, catId);
 				}
-			}).collect(Collectors.toList());
+			).collect(Collectors.toList());
 			prod.setCategories(dstCategoryIds);
+		}
+	}
+
+	private static Long mapCategoryId(ObjectIdMapper idMapper, Long srcCatId) {
+		try {
+			return idMapper.getMappedIdForId(srcCatId);
+		} catch (NotFoundException e) {
+			throw new IllegalStateException();
 		}
 	}
 }
