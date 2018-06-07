@@ -55,6 +55,9 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 			log.trace("   " + prod);
 		}
 
+		// TODO update category id
+		updateCategoryIdWithDestinationCategoryId(product);
+
 		ProductMigrationUtils.updateCategoryIdWithDestinationSystemCategoryId(config, mergedProducts);
 		log.info("Products category updated");
 

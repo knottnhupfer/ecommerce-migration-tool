@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on
@@ -27,6 +28,9 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 
   @Autowired
   private Magento19DbCategoriesReader categoriesReader;
+
+  @Autowired
+  private Magento19DbProductsReader productsReader;
 
   @Override
   public String getName() {
@@ -55,13 +59,23 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 
   @Override
   public List<Product> readAllProductsForCategories(List<SimpleCategory> categories) {
-    log.debug("readAllProductsForCategories({})", categories);
+    log.info("readAllProductsForCategories({})", categories);
     throw new RuntimeException("Not implemented yet");
   }
 
   @Override
   public List<Product> readAllProducts(List<SimpleProduct> products) {
     log.debug("readAllProducts({})", products);
-    throw new RuntimeException("Not implemented yet");
+    return products.stream().map(this::readProduct).collect(Collectors.toList());
+  }
+
+  private Product readProduct(SimpleProduct prod) {
+    log.debug("readProduct({})", prod);
+    try {
+      return productsReader.getProduct(prod.getProductId(), prod.getLangIso());
+    } catch(Exception e) {
+      log.error("Unable to load product: {}", prod, e);
+      throw new IllegalStateException(e.getMessage());
+    }
   }
 }

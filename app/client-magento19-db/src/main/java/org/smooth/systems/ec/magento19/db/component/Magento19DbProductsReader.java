@@ -56,6 +56,7 @@ public class Magento19DbProductsReader {
       String categoriesMappingFile = config.getGeneratedCreatedCategoriesMappingFile();
       Assert.hasText(categoriesMappingFile, "generated-created-categories-mapping-file is empty");
       categoryIdMapper = new ObjectIdMapper(categoriesMappingFile);
+      categoryIdMapper.initializeIdMapperFromFile();
     }
   }
 
