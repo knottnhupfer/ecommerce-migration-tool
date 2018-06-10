@@ -71,4 +71,6 @@ public interface MigrationSystemWriter extends RegisterableComponent {
 	Product writeProduct(Product product);
 
 	void uploadProductImages(Long prodId, File productImage);
+
+  Long writeBrand(String brand);
 }

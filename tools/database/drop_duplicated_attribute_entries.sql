@@ -1,6 +1,7 @@
 
-select value_id, entity_type_id, attribute_id, store_id, entity_id from catalog_product_entity_text WHERE store_id = 1;
-delete from catalog_product_entity_text WHERE store_id = 1;
+-- Only attributes for store_id = 0 will be considered
+-- select value_id, entity_type_id, attribute_id, store_id, entity_id from catalog_product_entity_text WHERE store_id = 1;
+-- delete from catalog_product_entity_text WHERE store_id = 1;
 
 
 

@@ -17,7 +17,7 @@ public class CommandLineRunner extends AbstractCommandLineRunner implements Appl
 
   public static String OPTION_MERGE_CATEGORY_NAME = "merge-category";
 
-  public static String OPTION_MERGE_PRODUCTS_NAME = "merge-products";
+//  public static String OPTION_MERGE_PRODUCTS_NAME = "merge-products";
 
   private final MigrationConfiguration config;
 
@@ -48,8 +48,8 @@ public class CommandLineRunner extends AbstractCommandLineRunner implements Appl
       log.error("");
       log.error("    <program> --{} --{}=/path/to/config", OPTION_MERGE_CATEGORY_NAME, OPTION_CONFIG_NAME);
       log.error("");
-      log.error("    <program> --{}", OPTION_MERGE_PRODUCTS_NAME);
-      log.error("");
+//      log.error("    <program> --{}", OPTION_MERGE_PRODUCTS_NAME);
+//      log.error("");
       System.exit(5);
     }
   }

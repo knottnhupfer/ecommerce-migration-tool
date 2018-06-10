@@ -70,7 +70,7 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
   }
 
   private Product readProduct(SimpleProduct prod) {
-    log.debug("readProduct({})", prod);
+    log.info("readProduct({})", prod);
     try {
       return productsReader.getProduct(prod.getProductId(), prod.getLangIso());
     } catch(Exception e) {

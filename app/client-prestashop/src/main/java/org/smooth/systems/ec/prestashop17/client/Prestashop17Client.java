@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.smooth.systems.ec.prestashop17.model.Manufacturer;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 import org.smooth.systems.ec.prestashop17.model.Category;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
@@ -61,10 +62,6 @@ public class Prestashop17Client {
 
   public List<Language> getLanguages() {
     log.info("getLanguages()");
-
-    ResponseEntity<String> stringResponse = client.getForEntity(baseUrl + "/languages/", String.class);
-    String body = stringResponse.getBody();
-    log.info("Result:\n{}", body);
 
     ResponseEntity<Languages> response = client.getForEntity(baseUrl + "/languages/", Languages.class);
     Languages languages = response.getBody();
@@ -198,6 +195,38 @@ public class Prestashop17Client {
     ResponseEntity<ImageUploadResponse> result = client.exchange(urlImageUpload, HttpMethod.POST, request, ImageUploadResponse.class);
     log.info("Uploaded image: {}", result.getBody());
     return result.getBody().getUploadedImage();
+  }
+
+  public List<Manufacturer> getAllManufacturers() {
+    log.debug("getAllManufacturers()");
+    ResponseEntity<Manufacturers> response = client.getForEntity(baseUrl + "/manufacturers", Manufacturers.class);
+    Manufacturers manufacturers = response.getBody();
+
+    List<Manufacturer> res = new ArrayList<>();
+    for (ObjectRefId langRef : manufacturers.getManufacturers()) {
+      res.add(getManufacturer(langRef.getId()));
+    }
+    return res;
+  }
+
+  public Manufacturer getManufacturer(Long manufacturerId) {
+    Assert.notNull(manufacturerId, "manufacturerId is null");
+    ResponseEntity<ManufacturersWrapper> responseManufacturers = client.getForEntity(baseUrl + "/manufacturers/" + manufacturerId, ManufacturersWrapper.class);
+    return responseManufacturers.getBody().getManufacturer();
+  }
+
+//  public Long writeManufacturer(Manufacturer manufacturer) {
+    public Long writeManufacturer(Manufacturer manufacturer) {
+    Assert.notNull(manufacturer, "manufacturer is null");
+    log.info("writeManufacturer({})", manufacturer);
+
+//    http://prestashop.local/api/manufacturers
+//    TagWrapper tagWrapper = new TagWrapper();
+//    tagWrapper.setTag(tag);
+//    String requestBody = Prestashop17ClientUtil.convertToUTF8(objectToString(tagWrapper, TagWrapper.class));
+//
+//
+//    ResponseEntity<CategoryWrapper> response = client.postForEntity(baseUrl + "/manufacturers", requestBody, CategoryWrapper.class);
   }
 
   private <T> String objectToString(T objectWrapper, Class<T> clazz) {

@@ -90,8 +90,7 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
   @Override
   public ObjectIdMapper getProductsObjectIdMapper() {
-    // TODO Auto-generated method stub
-    return null;
+    throw new NotImplementedException();
   }
 
 	@Override
@@ -104,7 +103,14 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 		throw new NotImplementedException();
 	}
 
-	@Override
+  @Override
+  public Long writeBrand(String brand) {
+    log.info("writeBrand({})", brand);
+//    return client.writeBrand(brand);
+    throw new NotImplementedException();
+  }
+
+  @Override
   public void repairAndValidateData() {
 
     // TODO check all category data

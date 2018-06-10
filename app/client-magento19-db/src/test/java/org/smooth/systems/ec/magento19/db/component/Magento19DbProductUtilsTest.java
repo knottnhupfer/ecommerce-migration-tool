@@ -93,17 +93,23 @@ public class Magento19DbProductUtilsTest {
 
   @Test
   public void productRetrieverTest() {
+//    Product product = productRetriever.getProduct(2232L, "it");
+//    log.info("Product: {}", product);
+
+    Product product = productRetriever.getProduct(2169L, "de");
+    log.info("Product: {}", product);
+
 //    Product product = productRetriever.getProduct(3717L, "it");
 //    log.info("Product: {}", product);
 //
 //    product = productRetriever.getProduct(78L, "it");
 //    log.info("Product: {}", product);
 
-    Product product = productRetriever.getProduct(2233L, "it");
-    log.info("Product: {}", product);
+//    Product product = productRetriever.getProduct(2233L, "it");
+//    log.info("Product: {}", product);
 
-    product = productRetriever.getProduct(2049L, "de");
-    log.info("Product: {}", product);
+//    product = productRetriever.getProduct(2049L, "de");
+//    log.info("Product: {}", product);
   }
 
   @Test
