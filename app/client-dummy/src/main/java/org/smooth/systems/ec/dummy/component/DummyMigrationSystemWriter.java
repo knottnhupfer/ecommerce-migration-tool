@@ -7,6 +7,7 @@ import org.smooth.systems.ec.dummy.DummyConstants;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Manufacturer;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.stereotype.Component;
@@ -63,6 +64,12 @@ public class DummyMigrationSystemWriter implements MigrationSystemWriter {
 	@Override
 	public void uploadProductImages(Long prodId, File productImage) {
 		log.info("Write image {} for product with id {}", productImage, prodId);
+	}
+
+	@Override
+	public Manufacturer writeManufacturer(String manufacturerName) {
+	  log.info("writeManufacturers({})", manufacturerName);
+	  throw new NotImplementedException();
 	}
 
 	@Override

@@ -51,6 +51,10 @@ echo ""
 
 
 case "$1" in
+  create-led-brands)
+    printInfo "Create brands for illuminazione-a-led brands ..."
+    java -jar ${UTILS_JAR} --action=create-led-brands --config=${CONFIG_FILE_PATH}
+    ;;
   generate-merged-product-ids)
     printInfo "Generate merged product ids mapping (both in source system) ..."
     java -jar ${UTILS_JAR} --action=products-mapping --config=${CONFIG_FILE_PATH}
@@ -70,7 +74,7 @@ case "$1" in
     echo " # ########################################################################"
     echo " # Prepare mapping files before products migration:"
     echo ""
-    echo "   Usage: ${0}   generate-merged-product-ids | migrate-products | upload-images"
+    echo "   Usage: ${0}   generate-merged-product-ids | migrate-products | upload-images | create-led-brands"
     echo ""
     ;;
 esac

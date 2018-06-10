@@ -1,14 +1,13 @@
 package org.smooth.systems.ec.prestashop17.client;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 import org.smooth.systems.ec.prestashop17.model.Manufacturer;
-import org.smooth.systems.ec.prestashop17.model.Tag;
 import org.springframework.util.Assert;
 
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on 10.06.18.
@@ -19,8 +18,6 @@ public class Prestashop17ReadingClientTest {
   public static final Long EXISTING_CATEGORY_ID = 1L;
 
   private Prestashop17Client client;
-
-  private PrestashopLanguageTranslatorCache langCache;
 
   @Before
   public void setup() {

@@ -8,6 +8,7 @@ import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Manufacturer;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -67,7 +68,7 @@ public class MagentoObjectWriter extends AbstractMagentoConnector implements Mig
 	}
 
   @Override
-  public Long writeBrand(String brand) {
+  public Manufacturer writeManufacturer(String manufacturerName) {
     throw new NotImplementedException();
   }
 }

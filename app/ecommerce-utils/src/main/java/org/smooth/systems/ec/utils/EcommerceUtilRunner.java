@@ -46,7 +46,11 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 
 		List<String> actionParams = args.getOptionValues(PARAM_ACTION);
 		if(actionParams == null || actionParams.isEmpty()) {
+		  log.warn("");
 			log.error("No action parameter '{}' defined.", PARAM_ACTION);
+			log.error("Valid actions are:");
+			log.error("  [ACTIONS]  -  {}", actions.keySet());
+			log.warn("");
 			System.exit(5);
 		}
 		String actionParam = actionParams.get(0);

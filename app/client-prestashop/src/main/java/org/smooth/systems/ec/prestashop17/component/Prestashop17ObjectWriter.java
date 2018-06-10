@@ -11,6 +11,7 @@ import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.AbstractCategoryWriter;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Manufacturer;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
@@ -29,10 +30,6 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
   public static final Long PRESTASHOP_ROOT_CATEGORY_ID = 2L;
 
-  private final Prestashop17Client client;
-
-  private final MigrationConfiguration config;
-
   private final PrestashopLanguageTranslatorCache languagesCache;
 
   private CategoryWriter categoryWriter;
@@ -40,8 +37,7 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   @Autowired
   public Prestashop17ObjectWriter(MigrationConfiguration config, PrestashopLanguageTranslatorCache languagesCache,
       Prestashop17Client client) {
-    this.config = config;
-    this.client = client;
+    super(config, client);
     this.languagesCache = languagesCache;
   }
 
@@ -104,10 +100,13 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 	}
 
   @Override
-  public Long writeBrand(String brand) {
-    log.info("writeBrand({})", brand);
-//    return client.writeBrand(brand);
-    throw new NotImplementedException();
+  public Manufacturer writeManufacturer(String manufacturerName) {
+    log.info("writeBrand({})", manufacturerName);
+    org.smooth.systems.ec.prestashop17.model.Manufacturer manufacturer = new org.smooth.systems.ec.prestashop17.model.Manufacturer();
+    manufacturer.setId(null);
+    manufacturer.setName(manufacturerName);
+    manufacturer = client.writeManufacturer(manufacturer);
+    return manufacturer.convert();
   }
 
   @Override

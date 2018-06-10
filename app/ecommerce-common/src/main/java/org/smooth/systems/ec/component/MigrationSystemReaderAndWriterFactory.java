@@ -39,13 +39,17 @@ public class MigrationSystemReaderAndWriterFactory {
   }
 
   public MigrationSystemReader getMigrationReader() {
+    return getMigrationReader(config.getSourceSystemName());
+  }
+
+  public MigrationSystemReader getMigrationReader(String systemName) {
     try {
-      return getSystemReaderForType(config.getSourceSystemName());
+      return getSystemReaderForType(systemName);
     } catch (NotFoundException e) {
       log.error("Error while retrieve migration reader. Reason: {}", e.getMessage());
       throw new IllegalStateException(e.getMessage());
     }
-  }
+  }  
 
   public MigrationSystemWriter getMigrationWriter() {
     try {

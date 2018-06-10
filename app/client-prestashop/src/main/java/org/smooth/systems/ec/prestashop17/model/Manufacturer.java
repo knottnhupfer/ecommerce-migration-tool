@@ -1,16 +1,13 @@
 package org.smooth.systems.ec.prestashop17.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-@Builder
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +16,7 @@ public class Manufacturer {
 
   private Long id;
 
-  private Long active;
+  private Long active = new Long(1);
 
   private String name;
 
@@ -28,4 +25,11 @@ public class Manufacturer {
 
   @XmlElement(name = "short_description")
   private PrestashopLangAttribute shortDescriptions;
+
+  public org.smooth.systems.ec.migration.model.Manufacturer convert() {
+    org.smooth.systems.ec.migration.model.Manufacturer manufacturer = new org.smooth.systems.ec.migration.model.Manufacturer();
+    manufacturer.setId(id);
+    manufacturer.setName(name);
+    return manufacturer;
+  }
 }

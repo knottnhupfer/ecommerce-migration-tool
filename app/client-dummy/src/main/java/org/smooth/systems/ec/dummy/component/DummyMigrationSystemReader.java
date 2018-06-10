@@ -1,23 +1,25 @@
 package org.smooth.systems.ec.dummy.component;
 
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.dummy.DummyConstants;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Manufacturer;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.migration.model.User;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
-import java.util.*;
-
-@Slf4j
 @Component
 public class DummyMigrationSystemReader implements MigrationSystemReader {
 
@@ -101,4 +103,9 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
 //		log.info("Created dummy project: {}", product);
 		return product;
 	}
+
+  @Override
+  public List<Manufacturer> readAllManufacturers() {
+    throw new NotImplementedException();
+  }
 }

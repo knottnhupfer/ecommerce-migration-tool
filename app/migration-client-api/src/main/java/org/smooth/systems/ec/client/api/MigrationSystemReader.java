@@ -3,6 +3,7 @@ package org.smooth.systems.ec.client.api;
 import java.util.List;
 
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Manufacturer;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 
@@ -54,4 +55,6 @@ public interface MigrationSystemReader extends RegisterableComponent {
   public List<Product> readAllProductsForCategories(List<SimpleCategory> categories);
 
   public List<Product> readAllProducts(List<SimpleProduct> products);
+
+  public List<Manufacturer> readAllManufacturers();
 }

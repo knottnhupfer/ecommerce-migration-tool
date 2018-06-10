@@ -6,6 +6,7 @@ import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Manufacturer;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,10 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
       log.error("Unable to load product: {}", prod, e);
       throw new IllegalStateException(e.getMessage());
     }
+  }
+
+  @Override
+  public List<Manufacturer> readAllManufacturers() {
+    throw new NotImplementedException();
   }
 }
