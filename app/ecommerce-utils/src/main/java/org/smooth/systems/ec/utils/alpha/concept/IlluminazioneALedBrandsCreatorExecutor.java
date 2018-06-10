@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.utils.alpha.concept;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import org.smooth.systems.ec.migration.model.Manufacturer;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +34,7 @@ public class IlluminazioneALedBrandsCreatorExecutor implements IActionExecuter {
 
   private ObjectStringToIdMapper brandsMapping;
 
-  private List<Manufacturer> existingManufacturers;
+  private List<Manufacturer> existingManufacturers = new ArrayList<>();
 
   private MigrationSystemReaderAndWriterFactory readerWriterFactory;
 
@@ -49,7 +51,13 @@ public class IlluminazioneALedBrandsCreatorExecutor implements IActionExecuter {
     writer = readerWriterFactory.getMigrationWriter();
     reader = readerWriterFactory.getMigrationReader(config.getDestinationSystemName());
     brandsMapping = new ObjectStringToIdMapper(config.getProductsBrandMappingFile());
-    existingManufacturers = reader.readAllManufacturers();
+    try {
+      existingManufacturers = reader.readAllManufacturers();      
+    } catch(Exception e) {
+      if(!(e instanceof RestClientException)) {
+        throw new IllegalStateException(e);
+      }
+    }
   }
 
   @Override
