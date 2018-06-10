@@ -2,6 +2,7 @@ package org.smooth.systems.ec.utils.migration.action;
 
 import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
+import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
@@ -12,6 +13,9 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 
 	@Autowired
 	protected MigrationConfiguration config;
+
+	@Autowired
+	protected MigrationSystemReaderAndWriterFactory readerWriterFactory;
 
 	/**
 	 * Maps the product id from the alternative language to the product id of the

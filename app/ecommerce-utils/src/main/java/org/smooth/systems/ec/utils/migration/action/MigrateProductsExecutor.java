@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.SimpleProduct;
-import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
@@ -15,11 +14,10 @@ import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.smooth.systems.ec.utils.migration.model.MigrationProductData;
 import org.smooth.systems.ec.utils.migration.util.ProductMigrationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on
@@ -28,9 +26,6 @@ import org.springframework.util.Assert;
 @Slf4j
 @Component
 public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
-
-	@Autowired
-	private MigrationSystemReaderAndWriterFactory readerWriterFactory;
 
 	@Override
 	public String getActionName() {

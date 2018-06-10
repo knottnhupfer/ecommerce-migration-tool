@@ -39,7 +39,11 @@ public class DataModelLogger {
   public void printReadCategories() {
     printSectionHeader(String.format("Read categories (%d):", migrationDataModel.readCategories.size()));
     ObjectLogger.printCategories(migrationDataModel.readCategories);
+    log.info("");
+    log.info("Read {} categories ...", migrationDataModel.readCategories.size());
+    log.info("");
     printSectionFooter();
+    
   }
 
   public void printMergedCategories() {

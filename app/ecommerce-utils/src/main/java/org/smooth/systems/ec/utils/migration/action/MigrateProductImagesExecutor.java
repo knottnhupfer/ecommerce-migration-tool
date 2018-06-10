@@ -1,21 +1,20 @@
 package org.smooth.systems.ec.utils.migration.action;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.SimpleProduct;
-import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.smooth.systems.ec.utils.migration.model.MigrationProductImagesObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on
@@ -24,9 +23,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecuter {
-
-	@Autowired
-	private MigrationSystemReaderAndWriterFactory readerWriterFactory;
 
 	@Override
 	public String getActionName() {

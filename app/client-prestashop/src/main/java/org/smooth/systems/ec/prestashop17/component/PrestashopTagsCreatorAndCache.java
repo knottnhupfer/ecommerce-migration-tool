@@ -16,8 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

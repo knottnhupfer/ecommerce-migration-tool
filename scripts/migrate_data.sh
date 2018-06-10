@@ -16,6 +16,11 @@ APP_TARGET_DIR=app/ecommerce-migration-tool/target
 APP_JAR=${DIST_DIR}/${APP_JAR_NAME}
 
 
+TOOL_DIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
+CONFIG_FILE_DIR=${TOOL_DIR}/config/illuminazione
+CONFIG_FILE_PATH=${CONFIG_FILE_DIR}/migration-config.yaml
+
+
 function printInfo {
   echo ""
 	echo "${INFO} $1"
@@ -41,7 +46,6 @@ if [ ! -f ${APP_JAR} ]; then
 fi
 
 
-
 # migrate products ==============================
 # -----------------------------------------------
 
@@ -55,7 +59,7 @@ fi
 case "$1" in
   merge-categories)
     printInfo "Merge categories ..."
-		java -jar ${APP_JAR} --merge-category --config=/home/david/workspace_alphaconcept/migration_tool/config/migration-config.yaml
+		java -jar ${APP_JAR} --merge-category --config=${CONFIG_FILE_PATH}
     ;;
   merge-products)
     printInfo "Merge products ..."

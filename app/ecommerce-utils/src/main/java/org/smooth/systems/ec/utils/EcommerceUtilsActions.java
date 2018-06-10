@@ -10,4 +10,6 @@ public interface EcommerceUtilsActions {
   String PRODUCTS_IMAGE_MIGRATION = "products-image-migrate";
 
   String PRODUCTS_MAPPING = "products-mapping";
+
+  String CATEGORIES_MIGRATION = "migrate-categories";
 }
