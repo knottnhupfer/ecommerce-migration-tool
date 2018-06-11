@@ -17,6 +17,7 @@ import org.smooth.systems.ec.migration.model.User;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
 import org.smooth.systems.ec.prestashop17.mapper.CategoryMapper;
+import org.smooth.systems.ec.prestashop17.model.ProductConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -91,7 +92,11 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
 	@Override
 	public Product writeProduct(Product product) {
-		throw new NotImplementedException();
+    log.info("writeProduct({})", product);
+    org.smooth.systems.ec.prestashop17.model.Product prod = ProductConvertUtil.convertProduct(languagesCache, product);
+    prod = client.writeProduct(prod);
+    product.setId(prod.getId());
+    return product;
 	}
 
 	@Override

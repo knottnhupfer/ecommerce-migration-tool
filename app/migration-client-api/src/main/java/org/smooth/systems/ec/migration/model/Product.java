@@ -56,4 +56,8 @@ public class Product {
     this.type = ProductType.Simple;
     this.creationDate = creationDate;
   }
+
+  public String simpleDescription() {
+    return String.format("Product(id=%d, sku=%s, brandId=%d, categories=%s, productImageUrls=%s)", id, sku, brandId, categories, productImageUrls);
+  }
 }

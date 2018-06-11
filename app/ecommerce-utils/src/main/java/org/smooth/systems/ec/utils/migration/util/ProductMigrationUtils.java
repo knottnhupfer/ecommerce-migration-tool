@@ -5,9 +5,12 @@ import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public final class ProductMigrationUtils {
 
 	private ProductMigrationUtils() {
@@ -19,7 +22,12 @@ public final class ProductMigrationUtils {
 		for(Product prod : mergedProducts) {
 			List<Long> dstCategoryIds = prod.getCategories().stream().map(
 				catId -> {
-					return mapCategoryId(idMapper, catId);
+				  try {				    
+				    return mapCategoryId(idMapper, catId);
+				  } catch(Exception e) {
+				    log.error("Unable to map category for product: {}", prod.simpleDescription());
+				    throw e;
+				  }
 				}
 			).collect(Collectors.toList());
 			prod.setCategories(dstCategoryIds);

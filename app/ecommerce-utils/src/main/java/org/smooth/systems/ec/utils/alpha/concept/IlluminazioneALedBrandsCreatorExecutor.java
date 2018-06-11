@@ -50,7 +50,7 @@ public class IlluminazioneALedBrandsCreatorExecutor implements IActionExecuter {
   public void init() {
     writer = readerWriterFactory.getMigrationWriter();
     reader = readerWriterFactory.getMigrationReader(config.getDestinationSystemName());
-    brandsMapping = new ObjectStringToIdMapper(config.getProductsBrandMappingFile());
+    brandsMapping = new ObjectStringToIdMapper(config.getGeneratedProductsBrandMappingFile());
     try {
       existingManufacturers = reader.readAllManufacturers();      
     } catch(Exception e) {

@@ -168,7 +168,7 @@ public class Prestashop17Client {
 
     printProduct(productWrapper);
 
-    String requestContent = productToString(productWrapper);
+    String requestContent = Prestashop17ClientUtil.convertToUTF8(productToString(productWrapper));
     ResponseEntity<ProductWrapper> response = client.postForEntity(baseUrl + URL_PRODUCTS, requestContent, ProductWrapper.class);
     Product postedProduct = response.getBody().getProduct();
     log.info("Wrote product: {}", postedProduct);
@@ -248,18 +248,6 @@ public class Prestashop17Client {
       throw new RuntimeException(e);
     }
   }
-
-  // private <T> void printProduct(T objectWrapper, Class<T> clazz) {
-  // try {
-  // JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
-  // Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-  // jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-  // jaxbMarshaller.marshal(objectWrapper, System.out);
-  // } catch (Exception e) {
-  // log.error("Error while marshalling class: {}",
-  // ProductWrapper.class.getName(), e);
-  // }
-  // }
 
   public void printProduct(ProductWrapper prodWrapper) {
     try {

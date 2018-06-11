@@ -80,8 +80,8 @@ public class Magento19DbProductFieldsProvider {
 
   public void initialize() {
     if(brandMapper == null) {
-      log.info("Initialize Magento19DbProductFieldsProvider with brands mapping file: {}", config.getProductsBrandMappingFile());
-      brandMapper = new ObjectStringToIdMapper(config.getProductsBrandMappingFile(), DEFAULT_MANUFACTURER_ID);
+      log.info("Initialize Magento19DbProductFieldsProvider with brands mapping file: {}", config.getGeneratedProductsBrandMappingFile());
+      brandMapper = new ObjectStringToIdMapper(config.getGeneratedProductsBrandMappingFile(), DEFAULT_MANUFACTURER_ID);
     }
   }
 

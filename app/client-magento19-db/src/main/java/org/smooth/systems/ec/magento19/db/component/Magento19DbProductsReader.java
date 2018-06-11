@@ -2,12 +2,10 @@ package org.smooth.systems.ec.magento19.db.component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
 
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
-import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.magento19.db.model.Magento19Product;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
@@ -80,6 +78,7 @@ public class Magento19DbProductsReader {
     Assert.notNull(productId, "productId is null");
 
     Magento19Product retrievedProduct = productRepo.findById(productId);
+    Assert.notNull(retrievedProduct, "no product found for id " + productId);
     LocalDateTime creationDate = LocalDateTime.ofInstant(retrievedProduct.getCreatedAt().toInstant(), ZoneId.systemDefault());
     Product product = new Product(retrievedProduct.getId(), retrievedProduct.getSku(), creationDate);
 

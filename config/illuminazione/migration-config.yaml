@@ -22,6 +22,10 @@ additional-categories:
 # manual created mapping file which maps alternative languages category id to main category id (sub categories of the root category)
 categories-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/categories-merging.properties
 
+# TODO
+# manual created mapping file which maps alternative languages category id to main category id (sub categories of the root category)
+# categories-linking-file: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/categories-linking.properties
+
 # list of category ids which do not need to be mapped to root category ex. additional category
 # anyway all categories needs to be mapped so that eventual products can be mapped
 category-ids-merging-ignore-list:
@@ -48,7 +52,7 @@ generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/mi
 ## ============================================================================
 
 # manual created brand mapping file
-products-brand-mapping: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/products-brands-mapping.properties
+generated-products-brand-mapping: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/products-brands-mapping.properties
 
 # TODO: currently not used ...
 # manual created product mapping file which maps alternative languages product id to root product id

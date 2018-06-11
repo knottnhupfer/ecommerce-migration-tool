@@ -40,8 +40,8 @@ public class MigrationConfiguration {
   @JsonProperty("generated-created-categories-mapping-file")
   private String generatedCreatedCategoriesMappingFile;
 
-  @JsonProperty("products-brand-mapping")
-  private String productsBrandMappingFile;
+  @JsonProperty("generated-products-brand-mapping")
+  private String generatedProductsBrandMappingFile;
 
   @JsonProperty("products-merging-file")
   private String productsMergingFile;
@@ -91,7 +91,7 @@ public class MigrationConfiguration {
     generatedProductsMergingFile = config.generatedProductsMergingFile;
     productIdsSkipping = config.productIdsSkipping != null ? config.productIdsSkipping : Collections.emptyList();
 
-    productsBrandMappingFile = config.productsBrandMappingFile;
+    generatedProductsBrandMappingFile = config.generatedProductsBrandMappingFile;
     generatedProductsMigrationFile = config.generatedProductsMigrationFile;
   }
 }
