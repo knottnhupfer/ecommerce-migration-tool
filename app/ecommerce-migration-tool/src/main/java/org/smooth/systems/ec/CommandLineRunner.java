@@ -40,6 +40,7 @@ public class CommandLineRunner extends AbstractCommandLineRunner implements Appl
     log.info("executeCommand(ApplicationArguments args)");
     if (isArgumentSet(args, OPTION_MERGE_CATEGORY_NAME)) {
       categoryMigrator.executeApplication();
+      System.exit(0);
     } else if (isArgumentSet(args, OPTION_MERGE_CATEGORY_NAME)) {
       throw new IllegalStateException("Product migrator not implemented yet.");
     } else {

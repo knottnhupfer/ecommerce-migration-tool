@@ -3,6 +3,7 @@ package org.smooth.systems.ec.prestashop17.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,7 +36,9 @@ public class Product {
   @XmlElement(name = "id_manufacturer")
   private Long manufacturerId;
 
-  // netto price
+  @XmlElement(name = "id_category_default")
+  private Long defaultCategoryId = null;
+
   @XmlElement(name = "price")
   private Double price;
 
@@ -72,12 +75,11 @@ public class Product {
   @XmlElement(name = "id_tax_rules_group")
   private Long taxRuleGroup = 1L;
 
-  // TODO
-  // http://prestashop.local/api/specific_prices
-  // http://prestashop.local/api/specific_prices/1
-
   @JsonIgnore
   public void addCategoryIds(List<Long> categoryIds) {
+    if(defaultCategoryId == null && !ObjectUtils.isEmpty(categoryIds)) {
+      defaultCategoryId = categoryIds.get(0);
+    }
     categoryIds.forEach(categoryId -> {
       addCategoryId(categoryId);
     });

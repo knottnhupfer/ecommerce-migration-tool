@@ -18,6 +18,6 @@ public class CategoryMigrationApplication {
 
   public void executeApplication() {
     mergeController.readCategoriesAndMerge();
-//    writeController.writeCategoriesAndStoreMapping();
+    writeController.writeCategoriesAndStoreMapping();
   }
 }
