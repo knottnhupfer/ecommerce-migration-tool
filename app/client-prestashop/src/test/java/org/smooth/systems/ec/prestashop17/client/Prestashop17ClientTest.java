@@ -164,6 +164,11 @@ public class Prestashop17ClientTest {
     assertEquals(tagsList.size() + 1, updatedTagsList.size());
   }
 
+  @Test
+  public void enableIgnoreOutOfStockTest() {
+    client.enableIgnoreStock(38L);
+  }
+
   private PrestashopLangAttribute createTranslatableAttributes(String... values) {
     int index = 1;
     PrestashopLangAttribute attr = new PrestashopLangAttribute();
@@ -180,6 +185,7 @@ public class Prestashop17ClientTest {
       langCache = prestashopLanguageTranslatorCache;
     }
   }
+
   // public static PrestashopLangAttribute createAttributes(String...
   // attributes) {
   // assertTrue(attributes.length >= 0 && attributes.length <= 3);

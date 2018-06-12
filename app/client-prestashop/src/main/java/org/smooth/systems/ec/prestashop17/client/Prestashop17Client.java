@@ -10,13 +10,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
-import org.smooth.systems.ec.prestashop17.model.Category;
-import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
+import org.smooth.systems.ec.prestashop17.model.*;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
-import org.smooth.systems.ec.prestashop17.model.Language;
-import org.smooth.systems.ec.prestashop17.model.Manufacturer;
-import org.smooth.systems.ec.prestashop17.model.Product;
-import org.smooth.systems.ec.prestashop17.model.Tag;
 import org.smooth.systems.ec.prestashop17.util.Prestashop17ClientUtil;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -46,6 +41,9 @@ public class Prestashop17Client {
 
   public static final String URL_MANUFACTURERS = "/manufacturers";
   public static final String URL_MANUFACTURER = "/manufacturers/%d";
+
+  public static final String URL_STOCK_AVAILABLES = "/stock_availables";
+  public static final String URL_STOCK_AVAILABLE = "/stock_availables/%d";
 
   private final String baseUrl;
 
@@ -173,6 +171,7 @@ public class Prestashop17Client {
     Product postedProduct = response.getBody().getProduct();
     log.info("Wrote product: {}", postedProduct);
     product.setId(postedProduct.getId());
+    updateProductStock(product);
     return product;
   }
 
@@ -221,7 +220,7 @@ public class Prestashop17Client {
 
   public Manufacturer writeManufacturer(Manufacturer manufacturer) {
     Assert.notNull(manufacturer, "manufacturer is null");
-    log.debug("writeManufacturer({})", manufacturer);
+    log.info("writeManufacturer({})", manufacturer);
 
     manufacturer.setId(null);
     ManufacturerWrapper manufacturerWrapper = new ManufacturerWrapper();
@@ -233,6 +232,29 @@ public class Prestashop17Client {
     Manufacturer postedManufacturer = response.getBody().getManufacturer();
     log.info("Wrote manufacturer: {}", postedManufacturer);
     return postedManufacturer;
+  }
+
+  public StockAvailable enableIgnoreStock(Long productId) {
+    Assert.notNull(productId, "productId is null");
+    log.info("enableIgnoreStock({})", productId);
+
+    StockAvailable stockAvailable = new StockAvailable();
+    stockAvailable.setId(productId);
+    stockAvailable.setProductId(productId);
+    stockAvailable.setDependsOnStock(0L);
+    stockAvailable.setOutOfStock(1L);
+    StockAvailableWrapper wrapper = new StockAvailableWrapper();
+    wrapper.setStockAvailable(stockAvailable);
+
+    String requestContent = objectToString(wrapper, StockAvailableWrapper.class);
+    client.put(baseUrl + URL_STOCK_AVAILABLES, requestContent);
+    log.info("Update stockAvailable: {}", stockAvailable);
+    return stockAvailable;
+  }
+
+  private void updateProductStock(Product product) {
+    // FIXME read product amount and set it if not null
+    enableIgnoreStock(product.getId());
   }
 
   private <T> String objectToString(T objectWrapper, Class<T> clazz) {

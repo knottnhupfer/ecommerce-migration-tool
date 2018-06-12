@@ -24,6 +24,9 @@ public class Product {
   @XmlElement(name = "low_stock_alert")
   private Long lowStockAlert = 0L;
 
+  @XmlElement(name = "additional_delivery_times")
+  private Long deliveryType = 1L;
+
   @XmlElement(name = "associations")
   private ProductAssociations associations = new ProductAssociations();
 
@@ -75,6 +78,12 @@ public class Product {
   @XmlElement(name = "id_tax_rules_group")
   private Long taxRuleGroup = 1L;
 
+  @XmlElement(name = "redirect_type")
+  private String redirectType = "404";
+
+  @XmlElement(name = "available_for_order")
+  private Long availableForOrder = 1L;
+
   @JsonIgnore
   public void addCategoryIds(List<Long> categoryIds) {
     if(defaultCategoryId == null && !ObjectUtils.isEmpty(categoryIds)) {
@@ -102,55 +111,4 @@ public class Product {
       associations.getTags().add(productTag);
     }
   }
-//
-//  public static Product convertProduct(org.smooth.systems.ec.migration.model.Product product) {
-//    Product prod = new Product();
-//
-//
-//    product.getSalesPrice();
-//    product.getRelatedProducts();
-//
-//    ;
-//    product.getCreationDate();
-//    product.getAttributes();
-//    product.getCostPrice();
-//
-//    // skipped elements
-////    product.getType();
-//
-//    // images will be uploaded in a special step
-////    product.getProductImageUrls();
-//
-//
-//    prod.setVisibility(convertVisibility(product.getVisibility()));
-//    prod.setId(null);
-//    prod.addCategoryIds(product.getCategories());
-//    prod.setReference(product.getSku());
-//    prod.setManufacturerId(product.getBrandId());
-//
-//    Double weight = product.getDimension().getWeight();
-//    prod.setWeight(weight != null ? weight.toString() : "0.0");
-//
-//
-//    prod.setDescriptions();
-//    prod.setFriendlyUrls();
-//    prod.setLowStockAlert();
-//
-//    prod.setNames();
-//    prod.setPrice();
-//    prod.setShortDescriptions();
-//    prod.setManufacturerId();
-//    return prod;
-//  }
-//
-//  private static Visibility convertVisibility(org.smooth.systems.ec.migration.model.Product.ProductVisibility visibility) {
-//    switch (visibility) {
-//      case Catalog:
-//      case Everywhere:
-//      case NotVisible:
-//      case Search:
-//        return Visibility.both;
-//    }
-//    throw new IllegalStateException("Unknown type:" + visibility);
-//  }
 }
