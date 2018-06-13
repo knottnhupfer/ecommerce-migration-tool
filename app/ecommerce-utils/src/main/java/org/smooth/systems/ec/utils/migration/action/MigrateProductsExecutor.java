@@ -112,6 +112,7 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 			Assert.isTrue(altProductInfo.getLangIso().equals(attr.getLangCode()), "Languages do not match with each other.");
 			product.getAttributes().add(attr);
 		}
+		product.getAttributes().forEach(this::replaceNewlinesAttributesValues);
 		return product;
 	}
 
@@ -137,5 +138,15 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 			productIdsMigration.addMapping(srcProdId, writtenProduct.getId());
 		}
 		productIdsMigration.writeMappingToFile("Mapping file which maps product ids from source system to product ids to destination system");
+	}
+
+	private void replaceNewlinesAttributesValues(ProductTranslateableAttributes attr) {
+		attr.setDescription(replaceNewlines(attr.getDescription()));
+		attr.setShortDescription(replaceNewlines(attr.getShortDescription()));
+	}
+
+	private String replaceNewlines(String value) {
+		String replacedValue = value.replaceAll("\r\n", "<br>");
+		return replacedValue = value.replaceAll("\n", "<br>");
 	}
 }

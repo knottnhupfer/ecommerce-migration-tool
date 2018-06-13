@@ -101,13 +101,6 @@ public class Prestashop17ClientTest {
   }
 
   @Test
-  public void getProductTest() {
-    Product product = client.getProduct(PrestashopConstantsTests.EXISTING_PRODUCT_ID);
-    log.info("Product: {}", product);
-    log.info("ProductAssociations: {}", product.getAssociations());
-  }
-
-  @Test
   public void createProductTest() {
     Product product = new Product();
     String random_string = UUID.randomUUID().toString().substring(16);

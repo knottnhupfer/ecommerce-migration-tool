@@ -1,20 +1,19 @@
 package org.smooth.systems.ec.prestashop17.client;
 
-import java.util.List;
-
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.smooth.systems.ec.prestashop17.model.Manufacturer;
 import org.smooth.systems.ec.prestashop17.model.Product;
 import org.springframework.util.Assert;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on 10.06.18.
  */
 @Slf4j
-public class Prestashop17ReadingClientTest {
+public class Prestashop17ProductClientTest {
 
   public static final Long EXISTING_CATEGORY_ID = 1L;
 

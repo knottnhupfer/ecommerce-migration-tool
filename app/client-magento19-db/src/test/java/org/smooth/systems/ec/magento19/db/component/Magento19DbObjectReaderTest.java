@@ -39,4 +39,26 @@ public class Magento19DbObjectReaderTest {
     log.info("Product: {}", retrievedProducts.get(0));
     log.info("");
   }
+
+  @Test
+  public void retrieveProductAndParseDescriptionTest() {
+    List<SimpleProduct> productsList = Arrays.asList(SimpleProduct.builder().productId(2140L).langIso("it").build());
+    List<Product> retrievedProducts = reader.readAllProducts(productsList);
+    Assert.notEmpty(retrievedProducts, "no retrieved products");
+    Product product = retrievedProducts.get(0);
+    String description = product.getAttributes().get(0).getDescription();
+    log.info("Product description: {}", description);
+    log.info("");
+
+//    int i1 = description.indexOf("Classe elettrica");
+//    int i2 = description.indexOf("DURATA");
+//    String substring = description.substring(i1, i1 + 50);
+//    log.info("Product substring: {}", substring);
+//    log.info("");
+
+    String desc = description.replaceAll("\r\n","<br>");
+    desc = desc.replaceAll("\n","<br>");
+    log.info("Product replaced: {}", desc);
+    log.info("");
+  }
 }
