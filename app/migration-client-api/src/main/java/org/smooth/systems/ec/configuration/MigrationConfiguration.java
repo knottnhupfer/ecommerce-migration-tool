@@ -55,8 +55,9 @@ public class MigrationConfiguration {
   @JsonProperty("product-ids-skipping")
   private List<Long> productIdsSkipping;
 
-  @JsonProperty("generated-products-migration-file")
-  private String generatedProductsMigrationFile;
+//  @JsonProperty("generated-products-migration-file")
+  @JsonProperty("generated-created-products-mapping-file")
+  private String generatedCreatedProductsMigrationFile;
 
   @JsonProperty("products-images-directory")
   private String productsImagesDirectory;
@@ -92,6 +93,6 @@ public class MigrationConfiguration {
     productIdsSkipping = config.productIdsSkipping != null ? config.productIdsSkipping : Collections.emptyList();
 
     generatedProductsBrandMappingFile = config.generatedProductsBrandMappingFile;
-    generatedProductsMigrationFile = config.generatedProductsMigrationFile;
+    generatedCreatedProductsMigrationFile = config.generatedCreatedProductsMigrationFile;
   }
 }

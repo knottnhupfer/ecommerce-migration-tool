@@ -45,6 +45,6 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 		log.info("Read product merging mapping from: {}", config.getGeneratedProductsMergingFile());
 		productIdsSourceSystem = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
 		productIdsSourceSystem.initializeIdMapperFromFile();
-		productIdsMigration = new ObjectIdMapper(config.getGeneratedProductsMigrationFile());
+		productIdsMigration = new ObjectIdMapper(config.getGeneratedCreatedProductsMigrationFile());
 	}
 }

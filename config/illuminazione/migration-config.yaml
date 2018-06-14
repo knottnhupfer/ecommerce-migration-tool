@@ -81,7 +81,8 @@ product-ids-skipping:
 
 # generated mapping file which maps alternative languages source system product ids to a root category id of the source system
 # main product id source system = product id destination system
-generated-products-migration-file: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/generated-products-migration.properties
+# generated-products-migration-file: 
+generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/migration_tool/config/illuminazione/generated-created-products-migration.properties
 
 # absolute path to the images files
 products-images-directory: /home/david/workspace_alphaconcept/migration_tool/config/dummy-config/images/
