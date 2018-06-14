@@ -46,6 +46,7 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 	private void uploadProductImages(List<MigrationProductImagesObject> imagesInfo) {
 		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
 		for(MigrationProductImagesObject imageObject : imagesInfo) {
+			log.info("Upload product images: {}", imageObject);
 			for(File imageUrl : imageObject.getImageUrls()) {
 				writer.uploadProductImages(imageObject.getDstProductId(), imageUrl);
 			}

@@ -55,7 +55,6 @@ public class MigrationConfiguration {
   @JsonProperty("product-ids-skipping")
   private List<Long> productIdsSkipping;
 
-//  @JsonProperty("generated-products-migration-file")
   @JsonProperty("generated-created-products-mapping-file")
   private String generatedCreatedProductsMigrationFile;
 

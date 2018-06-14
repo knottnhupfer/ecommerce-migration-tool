@@ -1,6 +1,8 @@
 package org.smooth.systems.ec.utils.migration.action;
 
 import lombok.extern.slf4j.Slf4j;
+import org.smooth.systems.ec.client.api.MigrationSystemReader;
+import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
@@ -46,5 +48,8 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 		productIdsSourceSystem = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
 		productIdsSourceSystem.initializeIdMapperFromFile();
 		productIdsMigration = new ObjectIdMapper(config.getGeneratedCreatedProductsMigrationFile());
+
+		MigrationSystemReader reader = readerWriterFactory.getMigrationReader();
+		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
 	}
 }

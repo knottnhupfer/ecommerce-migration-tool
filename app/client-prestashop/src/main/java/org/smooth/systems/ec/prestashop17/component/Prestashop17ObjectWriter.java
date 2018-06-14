@@ -29,8 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 @ConditionalOnProperty(prefix = Prestashop17Constants.PRESTASHOP17_CONFIG_PREFIX, name = MigrationClientConstants.MIGRATION_CLIENT_BASE_URL)
 public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector implements MigrationSystemWriter {
 
-  public static final Long PRESTASHOP_ROOT_CATEGORY_ID = 2L;
-
   private final PrestashopLanguageTranslatorCache languagesCache;
 
   private CategoryWriter categoryWriter;
