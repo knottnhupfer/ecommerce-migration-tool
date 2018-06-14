@@ -83,7 +83,7 @@ public class Magento19DbProductsReader {
     Product product = new Product(retrievedProduct.getId(), retrievedProduct.getSku(), creationDate);
 
     updateProductPrice(product);
-    updateMainCategoryId(product);
+    updateCategories(product);
     updateProductVisibility(product);
     updateProductManufacturer(product);
     updateDimensionAndShippingForProduct(product);
@@ -133,9 +133,9 @@ public class Magento19DbProductsReader {
     logRetrievedValue("cost price", product.getCostPrice(), product);
   }
 
-  private void updateMainCategoryId(Product product) {
-    Long categoryId = productFieldsProvider.getCategoryIdForProductId(getId(product));
-    product.getCategories().add(categoryId);
+  private void updateCategories(Product product) {
+    List<Long> categories = productFieldsProvider.getCategoryIdForProductId(getId(product));
+    product.setCategories(categories);
     logRetrievedValue("categoryId", product.getCategories(), product);
   }
 

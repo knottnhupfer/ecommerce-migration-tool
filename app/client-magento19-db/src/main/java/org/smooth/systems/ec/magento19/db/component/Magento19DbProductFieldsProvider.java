@@ -138,7 +138,7 @@ public class Magento19DbProductFieldsProvider {
     return decimalAttribute.getValue();
   }
 
-  public Long getCategoryIdForProductId(Long productId) {
+  public List<Long> getCategoryIdForProductId(Long productId) {
     log.debug("getCategoryIdForProductId({})", productId);
     List<Long> categoryIds = productCategoryRepo.getCategoryIdsforProductId(productId);
     if (categoryIds.isEmpty()) {
@@ -158,8 +158,9 @@ public class Magento19DbProductFieldsProvider {
       log.warn("Unable to fetch proper category size({}), found categories: {}", categoryIds.size(), categories);
     }
     log.trace("Found {} categories for productId {}", categoryIds.size(), productId);
-
-    return categories.get(0).getId();
+    Magento19Category mainCategory = categories.get(0);
+    List<Magento19Category> validCategories = categories.stream().filter(cat -> cat.getLevel().equals(mainCategory.getLevel())).collect(Collectors.toList());
+    return validCategories.stream().map(cat -> cat.getId()).collect(Collectors.toList());
   }
 
   public List<String> getImageUrlsOfProductId(Long productId) {

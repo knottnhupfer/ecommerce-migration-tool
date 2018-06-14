@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.magento19.db.component;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -92,21 +93,36 @@ public class Magento19DbProductUtilsTest {
   }
 
   @Test
+  public void retrieveProductWuithMultipleCategoriesTest() {
+    Product product;
+    product = productRetriever.getProduct(2971L, "de");
+    log.info("Product: {}", product);
+
+    assertEquals(2,product.getCategories().size());
+    assertTrue(product.getCategories().contains(new Long(11)));
+    assertTrue(product.getCategories().contains(new Long(17)));
+  }
+
+  @Test
   public void productRetrieverTest() {
+    Product product;
 //    Product product = productRetriever.getProduct(2232L, "it");
 //    log.info("Product: {}", product);
 
-    Product product = productRetriever.getProduct(2169L, "de");
+    product = productRetriever.getProduct(2971L, "de");
     log.info("Product: {}", product);
 
-//    Product product = productRetriever.getProduct(3717L, "it");
-//    log.info("Product: {}", product);
-//
+    product = productRetriever.getProduct(2169L, "de");
+    log.info("Product: {}", product);
+
+    product = productRetriever.getProduct(3717L, "it");
+    log.info("Product: {}", product);
+
 //    product = productRetriever.getProduct(78L, "it");
 //    log.info("Product: {}", product);
 
-//    Product product = productRetriever.getProduct(2233L, "it");
-//    log.info("Product: {}", product);
+    product = productRetriever.getProduct(2233L, "it");
+    log.info("Product: {}", product);
 
 //    product = productRetriever.getProduct(2049L, "de");
 //    log.info("Product: {}", product);

@@ -17,6 +17,7 @@ import org.smooth.systems.ec.migration.model.User;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
 import org.smooth.systems.ec.prestashop17.mapper.CategoryMapper;
+import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
 import org.smooth.systems.ec.prestashop17.model.ProductConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -99,7 +100,8 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
 	@Override
 	public void uploadProductImages(Long prodId, File productImage) {
-		throw new NotImplementedException();
+    ImageUploadResponse.UploadedImage image = client.uploadProductImage(prodId, productImage);
+    log.info("Successfully uploaded product image.");
 	}
 
   @Override
