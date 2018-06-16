@@ -16,10 +16,11 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "http://{{prestashop_url}}/api/",
+							"raw": "http://prestashop.local/api/",
 							"protocol": "http",
 							"host": [
-								"{{prestashop_url}}"
+								"prestashop",
+								"local"
 							],
 							"path": [
 								"api",
@@ -66,6 +67,49 @@
 							"path": [
 								"api",
 								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://prestashop.local/api/products",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve all categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://prestashop.local/api/categories/",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"categories",
+								""
 							]
 						}
 					},
@@ -122,7 +166,7 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "http://prestashop.local/api/products/1",
+							"raw": "http://prestashop.local/api/products/26",
 							"protocol": "http",
 							"host": [
 								"prestashop",
@@ -131,7 +175,7 @@
 							"path": [
 								"api",
 								"products",
-								"1"
+								"26"
 							]
 						}
 					},
@@ -162,7 +206,7 @@
 			]
 		},
 		{
-			"name": "Manipulation Requests",
+			"name": "Creation requests",
 			"description": "",
 			"item": [
 				{
@@ -190,6 +234,30 @@
 					"response": []
 				},
 				{
+					"name": "Add new manufacturer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <manufacturer>\n        <active>1</active>\n        <name>Eurolite</name>\n    </manufacturer>\n</prestashop>\n"
+						},
+						"url": {
+							"raw": "http://prestashop.local/api/manufacturers",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"manufacturers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add new category",
 					"request": {
 						"method": "POST",
@@ -208,6 +276,109 @@
 							"path": [
 								"api",
 								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <product>\n        <associations>\n            <categories>\n                <category>\n                    <id>147</id>\n                </category>\n            </categories>\n            <tags/>\n        </associations>\n        <reference>sku_created_4b-94b1-97d594bd232b</reference>\n        <weight>7.5</weight>\n        <id_manufacturer>1</id_manufacturer>\n        <price>23.6</price>\n        <visibility>both</visibility>\n        <name>\n            <language id=\"1\">English product</language>\n            <language id=\"2\">Deutsch Produkt</language>\n            <language id=\"3\">Prodotto italiano</language>\n        </name>\n        <description>\n            <language id=\"1\">description</language>\n            <language id=\"2\">Beschreibung</language>\n            <language id=\"3\">descrizione</language>\n        </description>\n        <description_short>\n            <language id=\"1\">short description</language>\n            <language id=\"2\">Beschreibung kurz</language>\n            <language id=\"3\">descrizione corta</language>\n        </description_short>\n        <link_rewrite>\n            <language id=\"1\">4b-94b1-97d594bd232b-en</language>\n            <language id=\"2\">4b-94b1-97d594bd232b-de</language>\n            <language id=\"3\">4b-94b1-97d594bd232b-it</language>\n        </link_rewrite>\n        <state>1</state>\n        <active>1</active>\n        <indexed>1</indexed>\n        <show_price>1</show_price>\n        <id_tax_rules_group>1</id_tax_rules_group>\n    </product>\n</prestashop>"
+						},
+						"url": {
+							"raw": "http://prestashop.local/api/products",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new product Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <product>\n        <low_stock_alert>0</low_stock_alert>\n        <associations>\n            <categories>\n                <category>\n                    <id>383</id>\n                </category>\n            </categories>\n            <tags/>\n        </associations>\n        <reference>AL3000</reference>\n        <weight>4500.0</weight>\n        <id_manufacturer>2</id_manufacturer>\n        <price>2413.22</price>\n        <visibility>both</visibility>\n        <name>\n            <language id=\"3\">Faro a Led Powershine S Ultra Spot RGBW</language>\n            <language id=\"2\">Led Scheinwerfer Powershine S Ultra Spot RGBW</language>\n        </name>\n        <description>\n            <language id=\"3\">Molto più di una configurazione ottica alternativa.</language>\n            <language id=\"2\">Led Architektur Outdoor Scheinwerfer Powershine S Ultra Spot</language>\n        </description>\n        <description_short>\n            <language id=\"3\">Faro a Led architetturale Powershine S Ultra Spot RGBW per utilizzo esterno con cambiacolore</language>\n            <language id=\"2\">Led Architektur Outdoor Scheinwerfer Powershine S Ultra Spot RGBW</language>\n        </description_short>\n        <link_rewrite>\n            <language id=\"3\">faro-a-led-powershine-s-ultra-spot-rgbw.html</language>\n            <language id=\"2\">led-scheinwerfer-powershine-s-ultra-spot-rgbw.html</language>\n        </link_rewrite>\n        <state>1</state>\n        <active>1</active>\n        <indexed>1</indexed>\n        <show_price>1</show_price>\n        <id_tax_rules_group>1</id_tax_rules_group>\n        <redirect_type>404</redirect_type>\n        <position_in_category notFilterable=\"true\">0</position_in_category>\n        <id_category_default>383</id_category_default>\n        <available_for_order>1</available_for_order>\n    </product>\n</prestashop>"
+						},
+						"url": {
+							"raw": "http://prestashop.local/api/products",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new category Testing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <category>\n        <id_parent>19</id_parent>\n        <is_root_category>0</is_root_category>\n        <active>1</active>\n        <name>\n            <language id=\"3\">Lampade a Led per negozi</language>\n            <language id=\"2\">LED Beleuchtung für Geschäfte</language>\n            <language id=\"1\">Lampade a Led per negozi</language>\n        </name>\n        <description>\n            <language id=\"3\">Lampade a Led per negozi</language>\n            <language id=\"2\">LED Beleuchtung für Geschäfte</language>\n            <language id=\"1\">Lampade a Led per negozi</language>\n        </description>\n        <link_rewrite>\n            <language id=\"3\">lampade-a-led-per-negozi</language>\n            <language id=\"2\">led-beleuchtung-fur-geschafte</language>\n            <language id=\"1\">lampade-a-led-per-negozi</language>\n        </link_rewrite>\n    </category>\n</prestashop>"
+						},
+						"url": {
+							"raw": "http://prestashop.local/api/categories",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update requests",
+			"description": "",
+			"item": [
+				{
+					"name": "Update stock availables",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<prestashop>\n  <stock_available>\n    <id>37</id>\n    <id_product>37</id_product>\n    <id_product_attribute>0</id_product_attribute>\n    <id_shop>1</id_shop>\n    <id_shop_group>0</id_shop_group>\n    <quantity>0</quantity>\n    <depends_on_stock>0</depends_on_stock>\n    <out_of_stock>1</out_of_stock>\n  </stock_available>\n</prestashop>"
+						},
+						"url": {
+							"raw": "http://prestashop.local/api/stock_availables/21",
+							"protocol": "http",
+							"host": [
+								"prestashop",
+								"local"
+							],
+							"path": [
+								"api",
+								"stock_availables",
+								"21"
 							]
 						}
 					},
