@@ -18,14 +18,15 @@ public class Magento19Product {
   @Column(name = "entity_id")
   private Long id;
 
+  @Column(name = "sku")
   private String sku;
 
   @Column(name = "attribute_set_id")
   private Long attributeSet;
 
-	@Column(name = "type_id")
+  @Column(name = "type_id")
   private String typeId;
 
-	@Column(name = "created_at")
-	private Date createdAt;
+  @Column(name = "created_at")
+  private Date createdAt;
 }

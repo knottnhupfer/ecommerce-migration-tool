@@ -26,6 +26,8 @@ public class Product {
 
   private String sku;
 
+  private Boolean activated;
+
   private LocalDateTime creationDate;
 
   // private long taxRuleId;
@@ -58,6 +60,6 @@ public class Product {
   }
 
   public String simpleDescription() {
-    return String.format("Product(id=%d, sku=%s, brandId=%d, categories=%s, productImageUrls=%s)", id, sku, brandId, categories, productImageUrls);
+    return String.format("\nProduct(id=%d, sku=%s, brandId=%d, categories=%s, productImageUrls=%s, activated=%b)", id, sku, brandId, categories, productImageUrls, activated);
   }
 }

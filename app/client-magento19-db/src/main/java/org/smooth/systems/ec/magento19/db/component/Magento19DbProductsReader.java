@@ -88,9 +88,16 @@ public class Magento19DbProductsReader {
     updateProductManufacturer(product);
     updateDimensionAndShippingForProduct(product);
     updateImagesUrls(product);
+    updateProductAttributes(product);
 
     product.getAttributes().add(getTranslateablAttributesForProduct(productId, langCode));
     return product;
+  }
+
+  private void updateProductAttributes(Product product) {
+    Assert.notNull(product,"product is null");
+    Assert.notNull(product.getId(),"product id is null");
+    product.setActivated(productFieldsProvider.getProductAttributeIdActivated(product.getId()));
   }
 
   private ProductTranslateableAttributes getTranslateablAttributesForProduct(Long productId, String langCode) {

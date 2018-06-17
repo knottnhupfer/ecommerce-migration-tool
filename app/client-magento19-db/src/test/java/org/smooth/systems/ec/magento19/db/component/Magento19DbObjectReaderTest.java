@@ -16,6 +16,8 @@ import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static org.junit.Assert.assertEquals;
+
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,7 +38,42 @@ public class Magento19DbObjectReaderTest {
     productsList = Arrays.asList(SimpleProduct.builder().productId(2971L).langIso("it").build());
     retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
-    log.info("Product: {}", retrievedProducts.get(0));
+    log.info("Product: {}", retrievedProducts.get(0).simpleDescription());
+    log.info("");
+  }
+
+  @Test
+  public void retrieveProductAttributesFromDatabaseTest() {
+    List<SimpleProduct> productsList = Arrays.asList(SimpleProduct.builder().productId(3718L).langIso("it").build());
+    List<Product> retrievedProducts = reader.readAllProducts(productsList);
+    Assert.notEmpty(retrievedProducts, "no retrieved products");
+    Product product = retrievedProducts.get(0);
+    assertEquals(Boolean.FALSE, product.getActivated());
+    log.info("Product: {}", product.simpleDescription());
+    log.info("");
+
+    productsList = Arrays.asList(SimpleProduct.builder().productId(3717L).langIso("it").build());
+    retrievedProducts = reader.readAllProducts(productsList);
+    Assert.notEmpty(retrievedProducts, "no retrieved products");
+    product = retrievedProducts.get(0);
+    assertEquals(Boolean.FALSE, product.getActivated());
+    log.info("Product: {}", product.simpleDescription());
+    log.info("");
+
+    productsList = Arrays.asList(SimpleProduct.builder().productId(3705L).langIso("it").build());
+    retrievedProducts = reader.readAllProducts(productsList);
+    Assert.notEmpty(retrievedProducts, "no retrieved products");
+    product = retrievedProducts.get(0);
+    assertEquals(Boolean.TRUE, product.getActivated());
+    log.info("Product: {}", product.simpleDescription());
+    log.info("");
+
+    productsList = Arrays.asList(SimpleProduct.builder().productId(3704L).langIso("it").build());
+    retrievedProducts = reader.readAllProducts(productsList);
+    Assert.notEmpty(retrievedProducts, "no retrieved products");
+    product = retrievedProducts.get(0);
+    assertEquals(Boolean.TRUE, product.getActivated());
+    log.info("Product: {}", product.simpleDescription());
     log.info("");
   }
 
@@ -60,5 +97,9 @@ public class Magento19DbObjectReaderTest {
     desc = desc.replaceAll("\n","<br>");
     log.info("Product replaced: {}", desc);
     log.info("");
+  }
+
+  private static String simpleProductDescription(Product prod) {
+    return String.format("Product: id=%s, sku=%s, activated=", prod.getId(), prod.getSku(), prod.getVisibility());
   }
 }
