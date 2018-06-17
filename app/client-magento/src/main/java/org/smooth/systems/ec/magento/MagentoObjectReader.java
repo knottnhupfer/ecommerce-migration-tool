@@ -8,10 +8,7 @@ import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.magento.mapper.MagentoCategoryConvert;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Manufacturer;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -86,6 +83,11 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
 
   @Override
   public List<Manufacturer> readAllManufacturers() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<SimpleProduct> products) {
     throw new NotImplementedException();
   }
 }

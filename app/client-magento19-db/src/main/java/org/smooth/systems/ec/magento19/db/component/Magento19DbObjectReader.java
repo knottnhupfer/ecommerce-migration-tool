@@ -5,16 +5,14 @@ import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Manufacturer;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,5 +81,16 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
   @Override
   public List<Manufacturer> readAllManufacturers() {
     throw new NotImplementedException();
+  }
+
+  @Override
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<SimpleProduct> products) {
+    log.debug("readProductsPriceStrategies({})", products);
+    List<ProductPriceStrategies> strategies = new ArrayList<>();
+    for (SimpleProduct product : products) {
+      ProductPriceStrategies productStrategy = productsReader.getProductPriceStrategy(product.getProductId());
+      strategies.add(productStrategy);
+    }
+    return strategies;
   }
 }

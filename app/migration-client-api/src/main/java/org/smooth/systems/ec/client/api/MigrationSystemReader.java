@@ -2,10 +2,7 @@ package org.smooth.systems.ec.client.api;
 
 import java.util.List;
 
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Manufacturer;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 
 public interface MigrationSystemReader extends RegisterableComponent {
 
@@ -52,9 +49,11 @@ public interface MigrationSystemReader extends RegisterableComponent {
    */
 //  public List<Product> readProductsOfCategory(Long categoryId, boolean searchSubcategories);
   
-  public List<Product> readAllProductsForCategories(List<SimpleCategory> categories);
+  List<Product> readAllProductsForCategories(List<SimpleCategory> categories);
 
-  public List<Product> readAllProducts(List<SimpleProduct> products);
+  List<Product> readAllProducts(List<SimpleProduct> products);
 
-  public List<Manufacturer> readAllManufacturers();
+  List<Manufacturer> readAllManufacturers();
+
+  List<ProductPriceStrategies> readProductsPriceStrategies(List<SimpleProduct> products);
 }

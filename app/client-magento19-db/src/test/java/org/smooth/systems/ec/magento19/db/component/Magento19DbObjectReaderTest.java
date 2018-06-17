@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles({ Magento19Constants.MAGENTO19_DB_PROFILE_NAME, "test" })
+@ActiveProfiles({Magento19Constants.MAGENTO19_DB_PROFILE_NAME, "test"})
 public class Magento19DbObjectReaderTest {
 
   @Autowired
@@ -93,8 +93,8 @@ public class Magento19DbObjectReaderTest {
 //    log.info("Product substring: {}", substring);
 //    log.info("");
 
-    String desc = description.replaceAll("\r\n","<br>");
-    desc = desc.replaceAll("\n","<br>");
+    String desc = description.replaceAll("\r\n", "<br>");
+    desc = desc.replaceAll("\n", "<br>");
     log.info("Product replaced: {}", desc);
     log.info("");
   }
