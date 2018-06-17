@@ -61,7 +61,8 @@ public class PrestashopTagsCreatorAndCache {
       if(!(e instanceof RestClientException)) {
         throw new IllegalStateException(e);
       }
-      log.error("Unable to read tags. Reason: {}", e.getMessage());
+      log.warn("Unable to read tags. Reason: {}", e.getMessage());
+      log.warn("Cache will be kept empty.");
     }
   }
 

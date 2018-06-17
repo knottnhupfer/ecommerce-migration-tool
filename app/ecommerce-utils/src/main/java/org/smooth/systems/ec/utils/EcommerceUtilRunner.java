@@ -54,8 +54,9 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 			System.exit(5);
 		}
 		String actionParam = actionParams.get(0);
-		log.info("Execute action '{}'", actionParam);
+		log.info("Execute action name '{}'", actionParam);
 		IActionExecuter action = actions.get(actionParam);
+		log.info("Execute action '{}'", action.getClass().getSimpleName());
 		action.execute();
 		System.exit(0);
 	}
