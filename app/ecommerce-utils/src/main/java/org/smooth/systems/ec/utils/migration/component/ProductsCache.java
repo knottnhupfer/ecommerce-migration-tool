@@ -20,8 +20,12 @@ public class ProductsCache {
   }
 
   public static ProductsCache createProductsCache(MigrationSystemReader reader, List<SimpleProduct> productsInfo) {
+    return createProductsCache(reader, productsInfo, true);
+  }
+
+  public static ProductsCache createProductsCache(MigrationSystemReader reader, List<SimpleProduct> productsInfo, boolean ignoreDeactivatedProducts) {
     ProductsCache cache = new ProductsCache();
-    cache.initializeProductsCache(reader, productsInfo);
+    cache.initializeProductsCache(reader, productsInfo, ignoreDeactivatedProducts);
     return cache;
   }
 
@@ -33,16 +37,20 @@ public class ProductsCache {
     return products.get(productId);
   }
 
-  private void initializeProductsCache(MigrationSystemReader reader, List<SimpleProduct> productsInfo) {
+  private void initializeProductsCache(MigrationSystemReader reader, List<SimpleProduct> productsInfo, boolean ignoreDeactivatedProducts) {
     log.info("initializeProductsCache({})", productsInfo);
     List<Product> retrievedProducts = reader.readAllProducts(productsInfo);
-    retrievedProducts.forEach(prod -> {
+    for(Product prod : retrievedProducts) {
       if (products.containsKey(prod.getId())) {
         log.error("Cached product: {}", products.get(prod.getId()));
         log.error("Retrieved product: {}", prod);
         throw new IllegalStateException(String.format("Unable to cache product with id: %d.", prod.getId()));
       }
+      if(ignoreDeactivatedProducts && !prod.getActivated()) {
+        log.warn("Ignore deactivated product {}", prod.simpleDescription());
+        continue;
+      }
       products.put(prod.getId(), prod);
-    });
+    }
   }
 }

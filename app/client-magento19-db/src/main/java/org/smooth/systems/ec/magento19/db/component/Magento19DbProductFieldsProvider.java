@@ -6,23 +6,9 @@ import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.util.ObjectStringToIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
-import org.smooth.systems.ec.magento19.db.model.Magento19Category;
-import org.smooth.systems.ec.magento19.db.model.Magento19EavAttributeOption;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductDecimal;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductIndexEav;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductMediaEntry;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductVisibility;
-import org.smooth.systems.ec.magento19.db.repository.CategoryRepository;
-import org.smooth.systems.ec.magento19.db.repository.EavAttributeOptionsRepository;
-import org.smooth.systems.ec.magento19.db.repository.ProductCategoryMappingRepository;
-import org.smooth.systems.ec.magento19.db.repository.ProductDecimalRepository;
-import org.smooth.systems.ec.magento19.db.repository.ProductEavIndexRepository;
-import org.smooth.systems.ec.magento19.db.repository.ProductMediaEntryRepository;
-import org.smooth.systems.ec.magento19.db.repository.ProductTextRepository;
-import org.smooth.systems.ec.magento19.db.repository.ProductVarcharRepository;
-import org.smooth.systems.ec.magento19.db.repository.ProductVisibilityRepository;
+import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.smooth.systems.ec.magento19.db.model.*;
+import org.smooth.systems.ec.magento19.db.repository.*;
 import org.smooth.systems.ec.migration.model.Product.ProductVisibility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,6 +46,9 @@ public class Magento19DbProductFieldsProvider {
 
   @Autowired
   private ProductTextRepository productTextRepo;
+
+  @Autowired
+  private ProductIntRepository productIntRepo;
 
   @Autowired
   private ProductVarcharRepository productVarcharRepo;
@@ -178,6 +167,16 @@ public class Magento19DbProductFieldsProvider {
       return imageUrls.get(0);
     }
     return entry.get(0).getValue();
+  }
+
+  public boolean getProductAttributeIdActivated(Long productId) {
+    log.debug("getProductAttributeIdActivated({})", productId);
+    List<Magento19ProductInt> entry = productIntRepo.findByProductIdAndAttributeId(productId, ProductIntRepository.PRODUCT_ATTRIBUTE_ID_ACTIVATED);
+    if (entry.isEmpty()) {
+      log.warn("Unable to retrieve product activated attribute for product id {}", productId);
+      return false;
+    }
+    return entry.get(0).getValue().intValue() == ProductIntRepository.PRODUCT_ATTRIBUTE_ACTIVATED_TRUE;
   }
 
   public String getTextAttribute(Long productId, Long attributeId) {

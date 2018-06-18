@@ -8,10 +8,8 @@ import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Manufacturer;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.smooth.systems.ec.migration.model.*;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +72,11 @@ public class Prestashop17ObjectReader extends AbstractPrestashop17Connector impl
     log.debug("readAllManufacturers()");
     List<org.smooth.systems.ec.prestashop17.model.Manufacturer> manufacturers = client.getAllManufacturers();
     return manufacturers.stream().map(manufacturer -> manufacturer.convert()).collect(Collectors.toList());
+  }
+
+  @Override
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<SimpleProduct> products) {
+    log.info("readProductsPriceStrategies({})", products);
+    throw new NotImplementedException();
   }
 }

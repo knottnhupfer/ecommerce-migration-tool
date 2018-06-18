@@ -26,7 +26,6 @@ function printInfo {
 
 # prepare application ============================
 # -----------------------------------------------
-CONFIG_DIR=${DIST_DIR}/configs
 if [ ! -f ${UTILS_JAR} ]; then
   echo ""
   echo "${INFO} Create directory ${DIST_DIR}"
@@ -34,11 +33,6 @@ if [ ! -f ${UTILS_JAR} ]; then
 
   echo "${INFO} Setup application jar file ${UTILS_JAR}"
   cp ${UTILS_TARGET_DIR}/${UTILS_JAR_NAME} ${DIST_DIR}/
-
-#	mkdir -p ${CONFIG_DIR}
-#	cp ${SRC_CONFIG}/migration-config.yaml ${CONFIG_DIR}
-#  echo "${INFO} Successfully copied and setup application configuration ..."
-#  echo ""
 fi
 
 echo ""

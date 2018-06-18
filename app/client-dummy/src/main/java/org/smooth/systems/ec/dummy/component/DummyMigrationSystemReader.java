@@ -13,11 +13,7 @@ import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.dummy.DummyConstants;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Manufacturer;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -108,4 +104,9 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
   public List<Manufacturer> readAllManufacturers() {
     throw new NotImplementedException();
   }
+
+	@Override
+	public List<ProductPriceStrategies> readProductsPriceStrategies(List<SimpleProduct> products) {
+		throw new NotImplementedException();
+	}
 }

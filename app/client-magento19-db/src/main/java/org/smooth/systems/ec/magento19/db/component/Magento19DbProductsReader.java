@@ -8,12 +8,12 @@ import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.magento19.db.model.Magento19Product;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
+import org.smooth.systems.ec.magento19.db.model.Magento19ProductTierPrice;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
 import org.smooth.systems.ec.magento19.db.repository.ProductRepository;
-import org.smooth.systems.ec.migration.model.Product;
+import org.smooth.systems.ec.magento19.db.repository.ProductTierPriceRepository;
+import org.smooth.systems.ec.migration.model.*;
 import org.smooth.systems.ec.migration.model.Product.ProductVisibility;
-import org.smooth.systems.ec.migration.model.ProductDimensionAndShipping;
-import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
@@ -39,6 +39,9 @@ public class Magento19DbProductsReader {
 
   @Autowired
   private ProductRepository productRepo;
+
+  @Autowired
+  private ProductTierPriceRepository productTierPriceRepo;
 
   @Autowired
   private Magento19DbProductFieldsProvider productFieldsProvider;
@@ -88,9 +91,26 @@ public class Magento19DbProductsReader {
     updateProductManufacturer(product);
     updateDimensionAndShippingForProduct(product);
     updateImagesUrls(product);
+    updateProductAttributes(product);
 
     product.getAttributes().add(getTranslateablAttributesForProduct(productId, langCode));
     return product;
+  }
+
+  public ProductPriceStrategies getProductPriceStrategy(Long productId) {
+    ProductPriceStrategies strategies = new ProductPriceStrategies();
+    List<Magento19ProductTierPrice> tierPrices = productTierPriceRepo.findByProductId(productId);
+    strategies.setProductId(productId);
+    for (Magento19ProductTierPrice tierPrice : tierPrices) {
+      strategies.addTierPriceStrategy(convertMagentoTierPriceStrategy(tierPrice));
+    }
+    return strategies;
+  }
+
+  private void updateProductAttributes(Product product) {
+    Assert.notNull(product,"product is null");
+    Assert.notNull(product.getId(),"product id is null");
+    product.setActivated(productFieldsProvider.getProductAttributeIdActivated(product.getId()));
   }
 
   private ProductTranslateableAttributes getTranslateablAttributesForProduct(Long productId, String langCode) {
@@ -170,5 +190,16 @@ public class Magento19DbProductsReader {
 
   private void logRetrievedValue(String valueName, Object value, Product product) {
     log.trace("Retrieved product {}: {} for productId: {}", valueName, value, product.getId());
+  }
+
+  private ProductTierPriceStrategy convertMagentoTierPriceStrategy(Magento19ProductTierPrice strategy) {
+    ProductTierPriceStrategy productPriceStrategy = new ProductTierPriceStrategy();
+    productPriceStrategy.setId(strategy.getId());
+    // TODO do not know yet
+    productPriceStrategy.setDiscountTaxIncluded(false);
+    productPriceStrategy.setDiscountType(ProductTierPriceStrategy.DiscountType.PRICE);
+    productPriceStrategy.setValue(strategy.getPrice());
+    productPriceStrategy.setMinQuantity(strategy.getQuantity().longValue());
+    return productPriceStrategy;
   }
 }
