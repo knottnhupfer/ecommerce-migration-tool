@@ -2,7 +2,9 @@ package org.smooth.systems.ec.utils.db.component;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.smooth.systems.ec.magento19.db.component.Magento19DbProductFieldsProvider;
 import org.smooth.systems.ec.magento19.db.repository.ProductCategoryMappingRepository;
+import org.smooth.systems.ec.migration.model.SimpleProduct;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.db.model.MagentoCategory;
 import org.smooth.systems.ec.utils.db.model.MagentoProduct;
@@ -28,6 +30,9 @@ public abstract class AbstractProductsForCategoryReader implements IActionExecut
 
 	@Autowired
 	protected ProductCategoryMappingRepository productCategoryMappingRepo;
+
+	@Autowired
+	protected Magento19DbProductFieldsProvider productFieldsProvider;
 
 	protected List<Long> retrieveAllProductIdsForCateoryId(Long mainCategoryId) {
 		log.info("retrieveAllProductIdsForCateoryId({})", mainCategoryId);
@@ -75,10 +80,22 @@ public abstract class AbstractProductsForCategoryReader implements IActionExecut
 		return categories.get(0).getId();
 	}
 
-	protected List<MagentoProduct> getCategoryProducts(Long categoryId) {
+	protected List<SimpleProduct> getCategoryProducts(Long categoryId) {
 		log.info("getCategoryProducts({})", categoryId);
 		List<Long> rootProductIds = retrieveAllProductIdsForCateoryId(categoryId);
 		log.info("Retrieved {} product ids for category id {}", rootProductIds.size(), categoryId);
-		return productsRepo.getAllProductsForIds(rootProductIds);
+		List<MagentoProduct> products = productsRepo.getAllProductsForIds(rootProductIds);
+		return products.stream().map(this::convertToSimpleProduct).collect(Collectors.toList());
+	}
+
+	protected List<SimpleProduct> getActivatedCategoryProducts(Long categoryId) {
+		log.info("getActivatedCategoryProducts({})", categoryId);
+		List<SimpleProduct> products = getCategoryProducts(categoryId);
+		// TODO write product ids list to file where activated is false
+		return products.stream().filter(prod -> prod.isActivated()).collect(Collectors.toList());
+	}
+
+	private SimpleProduct convertToSimpleProduct(MagentoProduct prod) {
+			return new SimpleProduct(prod.getId(), prod.getSku(), prod.getTypeId(), productFieldsProvider.getProductAttributeIdActivated(prod.getId()));
 	}
 }

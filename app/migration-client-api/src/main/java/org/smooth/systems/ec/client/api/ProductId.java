@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class SimpleProduct {
+public class ProductId {
 
   private Long productId;
 

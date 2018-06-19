@@ -11,5 +11,7 @@ public interface EcommerceUtilsActions {
 
   String PRODUCTS_MAPPING = "products-mapping";
 
+  String PRODUCTS_TIER_PRICES_MIGRATION = "products-tier-prices-migrate";
+
   String CATEGORIES_MIGRATION = "migrate-categories";
 }

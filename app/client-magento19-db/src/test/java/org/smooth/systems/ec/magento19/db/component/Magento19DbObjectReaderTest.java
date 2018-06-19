@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.smooth.systems.ec.client.api.SimpleProduct;
+import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
 import org.smooth.systems.ec.migration.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,13 @@ public class Magento19DbObjectReaderTest {
 
   @Test
   public void retrieveProductFromDatabaseTest() {
-    List<SimpleProduct> productsList = Arrays.asList(SimpleProduct.builder().productId(2971L).langIso("it").build());
+    List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(2971L).langIso("it").build());
     List<Product> retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     log.info("Product: {}", retrievedProducts.get(0).simpleDescription());
     log.info("");
 
-    productsList = Arrays.asList(SimpleProduct.builder().productId(2971L).langIso("it").build());
+    productsList = Arrays.asList(ProductId.builder().productId(2971L).langIso("it").build());
     retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     log.info("Product: {}", retrievedProducts.get(0).simpleDescription());
@@ -44,7 +44,7 @@ public class Magento19DbObjectReaderTest {
 
   @Test
   public void retrieveProductAttributesFromDatabaseTest() {
-    List<SimpleProduct> productsList = Arrays.asList(SimpleProduct.builder().productId(3718L).langIso("it").build());
+    List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(3718L).langIso("it").build());
     List<Product> retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     Product product = retrievedProducts.get(0);
@@ -52,7 +52,7 @@ public class Magento19DbObjectReaderTest {
     log.info("Product: {}", product.simpleDescription());
     log.info("");
 
-    productsList = Arrays.asList(SimpleProduct.builder().productId(3717L).langIso("it").build());
+    productsList = Arrays.asList(ProductId.builder().productId(3717L).langIso("it").build());
     retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     product = retrievedProducts.get(0);
@@ -60,7 +60,7 @@ public class Magento19DbObjectReaderTest {
     log.info("Product: {}", product.simpleDescription());
     log.info("");
 
-    productsList = Arrays.asList(SimpleProduct.builder().productId(3705L).langIso("it").build());
+    productsList = Arrays.asList(ProductId.builder().productId(3705L).langIso("it").build());
     retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     product = retrievedProducts.get(0);
@@ -68,7 +68,7 @@ public class Magento19DbObjectReaderTest {
     log.info("Product: {}", product.simpleDescription());
     log.info("");
 
-    productsList = Arrays.asList(SimpleProduct.builder().productId(3704L).langIso("it").build());
+    productsList = Arrays.asList(ProductId.builder().productId(3704L).langIso("it").build());
     retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     product = retrievedProducts.get(0);
@@ -79,7 +79,7 @@ public class Magento19DbObjectReaderTest {
 
   @Test
   public void retrieveProductAndParseDescriptionTest() {
-    List<SimpleProduct> productsList = Arrays.asList(SimpleProduct.builder().productId(2140L).langIso("it").build());
+    List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(2140L).langIso("it").build());
     List<Product> retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     Product product = retrievedProducts.get(0);

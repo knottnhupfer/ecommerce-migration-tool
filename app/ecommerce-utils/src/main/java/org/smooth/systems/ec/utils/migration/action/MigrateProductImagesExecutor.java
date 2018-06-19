@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
-import org.smooth.systems.ec.client.api.SimpleProduct;
+import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.utils.EcommerceUtilsActions;
@@ -34,7 +34,7 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 		initialize();
 		log.trace("execute()");
 
-		List<SimpleProduct> products = initializeProductCacheAndRetrieveList();
+		List<ProductId> products = initializeProductCacheAndRetrieveList();
 		log.info("Read products and initialized cache");
 
 		List<MigrationProductImagesObject> imagesInfo = generateProductImagesObjects(products);
@@ -53,12 +53,12 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 		}
 	}
 
-	private List<SimpleProduct> initializeProductCacheAndRetrieveList() {
-		List<SimpleProduct> mainProductIds = new ArrayList<>();
+	private List<ProductId> initializeProductCacheAndRetrieveList() {
+		List<ProductId> mainProductIds = new ArrayList<>();
 		try {
 			for (Long prodId : productIdsSourceSystem.keySet()) {
 				Long mainProductId = productIdsSourceSystem.getMappedIdForId(prodId);
-				SimpleProduct product = SimpleProduct.builder().productId(mainProductId).langIso(config.getRootCategoryLanguage()).build();
+				ProductId product = ProductId.builder().productId(mainProductId).langIso(config.getRootCategoryLanguage()).build();
 				mainProductIds.add(product);
 			}
 		} catch(NotFoundException e) {
@@ -68,7 +68,7 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 		return mainProductIds;
 	}
 
-	private List<MigrationProductImagesObject> generateProductImagesObjects(List<SimpleProduct> products) {
+	private List<MigrationProductImagesObject> generateProductImagesObjects(List<ProductId> products) {
 		File imagesUrl = new File(config.getProductsImagesDirectory());
 		List<MigrationProductImagesObject> imagesObjects = new ArrayList<>();
 		products.forEach(prod -> {

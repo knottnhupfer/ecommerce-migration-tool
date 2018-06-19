@@ -51,9 +51,11 @@ public interface MigrationSystemReader extends RegisterableComponent {
   
   List<Product> readAllProductsForCategories(List<SimpleCategory> categories);
 
-  List<Product> readAllProducts(List<SimpleProduct> products);
+  List<Product> readAllProducts(List<ProductId> products);
 
   List<Manufacturer> readAllManufacturers();
 
-  List<ProductPriceStrategies> readProductsPriceStrategies(List<SimpleProduct> products);
+  List<ProductPriceStrategies> readProductsPriceStrategies(List<ProductId> products);
+
+  ProductPriceStrategies readProductPriceStrategies(Long productId);
 }

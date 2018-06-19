@@ -1,7 +1,7 @@
 package org.smooth.systems.ec.magento19.db.component;
 
 import org.smooth.systems.ec.client.api.SimpleCategory;
-import org.smooth.systems.ec.client.api.SimpleProduct;
+import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
@@ -63,12 +63,12 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
   }
 
   @Override
-  public List<Product> readAllProducts(List<SimpleProduct> products) {
+  public List<Product> readAllProducts(List<ProductId> products) {
     log.debug("readAllProducts({})", products);
     return products.stream().map(this::readProduct).collect(Collectors.toList());
   }
 
-  private Product readProduct(SimpleProduct prod) {
+  private Product readProduct(ProductId prod) {
     log.info("readProduct({})", prod);
     try {
       return productsReader.getProduct(prod.getProductId(), prod.getLangIso());
@@ -84,13 +84,18 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
   }
 
   @Override
-  public List<ProductPriceStrategies> readProductsPriceStrategies(List<SimpleProduct> products) {
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ProductId> products) {
     log.debug("readProductsPriceStrategies({})", products);
     List<ProductPriceStrategies> strategies = new ArrayList<>();
-    for (SimpleProduct product : products) {
-      ProductPriceStrategies productStrategy = productsReader.getProductPriceStrategy(product.getProductId());
-      strategies.add(productStrategy);
+    for (ProductId product : products) {
+      strategies.add(readProductPriceStrategies(product.getProductId()));
     }
     return strategies;
+  }
+
+  @Override
+  public ProductPriceStrategies readProductPriceStrategies(Long productId) {
+    log.debug("readProductPriceStrategies({})", productId);
+    return productsReader.getProductPriceStrategy(productId);
   }
 }

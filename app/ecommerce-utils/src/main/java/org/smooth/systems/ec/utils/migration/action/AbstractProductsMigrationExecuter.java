@@ -13,43 +13,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Slf4j
 public abstract class AbstractProductsMigrationExecuter implements IActionExecuter {
 
-	@Autowired
-	protected MigrationConfiguration config;
+  @Autowired
+  protected MigrationConfiguration config;
 
-	@Autowired
-	protected MigrationSystemReaderAndWriterFactory readerWriterFactory;
+  @Autowired
+  protected MigrationSystemReaderAndWriterFactory readerWriterFactory;
 
-	/**
-	 * Maps the product id from the alternative language to the product id of the
-	 * main language id (only source system)
-	 *
-	 * <ul>
-	 * <li>key ... product id german language source system</li>
-	 * <li>value ... main product id source system (italian language)</li>
-	 * </ul>
-	 */
-	protected ObjectIdMapper productIdsSourceSystem;
+  /**
+   * Maps the product id from the alternative language to the product id of the
+   * main language id (only source system)
+   *
+   * <ul>
+   * <li>key ... product id german language source system</li>
+   * <li>value ... main product id source system (italian language)</li>
+   * </ul>
+   */
+  protected ObjectIdMapper productIdsSourceSystem;
 
-	/**
-	 * Maps the product id from the source system to the product id of the
-	 * uploaded product
-	 *
-	 * <ul>
-	 * <li>key ... product id source system</li>
-	 * <li>value ... product id destination system</li>
-	 * </ul>
-	 */
-	protected ObjectIdMapper productIdsMigration;
+  /**
+   * Maps the product id from the source system to the product id to the
+   * destination system
+   *
+   * <ul>
+   * <li>key ... product id source system</li>
+   * <li>value ... product id destination system</li>
+   * </ul>
+   */
+  protected ObjectIdMapper productIdsMigration;
 
-	protected ProductsCache productsCache;
+  protected MigrationSystemReader reader;
+  protected MigrationSystemWriter writer;
 
-	protected void initialize() {
-		log.info("Read product merging mapping from: {}", config.getGeneratedProductsMergingFile());
-		productIdsSourceSystem = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
-		productIdsSourceSystem.initializeIdMapperFromFile();
-		productIdsMigration = new ObjectIdMapper(config.getGeneratedCreatedProductsMigrationFile());
+  protected ProductsCache productsCache;
 
-		MigrationSystemReader reader = readerWriterFactory.getMigrationReader();
-		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
-	}
+  protected void initialize() {
+    log.info("Read product merging mapping from: {}", config.getGeneratedProductsMergingFile());
+    productIdsSourceSystem = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
+    productIdsSourceSystem.initializeIdMapperFromFile();
+    productIdsMigration = new ObjectIdMapper(config.getGeneratedCreatedProductsMigrationFile());
+
+    reader = readerWriterFactory.getMigrationReader();
+    writer = readerWriterFactory.getMigrationWriter();
+  }
 }
