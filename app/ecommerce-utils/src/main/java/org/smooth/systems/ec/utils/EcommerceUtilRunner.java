@@ -17,12 +17,6 @@ import java.util.Map;
 @Component
 public class EcommerceUtilRunner implements ApplicationRunner {
 
-	@Autowired
-	protected MigrationConfiguration config;
-
-	@Autowired
-	protected ToolConfiguration configReader;
-
 	public static final String PARAM_ACTION = "action";
 
 	private Map<String, IActionExecuter> actions = new HashMap<>();
@@ -41,8 +35,8 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		initialize(args);
+	public void run(ApplicationArguments args) {
+		log.info("run({})", args);
 
 		List<String> actionParams = args.getOptionValues(PARAM_ACTION);
 		if(actionParams == null || actionParams.isEmpty()) {
@@ -59,10 +53,5 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 		log.info("Execute action '{}'", action.getClass().getSimpleName());
 		action.execute();
 		System.exit(0);
-	}
-
-	private void initialize(ApplicationArguments args) {
-		MigrationConfiguration config = configReader.getMigrationConfiguration(args);
-		this.config.storeConfiguration(config);
 	}
 }

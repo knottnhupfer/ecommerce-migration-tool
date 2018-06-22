@@ -3,6 +3,7 @@ package org.smooth.systems.ec.magento19.db.component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
@@ -164,24 +165,11 @@ public class Magento19DbProductsReader {
     List<String> imageUrls = productFieldsProvider.getImageUrlsOfProductId(getId(product));
     imageUrls.remove(mainImageUrl);
     imageUrls.add(0, mainImageUrl);
+    // TODO as fast bug fix this works fine, should consider to implement a better strategy
+    imageUrls = imageUrls.stream().filter(url -> !url.contains("no_selection")).collect(Collectors.toList());
     product.getProductImageUrls().addAll(imageUrls);
     logRetrievedValue("imageUrls", product.getProductImageUrls(), product);
   }
-
-//  private void updateCategoryIdWithDestinationCategoryId(Product product) {
-//    init();
-//    Assert.notEmpty(product.getCategories(), "product categories are empty");
-//    try {
-//      Long origCategoryId = product.getCategories().get(0);
-//      Long createdCategoryId = categoryIdMapper.getMappedIdForId(origCategoryId);
-//      product.setCategories(Collections.singletonList(createdCategoryId));
-//      log.trace("Updated category id {} to created category id {}", origCategoryId, createdCategoryId);
-//    } catch (NotFoundException e) {
-//      String msg = String.format("Unable to find created category for source ids %s", product.getCategories());
-//      log.error(msg);
-//      throw new IllegalStateException(msg);
-//    }
-//  }
 
   private Long getId(Product product) {
     Assert.notNull(product.getId(), "productId is null");
