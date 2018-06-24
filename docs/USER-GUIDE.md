@@ -38,7 +38,7 @@ Following commands need to be executed to migrate data from A to B in root folde
   ./scripts/build_migration_tool.sh
 
   # merge and migrate categories
-  ./scripts/migrate_data.sh merge-categories
+  ./scripts/migrate_data.sh migrate-categories
 
   # generate manufacturers on destination system and write mapping file for exactly this store
   ./scripts/migration-utils.sh create-led-brands
@@ -48,7 +48,7 @@ Following commands need to be executed to migrate data from A to B in root folde
   # migrate products
   ./scripts/migration-utils.sh migrate-products
   # upload product images
-  ./scripts/migration-utils.sh upload-images
+  ./scripts/migration-utils.sh migrate-product-images
   # upload product tier prices
   ./scripts/migration-utils.sh migrate-product-tier-prices
 ```
