@@ -95,6 +95,11 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
     org.smooth.systems.ec.prestashop17.model.Product prod = ProductConvertUtil.convertProduct(languagesCache, product);
     prod = client.writeProduct(prod);
     product.setId(prod.getId());
+    try {
+      Thread.sleep(200L);
+    } catch (InterruptedException e) {
+      log.error("Error while waiting for 200ms ...");
+    }
     return product;
 	}
 
