@@ -6,10 +6,6 @@ TOOL_DIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
 source ${TOOL_DIR}/scripts/env_application.sh
 
 
-CONFIG_FILE_DIR=${TOOL_DIR}/config/illuminazione
-CONFIG_FILE="file:${CONFIG_FILE_DIR}/migration-config.yaml"
-
-
 # application variables
 UTILS_JAR_NAME=ecommerce-utils-1.0.0-SNAPSHOT.jar
 UTILS_TARGET_DIR=app/ecommerce-utils/target/
@@ -17,15 +13,14 @@ UTILS_JAR=${DIST_DIR}/${UTILS_JAR_NAME}
 
 
 # prepare application ============================
-# -----------------------------------------------
+# ------------------------------------------------
 if [ ! -f ${UTILS_JAR} ]; then
-  echo ""
-  echo "${INFO} Create directory ${DIST_DIR}"
-  mkdir -p ${DIST_DIR}
 
-  echo "${INFO} Setup application jar file ${UTILS_JAR}"
-  cp ${UTILS_TARGET_DIR}/${UTILS_JAR_NAME} ${DIST_DIR}/
+  echo ""
+  echo "${ERROR} Unable to find jar ${UTILS_JAR}"
+  exit 9
 fi
+
 
 echo ""
 echo "${INFO} Using configuration file ${CONFIG_FILE}"
