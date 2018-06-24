@@ -29,23 +29,23 @@ echo ""
 case "$1" in
   create-led-brands)
     printInfo "Create brands for illuminazione-a-led brands ..."
-    ${RUN_JAVA} -jar ${UTILS_JAR} --action=create-led-brands --migration.configuration=${CONFIG_FILE}
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=create-led-brands ${CONFIG_FILE_PARAM}
     ;;
   generate-merged-product-ids)
     printInfo "Generate merged product ids mapping (both in source system) ..."
-    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-mapping --migration.configuration=${CONFIG_FILE}
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-mapping ${CONFIG_FILE_PARAM}
     ;;
   migrate-products)
     printInfo "Migrate products ..."
-    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-migrate --migration.configuration=${CONFIG_FILE}
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-migrate ${CONFIG_FILE_PARAM}
     ;;
   migrate-product-images)
     printInfo "Migrate product images ..."
-    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-image-migrate --migration.configuration=${CONFIG_FILE}
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-image-migrate ${CONFIG_FILE_PARAM}
     ;;
   migrate-product-tier-prices)
     printInfo "Migrate main product tier prices ..."
-    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-tier-prices-migrate --migration.configuration=${CONFIG_FILE}
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-tier-prices-migrate ${CONFIG_FILE_PARAM}
     ;;
   *)
     echo ""

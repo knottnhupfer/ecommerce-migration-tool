@@ -7,6 +7,7 @@ import lombok.Data;
 import org.smooth.systems.ec.client.api.SimpleCategory;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -73,25 +74,32 @@ public class MigrationConfiguration {
     }
   }
 
-  public void storeConfiguration(MigrationConfiguration config) {
-    sourceSystemName = config.sourceSystemName;
-    destinationSystemName = config.destinationSystemName;
-    rootCategoryId = config.rootCategoryId;
-    rootCategoryLanguage = config.rootCategoryLanguage;
-    additionalCategories = config.additionalCategories;
-
-    categoriesMergingFile = config.categoriesMergingFile;
-    generatedCreatedCategoriesMappingFile = config.generatedCreatedCategoriesMappingFile;
-    categoryIdsMergingIgnoreList = config.categoryIdsMergingIgnoreList != null ? config.categoryIdsMergingIgnoreList
-            : Collections.emptyList();
-    categoryIdsSkipping = config.categoryIdsSkipping != null ? config.categoryIdsSkipping : Collections.emptyList();
-
-    productsImagesDirectory = config.productsImagesDirectory;
-    productsMergingFile = config.productsMergingFile;
-    generatedProductsMergingFile = config.generatedProductsMergingFile;
-    productIdsSkipping = config.productIdsSkipping != null ? config.productIdsSkipping : Collections.emptyList();
-
-    generatedProductsBrandMappingFile = config.generatedProductsBrandMappingFile;
-    generatedCreatedProductsMigrationFile = config.generatedCreatedProductsMigrationFile;
+  public List<Long> getCategoryIdsSkipping() {
+    if(categoryIdsSkipping == null) {
+      categoryIdsSkipping = new ArrayList<>();
+    }
+    return categoryIdsSkipping;
   }
+
+//  public void storeConfiguration(MigrationConfiguration config) {
+//    sourceSystemName = config.sourceSystemName;
+//    destinationSystemName = config.destinationSystemName;
+//    rootCategoryId = config.rootCategoryId;
+//    rootCategoryLanguage = config.rootCategoryLanguage;
+//    additionalCategories = config.additionalCategories;
+//
+//    categoriesMergingFile = config.categoriesMergingFile;
+//    generatedCreatedCategoriesMappingFile = config.generatedCreatedCategoriesMappingFile;
+//    categoryIdsMergingIgnoreList = config.categoryIdsMergingIgnoreList != null ? config.categoryIdsMergingIgnoreList
+//            : Collections.emptyList();
+//    categoryIdsSkipping = config.categoryIdsSkipping != null ? config.categoryIdsSkipping : Collections.emptyList();
+//
+//    productsImagesDirectory = config.productsImagesDirectory;
+//    productsMergingFile = config.productsMergingFile;
+//    generatedProductsMergingFile = config.generatedProductsMergingFile;
+//    productIdsSkipping = config.productIdsSkipping != null ? config.productIdsSkipping : Collections.emptyList();
+//
+//    generatedProductsBrandMappingFile = config.generatedProductsBrandMappingFile;
+//    generatedCreatedProductsMigrationFile = config.generatedCreatedProductsMigrationFile;
+//  }
 }

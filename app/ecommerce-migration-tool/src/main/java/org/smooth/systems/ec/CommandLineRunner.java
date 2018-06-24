@@ -13,26 +13,19 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class CommandLineRunner extends AbstractCommandLineRunner implements ApplicationRunner {
 
-  public static String OPTION_CONFIG_NAME = "config";
+  public static String OPTION_CONFIG_NAME = "migration.configuration";
 
   public static String OPTION_MERGE_CATEGORY_NAME = "merge-category";
-
-//  public static String OPTION_MERGE_PRODUCTS_NAME = "merge-products";
-
-  private final MigrationConfiguration config;
 
   private final CategoryMigrationApplication categoryMigrator;
 
   @Autowired
-  public CommandLineRunner(MigrationConfiguration config, CategoryMigrationApplication application) {
-    this.config = config;
+  public CommandLineRunner(CategoryMigrationApplication application) {
     this.categoryMigrator = application;
   }
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
-    MigrationConfiguration migrationConfiguration = getMigrationConfiguration(args, OPTION_CONFIG_NAME);
-    config.storeConfiguration(migrationConfiguration);
     executeCommand(args);
   }
 

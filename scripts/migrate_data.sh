@@ -27,8 +27,9 @@ fi
 
 case "$1" in
   migrate-categories)
-    printInfo "Merge categories ..."
-		${RUN_JAVA} -jar ${APP_JAR} --merge-category --config=${CONFIG_FILE}
+    APPLICATION_PARAMS="--merge-category ${CONFIG_FILE_PARAM}"
+    printInfo "Merge categories; run application with params: ${APPLICATION_PARAMS}"
+		${RUN_JAVA} -jar ${APP_JAR} ${APPLICATION_PARAMS}
     ;;
   *)
     echo ""

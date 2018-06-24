@@ -23,3 +23,4 @@ SOURCE_PROJECT_DIR=${TOOL_DIR}${APP_DIR_NAME}
 
 CONFIG_FILE_DIR=${TOOL_DIR}/config/illuminazione
 CONFIG_FILE="file:${CONFIG_FILE_DIR}/migration-config.yaml"
+CONFIG_FILE_PARAM="--migration.configuration=${CONFIG_FILE}"

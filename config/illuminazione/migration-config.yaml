@@ -34,7 +34,7 @@ category-ids-merging-ignore-list:
   - 126
   - 78
 category-ids-skipping:
-#  - 50
+#  - 100100
 
 # maps root category ids of the source system to category ids on the destination system
 #
