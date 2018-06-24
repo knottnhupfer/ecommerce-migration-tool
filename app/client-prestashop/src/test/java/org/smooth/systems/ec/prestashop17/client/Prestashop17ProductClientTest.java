@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.smooth.systems.ec.prestashop17.model.Manufacturer;
 import org.smooth.systems.ec.prestashop17.model.Product;
+import org.smooth.systems.ec.prestashop17.model.ProductSpecificPrice;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -36,5 +37,11 @@ public class Prestashop17ProductClientTest {
     Product product = client.getProduct(PrestashopConstantsTests.EXISTING_PRODUCT_ID);
     log.info("Product: {}", product);
     log.info("ProductAssociations: {}", product.getAssociations());
+  }
+
+  @Test
+  public void getProductSpecificPriceTest() {
+    List<ProductSpecificPrice> productSpecificPrices = client.readAllProductSpecificPrices();
+    log.info("ProductSpecificPrices: {}", productSpecificPrices);
   }
 }

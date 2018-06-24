@@ -5,10 +5,7 @@ import java.util.List;
 
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Manufacturer;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 
 public interface MigrationSystemWriter extends RegisterableComponent {
 
@@ -74,4 +71,6 @@ public interface MigrationSystemWriter extends RegisterableComponent {
 	void uploadProductImages(Long prodId, File productImage);
 
   Manufacturer writeManufacturer(String manufacturerName);
+
+  void writeProductPriceTier(ProductPriceStrategies priceStrategy);
 }

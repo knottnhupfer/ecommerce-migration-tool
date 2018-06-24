@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.smooth.systems.ec.prestashop17.model.ProductSpecificPrice;
 
 @Slf4j
 public class Prestashop17ClientDeserializeTest {
@@ -87,5 +88,34 @@ public class Prestashop17ClientDeserializeTest {
     assertEquals(new Long(4), imageUploadResponse.getUploadedImage().getId());
     assertEquals(new Long(2), imageUploadResponse.getUploadedImage().getProductId());
     assertEquals(new Long(3), imageUploadResponse.getUploadedImage().getPosition());
+  }
+
+  @Test
+  public void deserializeProductSpecificPrices() throws JsonParseException, JsonMappingException, IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    File inputFile = new File("src/test/resources/example_responses/product_specific_prices_1-7-3.xml");
+    ProductSpecificPrices productSpcificPricesResponse = xmlMapper.readValue(inputFile, ProductSpecificPrices.class);
+    log.info("ProductSpecificPrices: {}", productSpcificPricesResponse);
+    assertNotNull(productSpcificPricesResponse.getSpecificPrices());
+    assertEquals(4,productSpcificPricesResponse.getSpecificPrices().size());
+    assertEquals(Long.valueOf(1),productSpcificPricesResponse.getSpecificPrices().get(0).getId());
+    assertEquals(Long.valueOf(2),productSpcificPricesResponse.getSpecificPrices().get(1).getId());
+    assertEquals(Long.valueOf(3),productSpcificPricesResponse.getSpecificPrices().get(2).getId());
+    assertEquals(Long.valueOf(4),productSpcificPricesResponse.getSpecificPrices().get(3).getId());
+  }
+
+  @Test
+  public void deserializeProductSpecificPrice() throws JsonParseException, JsonMappingException, IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    File inputFile = new File("src/test/resources/example_responses/product_specific_price_1-7-3.xml");
+    ProductSpecificPriceWrapper productSpcificPriceResponse = xmlMapper.readValue(inputFile, ProductSpecificPriceWrapper.class);
+    log.info("ProductSpecificPrices: {}", productSpcificPriceResponse);
+    assertNotNull(productSpcificPriceResponse.getSpecificPrice());
+    ProductSpecificPrice specificPrice = productSpcificPriceResponse.getSpecificPrice();
+    assertEquals(Long.valueOf(1021), specificPrice.getProductId());
+    assertEquals(Long.valueOf(6), specificPrice.getQuantity());
+    assertEquals(Double.valueOf("2.5"), specificPrice.getReduction());
+    assertEquals(Long.valueOf(0), specificPrice.getReductionTax());
+    assertEquals("amount", specificPrice.getReductionType());
   }
 }

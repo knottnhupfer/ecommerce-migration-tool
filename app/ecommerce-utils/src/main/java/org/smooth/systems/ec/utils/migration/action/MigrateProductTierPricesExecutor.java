@@ -1,7 +1,7 @@
 package org.smooth.systems.ec.utils.migration.action;
 
 import lombok.extern.slf4j.Slf4j;
-import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.ProductPriceStrategies;
 import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.springframework.stereotype.Component;
@@ -32,16 +32,20 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
       if (priceStrategy.getPriceStrategies().isEmpty()) {
         continue;
       }
-      uploadProductPriceStrategies(priceStrategy);
+      try {
+        uploadProductPriceStrategies(priceStrategy);
+      } catch (NotFoundException e) {
+        log.error("Unable to map product tier price to destination system: {}", priceStrategy, e);
+        throw new IllegalStateException("Unable to map product tier price to destination system.");
+      }
     }
-    // check if tier prices already exists for given product, if yes abort processing for product
-    // read tier prices
-    // upload tier prices
+
   }
 
-  private void uploadProductPriceStrategies(ProductPriceStrategies priceStrategy) {
+  private void uploadProductPriceStrategies(ProductPriceStrategies priceStrategy) throws NotFoundException {
     log.debug("uploadProductPriceStrategies({})", priceStrategy);
-    throw new NotImplementedException();
+    productIdsMigration.getMappedIdForId(priceStrategy.getProductId());
+    writer.writeProductPriceTier(priceStrategy);
   }
 
   protected void initialize() {

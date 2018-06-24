@@ -9,6 +9,8 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.smooth.systems.ec.prestashop17.Prestashop17ClientConstants;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 import org.smooth.systems.ec.prestashop17.model.*;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
@@ -228,7 +230,7 @@ public class Prestashop17Client {
 
     String requestContent = objectToString(manufacturerWrapper, ManufacturerWrapper.class);
     ResponseEntity<ManufacturerWrapper> response = client.postForEntity(baseUrl + URL_MANUFACTURERS, requestContent,
-        ManufacturerWrapper.class);
+            ManufacturerWrapper.class);
     Manufacturer postedManufacturer = response.getBody().getManufacturer();
     log.info("Wrote manufacturer: {}", postedManufacturer);
     return postedManufacturer;
@@ -250,6 +252,28 @@ public class Prestashop17Client {
     client.put(baseUrl + URL_STOCK_AVAILABLES, requestContent);
     log.info("Update stockAvailable: {}", stockAvailable);
     return stockAvailable;
+  }
+
+
+  public List<ProductSpecificPrice> readAllProductSpecificPrices() {
+    log.debug("readAllProductSpecificPrices()");
+    ResponseEntity<ProductSpecificPrices> response = client.getForEntity(baseUrl + Prestashop17ClientConstants.URL_SPECIFIC_PRICES, ProductSpecificPrices.class);
+    ProductSpecificPrices specificPrices = response.getBody();
+
+    List<ProductSpecificPrice> res = new ArrayList<>();
+    for (ObjectRefId langRef : specificPrices.getSpecificPrices()) {
+      res.add(readProductSpecificPrice(langRef.getId()));
+    }
+    return res;
+//    throw new NotImplementedException();
+  }
+
+  public ProductSpecificPrice readProductSpecificPrice(Long specificPriceId) {
+    Assert.notNull(specificPriceId, "specificPriceId is null");
+    ResponseEntity<ProductSpecificPriceWrapper> response = client.getForEntity(baseUrl + Prestashop17ClientConstants.getProductSpecificPriceUrl(specificPriceId), ProductSpecificPriceWrapper.class);
+    ProductSpecificPriceWrapper specificPriceWrapper = response.getBody();
+    Assert.notNull(specificPriceWrapper.getSpecificPrice(), String.format("specificPrice for id %d not found", specificPriceId));
+    return specificPriceWrapper.getSpecificPrice();
   }
 
   private void updateProductStock(Product product) {

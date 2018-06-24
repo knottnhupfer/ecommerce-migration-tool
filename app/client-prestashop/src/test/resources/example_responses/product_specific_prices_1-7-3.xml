@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+    <specific_prices>
+        <specific_price id="1" xlink:href="http://prestashop.local/api/specific_prices/1"/>
+        <specific_price id="2" xlink:href="http://prestashop.local/api/specific_prices/2"/>
+        <specific_price id="3" xlink:href="http://prestashop.local/api/specific_prices/3"/>
+        <specific_price id="4" xlink:href="http://prestashop.local/api/specific_prices/4"/>
+    </specific_prices>
+</prestashop>

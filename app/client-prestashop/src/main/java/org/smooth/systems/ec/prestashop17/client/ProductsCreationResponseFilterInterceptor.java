@@ -33,6 +33,14 @@ public class ProductsCreationResponseFilterInterceptor implements ClientHttpRequ
 			String filteredBody = filteredTagResponseBody(response);
 			traceResponse(response, filteredBody);
 			return new HttpClientCustomeResponseWrapper(response, filteredBody);
+		} else if (request.getMethod() == HttpMethod.GET && response.getStatusCode() == HttpStatus.OK
+						&& request.getURI().toString().contains("/api/specific_prices/")) {
+			String filteredBody = filteredTagResponseBody(response);
+			filteredBody = removeSimpleElementInResponse(filteredBody,"id_shop_group");
+			filteredBody = removeAttributesFromSimpleTagInResponse(filteredBody, "id_shop");
+			filteredBody = removeAttributesFromSimpleTagInResponse(filteredBody, "id_product");
+			traceResponse(response, filteredBody);
+			return new HttpClientCustomeResponseWrapper(response, filteredBody);
 		}
 		return response;
 	}
@@ -106,5 +114,30 @@ public class ProductsCreationResponseFilterInterceptor implements ClientHttpRequ
 		String substring = mixedString.substring(startIndex, endIndex);
 		String idLangValue = substring.substring(substring.indexOf(">") + 1);
 		return mixedString.replace(substring, START_ID_TAG+idLangValue);
+	}
+
+	private String removeAttributesFromSimpleTagInResponse(String mixedString, String tagName) {
+		String START_ID_TAG = "<" + tagName +  ">";
+		String END_ID_TAG = "</" + tagName +  ">";
+		if(!mixedString.contains(END_ID_TAG)) {
+			return mixedString;
+		}
+		int startIndex = mixedString.indexOf("<" + tagName);
+		int endIndex = mixedString.indexOf(END_ID_TAG);
+		String substring = mixedString.substring(startIndex, endIndex);
+		String idLangValue = substring.substring(substring.indexOf(">") + 1);
+		return mixedString.replace(substring, START_ID_TAG+idLangValue);
+	}
+
+	private String removeSimpleElementInResponse(String mixedString, String tagName) {
+		String START_ID_TAG = "<" + tagName +  ">";
+		String END_ID_TAG = "</" + tagName +  ">";
+		if(!mixedString.contains(END_ID_TAG)) {
+			return mixedString;
+		}
+		int startIndex = mixedString.indexOf(START_ID_TAG);
+		int endIndex = mixedString.indexOf(END_ID_TAG) + END_ID_TAG.length();
+		String substring = mixedString.substring(startIndex, endIndex);
+		return mixedString.replace(substring, "");
 	}
 }
