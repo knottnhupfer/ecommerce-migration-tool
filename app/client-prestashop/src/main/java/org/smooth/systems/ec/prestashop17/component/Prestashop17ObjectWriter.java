@@ -15,6 +15,7 @@ import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
 import org.smooth.systems.ec.prestashop17.mapper.CategoryMapper;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
 import org.smooth.systems.ec.prestashop17.model.ProductConvertUtil;
+import org.smooth.systems.ec.prestashop17.model.ProductSpecificPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -116,9 +117,12 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   }
 
   @Override
-  public void writeProductPriceTier(ProductPriceStrategies priceStrategy) {
-    log.info("writeProductPriceTier({})", priceStrategy);
-    throw new NotImplementedException();
+  public void writeProductPriceTier(ProductPriceStrategies priceStrategies) {
+    log.debug("writeProductPriceTier({})", priceStrategies);
+    for(ProductTierPriceStrategy priceStrategy : priceStrategies.getPriceStrategies()) {
+      ProductSpecificPrice specificPrice = ProductConvertUtil.convertProductPriceStrategy(priceStrategies.getProductId(), priceStrategy);
+      client.writeProductSpecificPrice(specificPrice);
+    }
   }
 
   @Override

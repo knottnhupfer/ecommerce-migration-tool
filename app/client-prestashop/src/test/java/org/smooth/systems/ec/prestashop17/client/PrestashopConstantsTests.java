@@ -9,7 +9,7 @@ public interface PrestashopConstantsTests {
 
   public static final Long EXISTING_LANG_ID = 1L;
 
-  public static final Long EXISTING_PRODUCT_ID = 2L;
+  public static final Long EXISTING_PRODUCT_ID = 5L;
 
   public static final Long EXISTING_CATEGORY_ID = 147L;
 }

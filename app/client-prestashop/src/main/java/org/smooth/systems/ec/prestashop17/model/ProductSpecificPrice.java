@@ -33,4 +33,32 @@ public class ProductSpecificPrice {
 
   @JsonProperty("id_product")
   private Long productId;
+
+  @JsonProperty("id_shop")
+  private Long shopId;
+
+  @JsonProperty("id_cart")
+  private Long cartId = 0L;
+
+  // TODO currently not supported
+  @JsonProperty("id_currency")
+  private Long currencyId = 0L;
+
+  @JsonProperty("id_country")
+  private Long countryId = 0L;
+
+  @JsonProperty("id_group")
+  private Long groupId = 0L;
+
+  @JsonProperty("id_customer")
+  private Long customerId = 0L;
+
+  @JsonProperty("price")
+  private String price = "-1.000000";
+
+  @JsonProperty("from")
+  private String from = "0000-00-00 00:00:00";
+
+  @JsonProperty("to")
+  private String to = "0000-00-00 00:00:00";
 }

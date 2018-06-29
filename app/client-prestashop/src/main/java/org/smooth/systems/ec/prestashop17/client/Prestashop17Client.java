@@ -265,7 +265,6 @@ public class Prestashop17Client {
       res.add(readProductSpecificPrice(langRef.getId()));
     }
     return res;
-//    throw new NotImplementedException();
   }
 
   public ProductSpecificPrice readProductSpecificPrice(Long specificPriceId) {
@@ -274,6 +273,18 @@ public class Prestashop17Client {
     ProductSpecificPriceWrapper specificPriceWrapper = response.getBody();
     Assert.notNull(specificPriceWrapper.getSpecificPrice(), String.format("specificPrice for id %d not found", specificPriceId));
     return specificPriceWrapper.getSpecificPrice();
+  }
+
+  public ProductSpecificPrice writeProductSpecificPrice(ProductSpecificPrice specificPrice) {
+    Assert.notNull(specificPrice, "specificPrice is null");
+
+    ProductSpecificPriceWrapper specificPriceWrapper = new ProductSpecificPriceWrapper();
+    specificPriceWrapper.setSpecificPrice(specificPrice);
+
+    ResponseEntity<ProductSpecificPriceWrapper> response = client.postForEntity(baseUrl + Prestashop17ClientConstants.URL_SPECIFIC_PRICES, specificPriceWrapper,
+            ProductSpecificPriceWrapper.class);
+    log.info("Wrote product specific price: {}", response.getBody().getSpecificPrice());
+    return response.getBody().getSpecificPrice();
   }
 
   private void updateProductStock(Product product) {

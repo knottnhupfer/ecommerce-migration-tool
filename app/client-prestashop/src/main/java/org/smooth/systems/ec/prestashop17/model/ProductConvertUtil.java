@@ -2,6 +2,7 @@ package org.smooth.systems.ec.prestashop17.model;
 
 import lombok.experimental.UtilityClass;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.smooth.systems.ec.migration.model.ProductTierPriceStrategy;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 
@@ -84,5 +85,25 @@ public class ProductConvertUtil {
       attrs.addAttribute(cache.getLangId(attr.getLangCode()), attr.getFriendlyUrl());
     });
     return attrs;
+  }
+
+  public static ProductSpecificPrice convertProductPriceStrategy(Long productId, ProductTierPriceStrategy priceStrategy) {
+    ProductSpecificPrice specificPrice = new ProductSpecificPrice();
+    specificPrice.setProductId(productId);
+    specificPrice.setQuantity(priceStrategy.getMinQuantity());
+    specificPrice.setReduction(priceStrategy.getValue());
+    if (priceStrategy.getDiscountType() == ProductTierPriceStrategy.DiscountType.PRICE) {
+      specificPrice.setReductionType(ProductSpecificPrice.REDUCTION_TYPE_AMOUNT);
+    } else {
+      specificPrice.setReductionType(ProductSpecificPrice.REDUCTION_TYPE_AMOUNT);
+    }
+    specificPrice.setReductionTax(priceStrategy.isDiscountTaxIncluded() ? ProductSpecificPrice.INCLUSIVE_TAX : ProductSpecificPrice.EXCLUSIVE_TAX);
+
+    // TODO test with single product from MagentoDb19
+    // TODO fix this, currently it works for default shops
+    // must be retrieved and implemented somewhere else
+    specificPrice.setShopId(1L);
+    throw new NotImplementedException();
+//    return specificPrice;
   }
 }
