@@ -9,6 +9,7 @@ import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.magento.mapper.MagentoCategoryConvert;
 import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.Product;
+import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -81,4 +82,10 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
     log.debug("readAllProducts({})", products);
     throw new RuntimeException("Not implemented yet");
   }
+
+	@Override
+	public List<IProductMetaData> readAllProductsMetaData() {
+		log.debug("readAllProductsMetaData()");
+		throw new RuntimeException("Not implemented yet");
+	}
 }

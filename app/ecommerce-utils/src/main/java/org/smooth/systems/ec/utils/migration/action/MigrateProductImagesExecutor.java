@@ -5,7 +5,6 @@ import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.exceptions.NotFoundException;
-import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
@@ -50,8 +49,8 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 
 	private void uploadProductImages(List<MigrationProductImagesObject> imagesInfo) {
 		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
-		for(MigrationProductImagesObject imageObject : imagesInfo) {
-			for(File imageUrl : imageObject.getImageUrls()) {
+		for (MigrationProductImagesObject imageObject : imagesInfo) {
+			for (File imageUrl : imageObject.getImageUrls()) {
 				writer.uploadProductImages(imageObject.getDstProductId(), imageUrl);
 			}
 		}
@@ -65,7 +64,7 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 				SimpleProduct product = SimpleProduct.builder().productId(mainProductId).langIso(config.getRootCategoryLanguage()).build();
 				mainProductIds.add(product);
 			}
-		} catch(NotFoundException e) {
+		} catch (NotFoundException e) {
 			throw new IllegalStateException("This exception shouldn't not happen.");
 		}
 		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
@@ -76,25 +75,15 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 		File imagesUrl = new File(config.getProductsImagesDirectory());
 		List<MigrationProductImagesObject> imagesObjects = new ArrayList<>();
 		products.forEach(prod -> {
-			try {
-				Product product = productsCache.getProductById(prod.getProductId());
-				List<String> imageUrls = product.getProductImageUrls();
-				List<File> absoluteImagesPaths = imageUrls.stream().map(url -> new File(imagesUrl, url)).collect(Collectors.toList());
-				MigrationProductImagesObject imagesObj = new MigrationProductImagesObject(prod.getProductId(), absoluteImagesPaths);
+			Product product = productsCache.getProductById(prod.getProductId());
+			List<String> imageUrls = product.getProductImageUrls();
+			List<File> absoluteImagesPaths = imageUrls.stream().map(url -> new File(imagesUrl, url)).collect(Collectors.toList());
+			MigrationProductImagesObject imagesObj = new MigrationProductImagesObject(prod.getProductId(), absoluteImagesPaths);
 
-				Long dstProductId = productIdsMigration.getMappedIdForId(prod.getProductId());
-				imagesObj.setDstProductId(dstProductId);
-				imagesObjects.add(imagesObj);
-			} catch (NotFoundException e) {
-				log.error("Error while loading product with id {}.", prod.getProductId());
-				throw new IllegalStateException("Error while loading products.", e);
-			}
+			Long dstProductId = getProductIdDestinationSystemForProductSku(product.getSku());
+			imagesObj.setDstProductId(dstProductId);
+			imagesObjects.add(imagesObj);
 		});
 		return imagesObjects;
-	}
-
-	protected void initialize() {
-		super.initialize();
-		productIdsMigration.initializeIdMapperFromFile();
 	}
 }

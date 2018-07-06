@@ -6,6 +6,7 @@ import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
 import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +60,15 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
     throw new RuntimeException("Not implemented yet");
   }
 
-  @Override
-  public List<Product> readAllProducts(List<SimpleProduct> products) {
-    log.debug("readAllProducts({})", products);
-    throw new RuntimeException("Not implemented yet");
-  }
+	@Override
+	public List<Product> readAllProducts(List<SimpleProduct> products) {
+		log.debug("readAllProducts({})", products);
+		throw new RuntimeException("Not implemented yet");
+	}
+
+	@Override
+	public List<IProductMetaData> readAllProductsMetaData() {
+		log.debug("readAllProductsMetaData()");
+		throw new RuntimeException("Not implemented yet");
+	}
 }

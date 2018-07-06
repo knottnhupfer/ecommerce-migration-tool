@@ -6,10 +6,7 @@ import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.client.api.SimpleProduct;
 import org.smooth.systems.ec.dummy.DummyConstants;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -99,5 +96,11 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
 		product.setAttributes(attributes);
 		log.info("Created dummy project: {}", product);
 		return product;
+	}
+
+	@Override
+	public List<IProductMetaData> readAllProductsMetaData() {
+		log.debug("readAllProductsMetaData()");
+		throw new RuntimeException("Not implemented yet");
 	}
 }

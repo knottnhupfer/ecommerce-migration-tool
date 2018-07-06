@@ -1,20 +1,21 @@
 package org.smooth.systems.ec.utils.migration.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.SimpleProduct;
-import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
+import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
-import org.smooth.systems.ec.utils.db.component.AbstractProductsForCategoryReader;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.smooth.systems.ec.utils.migration.model.MigrationProductData;
 import org.smooth.systems.ec.utils.migration.util.ProductMigrationUtils;
@@ -46,29 +47,29 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter i
 		log.trace("execute()");
 
 		List<MigrationProductData> productList = generateProductsList("it", "de");
-		log.info("Generated basic product data ({}) for migration successfully", productList.size());
+		logExecutionStep(log, "Generated basic product data ({}) for migration successfully", productList.size());
 
-		initializeProductsCache(productList);
-		log.info("Products cache initialized successfully");
+		initializeProductsCaches(productList);
+		logExecutionStep(log, "Products cache initialized successfully");
 
 		List<Product> mergedProducts = mergeProductsLanguageAttributes(productList);
-		log.info("Successfully merged {} products", mergedProducts.size());
+		logExecutionStep(log, "Successfully merged {} products", mergedProducts.size());
 		log.trace("Merged Products:");
 		for (Product prod : mergedProducts) {
 			log.trace("   " + prod);
 		}
 
 		ProductMigrationUtils.updateCategoryIdWithDestinationSystemCategoryId(config, mergedProducts);
-		log.info("Products category updated");
+		logExecutionStep(log, "Products category updated");
 
 		List<Product> filledUpProducts = fillUpProductsWithMissingLanguage(mergedProducts);
-		log.info("Successfully filled up {} products", filledUpProducts.size());
+		logExecutionStep(log, "Successfully filled up {} products", filledUpProducts.size());
 
 		uploadProductsAndWriteMapping(filledUpProducts);
-		log.info("Successfully migrated all products");
+		logExecutionStep(log, "Successfully migrated all products");
 	}
 
-	private void initializeProductsCache(List<MigrationProductData> productList) {
+	private void initializeProductsCaches(List<MigrationProductData> productList) {
 		List<SimpleProduct> collect = new ArrayList<>();
 		productList.stream().map(data -> data.getAsFullList()).collect(Collectors.toList()).stream().forEach(x -> collect.addAll(x));
 		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), collect);
@@ -131,10 +132,11 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter i
 	private void uploadProductsAndWriteMapping(List<Product> productsToBeWrittern) {
 		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
 		for (Product product : productsToBeWrittern) {
-			Long srcProdId = product.getId();
-			Product writtenProduct = writer.writeProduct(product);
-			productIdsMigration.addMapping(srcProdId, writtenProduct.getId());
+			if(!doesProductWithSkuExists(product.getSku())) {
+				writer.writeProduct(product);
+			} else {
+				log.trace("Product with sku {} already exists on destination system.");
+			}
 		}
-		productIdsMigration.writeMappingToFile("Mapping file which maps product ids from source system to product ids to destination system");
 	}
 }
