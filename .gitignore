@@ -22,3 +22,5 @@ application.log
 data/
 app/logs/
 config/generated/migration/*.properties
+
+*.jar

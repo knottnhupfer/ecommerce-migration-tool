@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.magento19.db.component;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -13,9 +14,12 @@ import org.smooth.systems.ec.magento19.db.model.Magento19ProductVisibility;
 import org.smooth.systems.ec.magento19.db.repository.ProductRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductVisibilityRepository;
 import org.smooth.systems.ec.migration.model.Product;
+import org.smooth.systems.ec.migration.model.ProductPriceStrategies;
+import org.smooth.systems.ec.migration.model.ProductTierPriceStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Pair;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@ActiveProfiles({"test"})
 public class Magento19DbProductUtilsTest {
 
   @Autowired
@@ -92,12 +97,39 @@ public class Magento19DbProductUtilsTest {
   }
 
   @Test
-  public void productRetrieverTest() {
-    Product product = productRetriever.getProduct(3717L, "it");
+  public void retrieveProductWuithMultipleCategoriesTest() {
+    Product product;
+    product = productRetriever.getProduct(2971L, "de");
     log.info("Product: {}", product);
 
-    product = productRetriever.getProduct(78L, "it");
+    assertEquals(2,product.getCategories().size());
+    assertTrue(product.getCategories().contains(new Long(11)));
+    assertTrue(product.getCategories().contains(new Long(17)));
+  }
+
+  @Test
+  public void productRetrieverTest() {
+    Product product;
+//    Product product = productRetriever.getProduct(2232L, "it");
+//    log.info("Product: {}", product);
+
+    product = productRetriever.getProduct(2971L, "de");
     log.info("Product: {}", product);
+
+    product = productRetriever.getProduct(2169L, "de");
+    log.info("Product: {}", product);
+
+    product = productRetriever.getProduct(3717L, "it");
+    log.info("Product: {}", product);
+
+//    product = productRetriever.getProduct(78L, "it");
+//    log.info("Product: {}", product);
+
+    product = productRetriever.getProduct(2233L, "it");
+    log.info("Product: {}", product);
+
+//    product = productRetriever.getProduct(2049L, "de");
+//    log.info("Product: {}", product);
   }
 
   @Test
@@ -109,5 +141,21 @@ public class Magento19DbProductUtilsTest {
     asList = Arrays.asList(Pair.of(2498L, "it"), Pair.of(2785L, "de"));
     mergedProduct = productRetriever.getMergedProduct(asList);
     log.info("Merged product: {}", mergedProduct);
+  }
+
+  @Test
+  public void productTierPriceRetrieverTest() {
+    ProductPriceStrategies priceStrategy = productRetriever.getProductPriceStrategy(3714L);
+    assertEquals(Long.valueOf(3714),priceStrategy.getProductId());
+    assertEquals(3,priceStrategy.getPriceStrategies().size());
+    assertEquals(ProductTierPriceStrategy.DiscountType.PRICE,priceStrategy.getPriceStrategies().get(0).getDiscountType());
+    assertEquals(false,priceStrategy.getPriceStrategies().get(0).isDiscountTaxIncluded());
+    assertEquals(Long.valueOf(2),priceStrategy.getPriceStrategies().get(0).getMinQuantity());
+    assertEquals(Double.valueOf("35.47"),priceStrategy.getPriceStrategies().get(0).getValue());
+
+    assertEquals(Long.valueOf(4),priceStrategy.getPriceStrategies().get(1).getMinQuantity());
+    assertEquals(Double.valueOf("32.78"),priceStrategy.getPriceStrategies().get(1).getValue());
+    assertEquals(Long.valueOf(6),priceStrategy.getPriceStrategies().get(2).getMinQuantity());
+    assertEquals(Double.valueOf("31.89"),priceStrategy.getPriceStrategies().get(2).getValue());
   }
 }

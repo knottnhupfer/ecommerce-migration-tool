@@ -5,10 +5,9 @@ import java.util.List;
 
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
+import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -22,46 +21,56 @@ public class MagentoObjectWriter extends AbstractMagentoConnector implements Mig
 
   @Override
   public void writeUsers(List<User> customers) throws ObjectAlreadyExistsException {
-    throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
   }
 
   @Override
   public void writeUsers(List<User> customers, boolean updateIfExists) throws ObjectAlreadyExistsException {
-    throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
   }
 
   @Override
   public void writeCategories(Category categories) throws ObjectAlreadyExistsException {
-    throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
   }
 
   @Override
   public void writeCategories(Category categories, boolean updateIfExists) throws ObjectAlreadyExistsException {
-    throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
   }
 
   @Override
   public void repairAndValidateData() {
-    throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
   }
 
   @Override
   public ObjectIdMapper getCategoriesObjectIdMapper() {
-    throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
   }
 
   @Override
   public ObjectIdMapper getProductsObjectIdMapper() {
-    throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
   }
 
 	@Override
 	public Product writeProduct(Product product) {
-		throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
 	}
 
 	@Override
 	public void uploadProductImages(Long prodId, File productImage) {
-		throw new RuntimeException("Not implemented yet");
+    throw new NotImplementedException();
 	}
+
+  @Override
+  public Manufacturer writeManufacturer(String manufacturerName) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void writeProductPriceTier(ProductPriceStrategies priceStrategy) {
+    throw new NotImplementedException();
+  }
 }

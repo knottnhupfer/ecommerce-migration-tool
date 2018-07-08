@@ -28,6 +28,7 @@ public class ComponentCache<T extends RegisterableComponent> {
     boolean alreadyRegistered = elements.containsKey(name);
     if (!alreadyRegistered) {
       log.warn("Unable to find element with name: {}", name);
+      log.warn("Valid factories are: {}", elements.keySet());
       throw new NotFoundException("Unable to find element with name: " + name);
     }
     return elements.get(name);

@@ -4,10 +4,9 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import org.smooth.systems.ec.client.api.SimpleProduct;
+import org.smooth.systems.ec.client.api.ProductId;
 import org.springframework.util.Assert;
 
 /**
@@ -17,19 +16,19 @@ import org.springframework.util.Assert;
 @Data
 public class MigrationProductData {
 
-  private SimpleProduct mainProduct;
+  private ProductId mainProduct;
 
-  private List<SimpleProduct> alternativeProducts = new ArrayList<>();
+  private List<ProductId> alternativeProducts = new ArrayList<>();
 
-  public MigrationProductData(SimpleProduct... products) {
+  public MigrationProductData(ProductId... products) {
     Assert.isTrue(products.length >= 1, "there must be at least one product");
-		List<SimpleProduct> productsList = new ArrayList<>(Arrays.asList(products));
+		List<ProductId> productsList = new ArrayList<>(Arrays.asList(products));
     mainProduct = productsList.remove(0);
     alternativeProducts = productsList;
   }
 
-  public List<SimpleProduct> getAsFullList() {
-		List<SimpleProduct> res = new ArrayList<>();
+  public List<ProductId> getAsFullList() {
+		List<ProductId> res = new ArrayList<>();
 		res.add(mainProduct);
     res.addAll(alternativeProducts);
     return res;

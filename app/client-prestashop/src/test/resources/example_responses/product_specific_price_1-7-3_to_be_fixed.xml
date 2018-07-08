@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prestashop>
+    <specific_price>
+        <id>3</id>
+        <id_shop_group>0</id_shop_group>
+        <id_shop xlink:href="http://prestashop.local/api/shops/1">1</id_shop>
+        <id_cart>0</id_cart>
+        <id_product xlink:href="http://prestashop.local/api/products/1021">1021</id_product>
+        <id_product_attribute>0</id_product_attribute>
+        <id_currency>0</id_currency>
+        <id_country>0</id_country>
+        <id_group>0</id_group>
+        <id_customer>0</id_customer>
+        <id_specific_price_rule>0</id_specific_price_rule>
+        <price>-1.000000</price>
+        <from_quantity>6</from_quantity>
+        <reduction>2.500000</reduction>
+        <reduction_tax>0</reduction_tax>
+        <reduction_type>amount</reduction_type>
+        <from>0000-00-00 00:00:00</from>
+        <to>0000-00-00 00:00:00</to>
+    </specific_price>
+</prestashop>

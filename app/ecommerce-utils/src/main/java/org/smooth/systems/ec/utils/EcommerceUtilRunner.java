@@ -17,12 +17,6 @@ import java.util.Map;
 @Component
 public class EcommerceUtilRunner implements ApplicationRunner {
 
-	@Autowired
-	protected MigrationConfiguration config;
-
-	@Autowired
-	protected ToolConfiguration configReader;
-
 	public static final String PARAM_ACTION = "action";
 
 	private Map<String, IActionExecuter> actions = new HashMap<>();
@@ -41,23 +35,23 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		initialize(args);
+	public void run(ApplicationArguments args) {
+		log.info("run({})", args);
 
 		List<String> actionParams = args.getOptionValues(PARAM_ACTION);
 		if(actionParams == null || actionParams.isEmpty()) {
+		  log.warn("");
 			log.error("No action parameter '{}' defined.", PARAM_ACTION);
+			log.error("Valid actions are:");
+			log.error("  [ACTIONS]  -  {}", actions.keySet());
+			log.warn("");
 			System.exit(5);
 		}
 		String actionParam = actionParams.get(0);
-		log.info("Execute action '{}'", actionParam);
+		log.info("Execute action name '{}'", actionParam);
 		IActionExecuter action = actions.get(actionParam);
+		log.info("Execute action '{}'", action.getClass().getSimpleName());
 		action.execute();
 		System.exit(0);
-	}
-
-	private void initialize(ApplicationArguments args) {
-		MigrationConfiguration config = configReader.getMigrationConfiguration(args);
-		this.config.storeConfiguration(config);
 	}
 }

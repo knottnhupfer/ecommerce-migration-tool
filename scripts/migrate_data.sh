@@ -2,13 +2,9 @@
 
 set -e
 
-INFO=" [INFO]"
+TOOL_DIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
+source ${TOOL_DIR}/scripts/env_application.sh
 
-
-APP_DIR=/home/david/workspace_alphaconcept/migration_tool
-DIST_DIR=${APP_DIR}/dist_new
-
-SRC_CONFIG=config/
 
 # application variables
 APP_JAR_NAME=ecommerce-migration-tool-1.0.0-SNAPSHOT.jar
@@ -16,52 +12,24 @@ APP_TARGET_DIR=app/ecommerce-migration-tool/target
 APP_JAR=${DIST_DIR}/${APP_JAR_NAME}
 
 
-function printInfo {
-  echo ""
-	echo "${INFO} $1"
-}
-
-
 # prepare application ============================
-# -----------------------------------------------
-CONFIG_DIR=${DIST_DIR}/configs
+# ------------------------------------------------
 if [ ! -f ${APP_JAR} ]; then
 
   echo ""
-  echo "${INFO} Create directory ${DIST_DIR}"
-  mkdir -p ${DIST_DIR}
-
-  echo "${INFO} Setup application jar file ${APP_JAR}"
-  cp ${APP_TARGET_DIR}/${APP_JAR_NAME} ${DIST_DIR}/
-
-	mkdir -p ${CONFIG_DIR}
-	cp ${SRC_CONFIG}/migration-config.yaml ${CONFIG_DIR}
-  echo "${INFO} Successfully copied and setup application configuration ..."
-  echo ""
+  echo "${ERROR} Unable to find jar ${APP_JAR}"
+  exit 9
 fi
 
 
-
-# migrate products ==============================
-# -----------------------------------------------
-
-
-
-# migrate categories to destination system
-# migrate products to destination system
-# migrate products images to destination system
-
+# migrate categories =============================
+# ------------------------------------------------
 
 case "$1" in
-  merge-categories)
-    printInfo "Merge categories ..."
-		java -jar ${APP_JAR} --merge-category --config=/home/david/workspace_alphaconcept/migration_tool/config/migration-config.yaml
-    ;;
-  merge-products)
-    printInfo "Merge products ..."
-		;;
-  merge-product-images)
-    printInfo "Merge product images ..."
+  migrate-categories)
+    APPLICATION_PARAMS="--merge-category ${CONFIG_FILE_PARAM}"
+    printInfo "Merge categories; run application with params: ${APPLICATION_PARAMS}"
+		${RUN_JAVA} -jar ${APP_JAR} ${APPLICATION_PARAMS}
     ;;
   *)
     echo ""
@@ -70,7 +38,7 @@ case "$1" in
     echo " # ########################################################################"
     echo " # Main command for migration:"
     echo ""
-    echo "   Usage: ${0} merge-categories | merge-products | merge-product-images"
+    echo "   Usage: ${0} migrate-categories"
     echo ""
     ;;
 esac

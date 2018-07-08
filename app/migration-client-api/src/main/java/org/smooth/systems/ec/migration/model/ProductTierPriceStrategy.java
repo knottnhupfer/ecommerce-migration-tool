@@ -22,7 +22,10 @@ public class ProductTierPriceStrategy {
 
   private LocalDateTime to;
 
-  private Double newPrice;
+  /**
+   * Depending on the discountType this can be either the reduced price or the discount percentage
+   */
+  private Double value;
 
   private DiscountType discountType;
 

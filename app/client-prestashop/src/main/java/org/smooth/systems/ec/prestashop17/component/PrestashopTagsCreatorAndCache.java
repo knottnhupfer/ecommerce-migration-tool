@@ -14,6 +14,7 @@ import org.smooth.systems.utils.ErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,12 +50,20 @@ public class PrestashopTagsCreatorAndCache {
 
   private void initializeTagsMapping() {
     log.info("initializeTagsMapping()");
-    List<Tag> tags = client.getTags();
-    tags.forEach(tag -> {
-      String langCode = langCache.getLangCode(tag.getIdLang());
-      String key = getUniqueIdentifier(langCode, tag.getName());
-      tagToIdMapping.put(key, tag.getId());
-    });
+    try {
+      List<Tag> tags = client.getTags();      
+      tags.forEach(tag -> {
+        String langCode = langCache.getLangCode(tag.getIdLang());
+        String key = getUniqueIdentifier(langCode, tag.getName());
+        tagToIdMapping.put(key, tag.getId());
+      });
+    } catch(Exception e) {
+      if(!(e instanceof RestClientException)) {
+        throw new IllegalStateException(e);
+      }
+      log.warn("Unable to read tags. Reason: {}", e.getMessage());
+      log.warn("Cache will be kept empty.");
+    }
   }
 
   private String getUniqueIdentifier(String langCode, String tagName) {

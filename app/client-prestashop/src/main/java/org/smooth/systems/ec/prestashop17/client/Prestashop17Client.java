@@ -9,13 +9,11 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.smooth.systems.ec.prestashop17.Prestashop17ClientConstants;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
-import org.smooth.systems.ec.prestashop17.model.Category;
-import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
+import org.smooth.systems.ec.prestashop17.model.*;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
-import org.smooth.systems.ec.prestashop17.model.Language;
-import org.smooth.systems.ec.prestashop17.model.Product;
-import org.smooth.systems.ec.prestashop17.model.Tag;
 import org.smooth.systems.ec.prestashop17.util.Prestashop17ClientUtil;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -43,6 +41,12 @@ public class Prestashop17Client {
   public static final String URL_PRODUCTS = "/products";
   public static final String URL_PRODUCT = "/products/%d";
 
+  public static final String URL_MANUFACTURERS = "/manufacturers";
+  public static final String URL_MANUFACTURER = "/manufacturers/%d";
+
+  public static final String URL_STOCK_AVAILABLES = "/stock_availables";
+  public static final String URL_STOCK_AVAILABLE = "/stock_availables/%d";
+
   private final String baseUrl;
 
   private final RestTemplate client;
@@ -61,10 +65,6 @@ public class Prestashop17Client {
 
   public List<Language> getLanguages() {
     log.info("getLanguages()");
-
-    ResponseEntity<String> stringResponse = client.getForEntity(baseUrl + "/languages/", String.class);
-    String body = stringResponse.getBody();
-    log.info("Result:\n{}", body);
 
     ResponseEntity<Languages> response = client.getForEntity(baseUrl + "/languages/", Languages.class);
     Languages languages = response.getBody();
@@ -100,12 +100,12 @@ public class Prestashop17Client {
     return 0L;
   }
 
-  public List<CategoryRef> getCategoriesMetaData() {
+  public List<ObjectRefId> getCategoriesMetaData() {
     log.debug("getCategoriesMetaData()");
     ResponseEntity<Categories> response = client.getForEntity(baseUrl + "/categories/", Categories.class);
     Categories categories = response.getBody();
-    log.trace("Retrieved {} category references", categories.getWrapper().getCategoryRefs().size());
-    return categories.getWrapper().getCategoryRefs();
+    log.trace("Retrieved {} category references", categories.getCategories().size());
+    return categories.getCategories();
   }
 
 	public List<ProductRef> getProductsMetaData() {
@@ -119,11 +119,11 @@ public class Prestashop17Client {
 
   public List<Category> getCategories() {
     log.debug("getCategories()");
-    List<CategoryRef> categoryRefs = getCategoriesMetaData();
+    List<ObjectRefId> categoryRefs = getCategoriesMetaData();
     log.trace("Retrieved {} categories", categoryRefs.size());
 
     List<Category> resCategory = new ArrayList<>();
-    for (CategoryRef catRef : categoryRefs) {
+    for (ObjectRefId catRef : categoryRefs) {
       Category category = getCategory(catRef.getId());
       resCategory.add(category);
     }
@@ -191,11 +191,12 @@ public class Prestashop17Client {
 
     printProduct(productWrapper);
 
-    String requestContent = productToString(productWrapper);
+    String requestContent = Prestashop17ClientUtil.convertToUTF8(productToString(productWrapper));
     ResponseEntity<ProductWrapper> response = client.postForEntity(baseUrl + URL_PRODUCTS, requestContent, ProductWrapper.class);
     Product postedProduct = response.getBody().getProduct();
     log.info("Wrote product: {}", postedProduct);
     product.setId(postedProduct.getId());
+    updateProductStock(product);
     return product;
   }
 
@@ -223,6 +224,97 @@ public class Prestashop17Client {
     return result.getBody().getUploadedImage();
   }
 
+  public List<Manufacturer> getAllManufacturers() {
+    log.debug("getAllManufacturers()");
+    ResponseEntity<Manufacturers> response = client.getForEntity(baseUrl + "/manufacturers", Manufacturers.class);
+    Manufacturers manufacturers = response.getBody();
+
+    List<Manufacturer> res = new ArrayList<>();
+    for (ObjectRefId langRef : manufacturers.getManufacturers()) {
+      res.add(getManufacturer(langRef.getId()));
+    }
+    return res;
+  }
+
+  public Manufacturer getManufacturer(Long manufacturerId) {
+    Assert.notNull(manufacturerId, "manufacturerId is null");
+    String url = String.format(URL_MANUFACTURER, manufacturerId);
+    ResponseEntity<ManufacturerWrapper> responseManufacturers = client.getForEntity(baseUrl + url, ManufacturerWrapper.class);
+    return responseManufacturers.getBody().getManufacturer();
+  }
+
+  public Manufacturer writeManufacturer(Manufacturer manufacturer) {
+    Assert.notNull(manufacturer, "manufacturer is null");
+    log.info("writeManufacturer({})", manufacturer);
+
+    manufacturer.setId(null);
+    ManufacturerWrapper manufacturerWrapper = new ManufacturerWrapper();
+    manufacturerWrapper.setManufacturer(manufacturer);
+
+    String requestContent = objectToString(manufacturerWrapper, ManufacturerWrapper.class);
+    ResponseEntity<ManufacturerWrapper> response = client.postForEntity(baseUrl + URL_MANUFACTURERS, requestContent,
+            ManufacturerWrapper.class);
+    Manufacturer postedManufacturer = response.getBody().getManufacturer();
+    log.info("Wrote manufacturer: {}", postedManufacturer);
+    return postedManufacturer;
+  }
+
+  public StockAvailable enableIgnoreStock(Long productId) {
+    Assert.notNull(productId, "productId is null");
+    log.info("enableIgnoreStock({})", productId);
+
+    StockAvailable stockAvailable = new StockAvailable();
+    stockAvailable.setId(productId);
+    stockAvailable.setProductId(productId);
+    stockAvailable.setDependsOnStock(0L);
+    stockAvailable.setOutOfStock(1L);
+    StockAvailableWrapper wrapper = new StockAvailableWrapper();
+    wrapper.setStockAvailable(stockAvailable);
+
+    String requestContent = objectToString(wrapper, StockAvailableWrapper.class);
+    client.put(baseUrl + URL_STOCK_AVAILABLES, requestContent);
+    log.info("Update stockAvailable: {}", stockAvailable);
+    return stockAvailable;
+  }
+
+
+  public List<ProductSpecificPrice> readAllProductSpecificPrices() {
+    log.debug("readAllProductSpecificPrices()");
+    ResponseEntity<ProductSpecificPrices> response = client.getForEntity(baseUrl + Prestashop17ClientConstants.URL_SPECIFIC_PRICES, ProductSpecificPrices.class);
+    ProductSpecificPrices specificPrices = response.getBody();
+
+    List<ProductSpecificPrice> res = new ArrayList<>();
+    for (ObjectRefId langRef : specificPrices.getSpecificPrices()) {
+      res.add(readProductSpecificPrice(langRef.getId()));
+    }
+    return res;
+  }
+
+  public ProductSpecificPrice readProductSpecificPrice(Long specificPriceId) {
+    Assert.notNull(specificPriceId, "specificPriceId is null");
+    ResponseEntity<ProductSpecificPriceWrapper> response = client.getForEntity(baseUrl + Prestashop17ClientConstants.getProductSpecificPriceUrl(specificPriceId), ProductSpecificPriceWrapper.class);
+    ProductSpecificPriceWrapper specificPriceWrapper = response.getBody();
+    Assert.notNull(specificPriceWrapper.getSpecificPrice(), String.format("specificPrice for id %d not found", specificPriceId));
+    return specificPriceWrapper.getSpecificPrice();
+  }
+
+  public ProductSpecificPrice writeProductSpecificPrice(ProductSpecificPrice specificPrice) {
+    Assert.notNull(specificPrice, "specificPrice is null");
+
+    ProductSpecificPriceWrapper specificPriceWrapper = new ProductSpecificPriceWrapper();
+    specificPriceWrapper.setSpecificPrice(specificPrice);
+
+    ResponseEntity<ProductSpecificPriceWrapper> response = client.postForEntity(baseUrl + Prestashop17ClientConstants.URL_SPECIFIC_PRICES, specificPriceWrapper,
+            ProductSpecificPriceWrapper.class);
+    log.info("Wrote product specific price: {}", response.getBody().getSpecificPrice());
+    return response.getBody().getSpecificPrice();
+  }
+
+  private void updateProductStock(Product product) {
+    // FIXME read product amount and set it if not null
+    enableIgnoreStock(product.getId());
+  }
+
   private <T> String objectToString(T objectWrapper, Class<T> clazz) {
     try {
       JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
@@ -236,18 +328,6 @@ public class Prestashop17Client {
       throw new RuntimeException(e);
     }
   }
-
-  // private <T> void printProduct(T objectWrapper, Class<T> clazz) {
-  // try {
-  // JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
-  // Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-  // jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-  // jaxbMarshaller.marshal(objectWrapper, System.out);
-  // } catch (Exception e) {
-  // log.error("Error while marshalling class: {}",
-  // ProductWrapper.class.getName(), e);
-  // }
-  // }
 
   public void printProduct(ProductWrapper prodWrapper) {
     try {

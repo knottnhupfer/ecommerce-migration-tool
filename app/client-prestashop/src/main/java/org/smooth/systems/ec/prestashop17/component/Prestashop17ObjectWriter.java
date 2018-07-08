@@ -9,13 +9,13 @@ import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
-import org.smooth.systems.ec.migration.model.AbstractCategoryWriter;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
 import org.smooth.systems.ec.prestashop17.mapper.CategoryMapper;
+import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
+import org.smooth.systems.ec.prestashop17.model.ProductConvertUtil;
+import org.smooth.systems.ec.prestashop17.model.ProductSpecificPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -27,12 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @ConditionalOnProperty(prefix = Prestashop17Constants.PRESTASHOP17_CONFIG_PREFIX, name = MigrationClientConstants.MIGRATION_CLIENT_BASE_URL)
 public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector implements MigrationSystemWriter {
 
-  public static final Long PRESTASHOP_ROOT_CATEGORY_ID = 2L;
-
-  private final Prestashop17Client client;
-
-  private final MigrationConfiguration config;
-
   private final PrestashopLanguageTranslatorCache languagesCache;
 
   private CategoryWriter categoryWriter;
@@ -40,8 +34,7 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   @Autowired
   public Prestashop17ObjectWriter(MigrationConfiguration config, PrestashopLanguageTranslatorCache languagesCache,
       Prestashop17Client client) {
-    this.config = config;
-    this.client = client;
+    super(config, client);
     this.languagesCache = languagesCache;
   }
 
@@ -90,23 +83,50 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
   @Override
   public ObjectIdMapper getProductsObjectIdMapper() {
-    // TODO Auto-generated method stub
-    return null;
+    throw new NotImplementedException();
   }
 
 	@Override
 	public Product writeProduct(Product product) {
-		throw new NotImplementedException();
+    log.info("writeProduct({})", product);
+    org.smooth.systems.ec.prestashop17.model.Product prod = ProductConvertUtil.convertProduct(languagesCache, product);
+    prod = client.writeProduct(prod);
+    product.setId(prod.getId());
+    try {
+      Thread.sleep(200L);
+    } catch (InterruptedException e) {
+      log.error("Error while waiting for 200ms ...");
+    }
+    return product;
 	}
 
 	@Override
 	public void uploadProductImages(Long prodId, File productImage) {
-		throw new NotImplementedException();
+    ImageUploadResponse.UploadedImage image = client.uploadProductImage(prodId, productImage);
+    log.info("Successfully uploaded product image.");
 	}
 
-	@Override
-  public void repairAndValidateData() {
+  @Override
+  public Manufacturer writeManufacturer(String manufacturerName) {
+    log.info("writeBrand({})", manufacturerName);
+    org.smooth.systems.ec.prestashop17.model.Manufacturer manufacturer = new org.smooth.systems.ec.prestashop17.model.Manufacturer();
+    manufacturer.setId(null);
+    manufacturer.setName(manufacturerName);
+    manufacturer = client.writeManufacturer(manufacturer);
+    return manufacturer.convert();
+  }
 
+  @Override
+  public void writeProductPriceTier(ProductPriceStrategies priceStrategies) {
+    log.debug("writeProductPriceTier({})", priceStrategies);
+    for(ProductTierPriceStrategy priceStrategy : priceStrategies.getPriceStrategies()) {
+      ProductSpecificPrice specificPrice = ProductConvertUtil.convertProductPriceStrategy(priceStrategies.getProductId(), priceStrategy);
+      client.writeProductSpecificPrice(specificPrice);
+    }
+  }
+
+  @Override
+  public void repairAndValidateData() {
     // TODO check all category data
   }
 

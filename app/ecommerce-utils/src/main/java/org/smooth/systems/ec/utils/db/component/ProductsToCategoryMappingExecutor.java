@@ -31,7 +31,7 @@ public class ProductsToCategoryMappingExecutor implements IActionExecuter {
 
   @Override
   public String getActionName() {
-    return "products-mapping";
+    return "products-mapping-old";
   }
 
   @Override

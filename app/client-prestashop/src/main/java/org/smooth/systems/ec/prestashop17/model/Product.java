@@ -1,14 +1,14 @@
 package org.smooth.systems.ec.prestashop17.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-
-import org.springframework.util.Assert;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Data;
+import java.util.List;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -24,6 +24,9 @@ public class Product {
   @XmlElement(name = "low_stock_alert")
   private Long lowStockAlert = 0L;
 
+  @XmlElement(name = "additional_delivery_times")
+  private Long deliveryType = 1L;
+
   @XmlElement(name = "associations")
   private ProductAssociations associations = new ProductAssociations();
 
@@ -36,7 +39,9 @@ public class Product {
   @XmlElement(name = "id_manufacturer")
   private Long manufacturerId;
 
-  // netto price
+  @XmlElement(name = "id_category_default")
+  private Long defaultCategoryId = null;
+
   @XmlElement(name = "price")
   private Double price;
 
@@ -66,22 +71,34 @@ public class Product {
 
   @XmlElement(name = "indexed")
   private Long indexed = 1L;
-  
+
   @XmlElement(name = "show_price")
   private Long showPrice = 1L;
 
   @XmlElement(name = "id_tax_rules_group")
   private Long taxRuleGroup = 1L;
 
-  // TODO
-  // http://prestashop.local/api/specific_prices
-  // http://prestashop.local/api/specific_prices/1
+  @XmlElement(name = "redirect_type")
+  private String redirectType = "404";
+
+  @XmlElement(name = "available_for_order")
+  private Long availableForOrder = 1L;
+
+  @JsonIgnore
+  public void addCategoryIds(List<Long> categoryIds) {
+    if(defaultCategoryId == null && !ObjectUtils.isEmpty(categoryIds)) {
+      defaultCategoryId = categoryIds.get(0);
+    }
+    categoryIds.forEach(categoryId -> {
+      addCategoryId(categoryId);
+    });
+  }
 
   @JsonIgnore
   public void addCategoryId(Long categoryId) {
     Assert.notNull(categoryId, "categoryId is null");
     ProductCategory productCategory = new ProductCategory(categoryId);
-    if(!associations.getCategories().contains(productCategory)) {      
+    if (!associations.getCategories().contains(productCategory)) {
       associations.getCategories().add(productCategory);
     }
   }
@@ -90,7 +107,7 @@ public class Product {
   public void addTagId(Long tagId) {
     Assert.notNull(tagId, "tagId is null");
     ProductTag productTag = new ProductTag(tagId);
-    if(!associations.getTags().contains(productTag)) {      
+    if (!associations.getTags().contains(productTag)) {
       associations.getTags().add(productTag);
     }
   }

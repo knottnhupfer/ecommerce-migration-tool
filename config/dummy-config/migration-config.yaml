@@ -36,7 +36,7 @@ category-ids-skipping:
 # maps root category ids of the source system to category ids on the destination system
 #
 # sourceCategoryId = destinationCategoryId
-generated-created-categories-mapping-file: D:\workspace_alphaconcept\ecommerce-migration-tool\config\dummy-config\dummy-generated-created-categories-mapping.properties
+generated-created-categories-mapping-file: /home/david/workspace_alphaconcept/migration_tool/config/dummy-config/dummy-generated-created-categories-mapping.properties
 
 
 
@@ -48,7 +48,7 @@ generated-created-categories-mapping-file: D:\workspace_alphaconcept\ecommerce-m
 ## ============================================================================
 
 # manual created brand mapping file
-products-brand-mapping: D:\workspace_alphaconcept\ecommerce-migration-tool\config\dummy-config\dummy-products-brands-mapping.properties
+products-brand-mapping: /home/david/workspace_alphaconcept/migration_tool/config/dummy-config/dummy-products-brands-mapping.properties
 
 # TODO: currently not used ...
 # manual created product mapping file which maps alternative languages product id to root product id
@@ -59,7 +59,7 @@ products-brand-mapping: D:\workspace_alphaconcept\ecommerce-migration-tool\confi
 # generated-products-root-ids-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/generated/generated-products-root-ids-merging.properties
 
 # generated mapping file which maps alternative languages source system product ids to a root category id of the source system
-generated-products-merging-file: D:\workspace_alphaconcept\ecommerce-migration-tool\config\dummy-config\dummy-generated-products-merging.properties
+generated-products-merging-file: /home/david/workspace_alphaconcept/migration_tool/config/dummy-config/dummy-generated-products-merging.properties
 
 product-ids-skipping:
   - 926     # skip IT SKU == null
@@ -78,7 +78,7 @@ product-ids-skipping:
 
 # generated mapping file which maps alternative languages source system product ids to a root category id of the source system
 # main product id source system = product id destination system
-generated-products-migration-file: D:\workspace_alphaconcept\ecommerce-migration-tool\config\dummy-config\dummy-generated-products-migration.properties
+generated-products-migration-file: /home/david/workspace_alphaconcept/migration_tool/config/dummy-config/dummy-generated-products-migration.properties
 
 # absolute path to the images files
-products-images-directory: D:\alpha-concept\images-url
+products-images-directory: /home/david/workspace_alphaconcept/migration_tool/config/dummy-config/images/

@@ -1,21 +1,20 @@
 package org.smooth.systems.ec.magento19.db.component;
 
 import org.smooth.systems.ec.client.api.SimpleCategory;
-import org.smooth.systems.ec.client.api.SimpleProduct;
+import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
-import org.smooth.systems.ec.migration.model.Category;
-import org.smooth.systems.ec.migration.model.IProductMetaData;
-import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.User;
+import org.smooth.systems.ec.migration.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions> on
@@ -28,6 +27,9 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 
   @Autowired
   private Magento19DbCategoriesReader categoriesReader;
+
+  @Autowired
+  private Magento19DbProductsReader productsReader;
 
   @Override
   public String getName() {
@@ -56,15 +58,46 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 
   @Override
   public List<Product> readAllProductsForCategories(List<SimpleCategory> categories) {
-    log.debug("readAllProductsForCategories({})", categories);
+    log.info("readAllProductsForCategories({})", categories);
     throw new RuntimeException("Not implemented yet");
   }
 
-	@Override
-	public List<Product> readAllProducts(List<SimpleProduct> products) {
-		log.debug("readAllProducts({})", products);
-		throw new RuntimeException("Not implemented yet");
-	}
+  @Override
+  public List<Product> readAllProducts(List<ProductId> products) {
+    log.debug("readAllProducts({})", products);
+    return products.stream().map(this::readProduct).collect(Collectors.toList());
+  }
+
+  private Product readProduct(ProductId prod) {
+    log.info("readProduct({})", prod);
+    try {
+      return productsReader.getProduct(prod.getProductId(), prod.getLangIso());
+    } catch(Exception e) {
+      log.error("Unable to load product: {}", prod, e);
+      throw new IllegalStateException(e.getMessage());
+    }
+  }
+
+  @Override
+  public List<Manufacturer> readAllManufacturers() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ProductId> products) {
+    log.debug("readProductsPriceStrategies({})", products);
+    List<ProductPriceStrategies> strategies = new ArrayList<>();
+    for (ProductId product : products) {
+      strategies.add(readProductPriceStrategies(product.getProductId()));
+    }
+    return strategies;
+  }
+
+  @Override
+  public ProductPriceStrategies readProductPriceStrategies(Long productId) {
+    log.debug("readProductPriceStrategies({})", productId);
+    return productsReader.getProductPriceStrategy(productId);
+  }
 
 	@Override
 	public List<IProductMetaData> readAllProductsMetaData() {

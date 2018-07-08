@@ -3,6 +3,7 @@ package org.smooth.systems.ec.magento19.db.component;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.smooth.systems.ec.client.api.SimpleCategory;
 import org.smooth.systems.ec.magento19.db.model.Magento19CategoryText;
 import org.smooth.systems.ec.magento19.db.model.Magento19CategoryVarchar;
 import org.smooth.systems.ec.magento19.db.repository.CategoryTextRepository;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -60,4 +62,22 @@ public class Magento19DbCategoriesReaderTest {
 		log.info("Magento19CategoryText: {}", attr1);
 		log.info("Magento19CategoryVarchar: {}", attr2);
 	}
+
+	 @Test
+	  public void retrieveCategoryForIdTest() {
+	   List<SimpleCategory> categories = Arrays.asList(new SimpleCategory(127L, "it"));
+	   List<Category> retrievedCategories = categoriesReader.readAllCategories(categories);
+	   log.info("Category: {}", retrievedCategories.get(0).extendedDescription());
+	   log.info("");
+
+     categories = Arrays.asList(new SimpleCategory(17L, "it"));
+     retrievedCategories = categoriesReader.readAllCategories(categories);
+     log.info("Category: {}", retrievedCategories.get(0).extendedDescription());
+     log.info("");
+
+     categories = Arrays.asList(new SimpleCategory(11L, "it"));
+     retrievedCategories = categoriesReader.readAllCategories(categories);
+     log.info("Category: {}", retrievedCategories.get(0).extendedDescription());
+     log.info("");
+	  }
 }

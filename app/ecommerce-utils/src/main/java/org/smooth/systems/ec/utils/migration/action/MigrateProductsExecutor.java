@@ -1,44 +1,34 @@
 package org.smooth.systems.ec.utils.migration.action;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
-import org.smooth.systems.ec.client.api.SimpleProduct;
-import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
-import org.smooth.systems.ec.configuration.MigrationConfiguration;
+import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
-import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
-import org.smooth.systems.ec.utils.db.api.IActionExecuter;
+import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.smooth.systems.ec.utils.migration.model.MigrationProductData;
 import org.smooth.systems.ec.utils.migration.util.ProductMigrationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
- * Created by David Monichi <david.monichi@smooth-systems.solutions> on
- * 29.05.18.
+ * Created by David Monichi <david.monichi@smooth-systems.solutions>
  */
 @Slf4j
 @Component
-public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter implements IActionExecuter {
-
-	@Autowired
-	private MigrationSystemReaderAndWriterFactory readerWriterFactory;
+public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 
 	@Override
 	public String getActionName() {
-		return "products-migrate";
+		return EcommerceUtilsActions.PRODUCTS_MIGRATION;
 	}
 
 	@Override
@@ -49,7 +39,7 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter i
 		List<MigrationProductData> productList = generateProductsList("it", "de");
 		logExecutionStep(log, "Generated basic product data ({}) for migration successfully", productList.size());
 
-		initializeProductsCaches(productList);
+		initializeProductsCache(productList);
 		logExecutionStep(log, "Products cache initialized successfully");
 
 		List<Product> mergedProducts = mergeProductsLanguageAttributes(productList);
@@ -62,15 +52,17 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter i
 		ProductMigrationUtils.updateCategoryIdWithDestinationSystemCategoryId(config, mergedProducts);
 		logExecutionStep(log, "Products category updated");
 
-		List<Product> filledUpProducts = fillUpProductsWithMissingLanguage(mergedProducts);
-		logExecutionStep(log, "Successfully filled up {} products", filledUpProducts.size());
+		List<Product> updatedProducts = processNotMergedProducts(mergedProducts);
 
-		uploadProductsAndWriteMapping(filledUpProducts);
+		updatedProducts = fillUpProductsWithMissingLanguage(updatedProducts);
+		logExecutionStep(log, "Successfully filled up {} products", updatedProducts.size());
+
+		uploadProductsAndWriteMapping(updatedProducts);
 		logExecutionStep(log, "Successfully migrated all products");
 	}
 
-	private void initializeProductsCaches(List<MigrationProductData> productList) {
-		List<SimpleProduct> collect = new ArrayList<>();
+	private void initializeProductsCache(List<MigrationProductData> productList) {
+		List<ProductId> collect = new ArrayList<>();
 		productList.stream().map(data -> data.getAsFullList()).collect(Collectors.toList()).stream().forEach(x -> collect.addAll(x));
 		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), collect);
 	}
@@ -81,9 +73,9 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter i
 		Set<Long> alternativeProductIds = productIdsSourceSystem.keySet();
 		try {
 			for (Long prodId : alternativeProductIds) {
-				SimpleProduct mainProduct = SimpleProduct.builder().productId(productIdsSourceSystem.getMappedIdForId(prodId)).langIso(mainLangCode)
+				ProductId mainProduct = ProductId.builder().productId(productIdsSourceSystem.getMappedIdForId(prodId)).langIso(mainLangCode)
 					.build();
-				SimpleProduct altProduct = SimpleProduct.builder().productId(prodId).langIso(alternativeLangCode).build();
+				ProductId altProduct = ProductId.builder().productId(prodId).langIso(alternativeLangCode).build();
 				products.add(new MigrationProductData(mainProduct, altProduct));
 			}
 		} catch (NotFoundException e) {
@@ -103,29 +95,35 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter i
 	}
 
 	private Product populateProduct(MigrationProductData productData) {
-		SimpleProduct mainProdInfo = productData.getMainProduct();
+		ProductId mainProdInfo = productData.getMainProduct();
 		Product product = productsCache.getProductById(mainProdInfo.getProductId());
 		Assert.isTrue(product.getAttributes().size() == 1 && mainProdInfo.getLangIso().equals(product.getAttributes().get(0).getLangCode()),
 			"invalid attributes configuration");
 
-		for (SimpleProduct altProductInfo : productData.getAlternativeProducts()) {
+		for (ProductId altProductInfo : productData.getAlternativeProducts()) {
 			Assert.isTrue(!product.getAttributes().stream().filter(attr -> attr.getLangCode().equals(altProductInfo.getLangIso())).findAny().isPresent(),
 				String.format("Duplicated attribute language for language: %s", altProductInfo.getLangIso()));
 			Product altProduct = productsCache.getProductById(altProductInfo.getProductId());
 			Assert.isTrue(altProduct.getAttributes().size() == 1, "More then a single language in alternative product.");
 			ProductTranslateableAttributes attr = altProduct.getAttributes().get(0);
-			Assert.isTrue(altProductInfo.getLangIso().equals(attr.getLangCode()), "Languages do not match with each other.");
+			Assert.isTrue(altProductInfo.getLangIso().equals(attr.getLangCode()), String.format("Languages do not match with each other. Product data is: %s", productData));
 			product.getAttributes().add(attr);
 		}
+		product.getAttributes().forEach(this::replaceNewlinesAttributesValues);
 		return product;
 	}
 
 	private List<Product> fillUpProductsWithMissingLanguage(List<Product> productList) {
 		// TODO: check if all products are filled with 2 languages
+		log.info("Successfully filled up {} products", productList.size());
+		return productList;
+	}
+
+	private List<Product> processNotMergedProducts(List<Product> productList) {
 		// TODO: what to do with only Italian products, not in list
 		// TODO: what to do with only German products, not in list and filtered earlier
-		// throw new NotImplementedException();
 		log.warn("Not mapped italian and german products are currently skipped.");
+//		log.info("Successfully processed up {} products", productList.size());
 		return productList;
 	}
 
@@ -138,5 +136,15 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter i
 				log.trace("Product with sku {} already exists on destination system.");
 			}
 		}
+	}
+
+	private void replaceNewlinesAttributesValues(ProductTranslateableAttributes attr) {
+		attr.setDescription(replaceNewlines(attr.getDescription()));
+		attr.setShortDescription(replaceNewlines(attr.getShortDescription()));
+	}
+
+	private String replaceNewlines(String value) {
+		String replacedValue = value.replaceAll("\r\n", "<br>");
+		return replacedValue.replaceAll("\n", "<br>");
 	}
 }
