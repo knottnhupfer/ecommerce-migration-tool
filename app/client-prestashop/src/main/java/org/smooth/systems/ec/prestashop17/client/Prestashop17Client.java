@@ -108,6 +108,15 @@ public class Prestashop17Client {
     return categories.getCategories();
   }
 
+	public List<ProductRef> getProductsMetaData() {
+		log.debug("getProductsMetaData()");
+		ResponseEntity<Products> response = client.getForEntity(baseUrl + "/products/", Products.class);
+		Assert.notNull(response.getBody(), "Response body is null");
+		Products products = response.getBody();
+		log.trace("Retrieved {} category references", products.getWrapper().getProductRefs().size());
+		return products.getWrapper().getProductRefs();
+	}
+
   public List<Category> getCategories() {
     log.debug("getCategories()");
     List<ObjectRefId> categoryRefs = getCategoriesMetaData();
@@ -131,6 +140,20 @@ public class Prestashop17Client {
   public void removeCategory(Long categoryId) {
     client.delete(baseUrl + "/categories/" + categoryId);
   }
+
+	public List<Product> getAllProducts() {
+		log.debug("getAllProducts()");
+		List<ProductRef> productRefs = getProductsMetaData();
+		log.trace("Retrieved {} products", productRefs.size());
+
+		List<Product> resProducts = new ArrayList<>();
+		for (ProductRef prodRef : productRefs) {
+			Product product = getProduct(prodRef.getId());
+			resProducts.add(product);
+		}
+		log.trace("Retrieved {} products", resProducts.size());
+		return resProducts;
+	}
 
   public Product getProduct(Long productId) {
     String url = baseUrl + String.format(URL_PRODUCT, productId);

@@ -98,4 +98,10 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
     log.debug("readProductPriceStrategies({})", productId);
     return productsReader.getProductPriceStrategy(productId);
   }
+
+	@Override
+	public List<IProductMetaData> readAllProductsMetaData() {
+		log.debug("readAllProductsMetaData()");
+		throw new RuntimeException("Not implemented yet");
+	}
 }

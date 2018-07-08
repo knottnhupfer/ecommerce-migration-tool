@@ -97,4 +97,10 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
     log.info("readProductPriceStrategies({})", productId);
     throw new NotImplementedException();
   }
+
+	@Override
+	public List<IProductMetaData> readAllProductsMetaData() {
+		log.debug("readAllProductsMetaData()");
+		throw new RuntimeException("Not implemented yet");
+	}
 }

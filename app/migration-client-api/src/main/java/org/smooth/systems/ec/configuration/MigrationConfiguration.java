@@ -56,9 +56,6 @@ public class MigrationConfiguration {
   @JsonProperty("product-ids-skipping")
   private List<Long> productIdsSkipping;
 
-  @JsonProperty("generated-created-products-mapping-file")
-  private String generatedCreatedProductsMigrationFile;
-
   @JsonProperty("products-images-directory")
   private String productsImagesDirectory;
 
@@ -80,26 +77,4 @@ public class MigrationConfiguration {
     }
     return categoryIdsSkipping;
   }
-
-//  public void storeConfiguration(MigrationConfiguration config) {
-//    sourceSystemName = config.sourceSystemName;
-//    destinationSystemName = config.destinationSystemName;
-//    rootCategoryId = config.rootCategoryId;
-//    rootCategoryLanguage = config.rootCategoryLanguage;
-//    additionalCategories = config.additionalCategories;
-//
-//    categoriesMergingFile = config.categoriesMergingFile;
-//    generatedCreatedCategoriesMappingFile = config.generatedCreatedCategoriesMappingFile;
-//    categoryIdsMergingIgnoreList = config.categoryIdsMergingIgnoreList != null ? config.categoryIdsMergingIgnoreList
-//            : Collections.emptyList();
-//    categoryIdsSkipping = config.categoryIdsSkipping != null ? config.categoryIdsSkipping : Collections.emptyList();
-//
-//    productsImagesDirectory = config.productsImagesDirectory;
-//    productsMergingFile = config.productsMergingFile;
-//    generatedProductsMergingFile = config.generatedProductsMergingFile;
-//    productIdsSkipping = config.productIdsSkipping != null ? config.productIdsSkipping : Collections.emptyList();
-//
-//    generatedProductsBrandMappingFile = config.generatedProductsBrandMappingFile;
-//    generatedCreatedProductsMigrationFile = config.generatedCreatedProductsMigrationFile;
-//  }
 }

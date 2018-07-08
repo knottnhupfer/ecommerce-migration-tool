@@ -20,8 +20,7 @@ import org.springframework.util.Assert;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Created by David Monichi <david.monichi@smooth-systems.solutions> on
- * 29.05.18.
+ * Created by David Monichi <david.monichi@smooth-systems.solutions>
  */
 @Slf4j
 @Component
@@ -38,27 +37,28 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 		log.trace("execute()");
 
 		List<MigrationProductData> productList = generateProductsList("it", "de");
-		log.info("Generated basic product data ({}) for migration successfully", productList.size());
+		logExecutionStep(log, "Generated basic product data ({}) for migration successfully", productList.size());
 
 		initializeProductsCache(productList);
-		log.info("Products cache initialized successfully");
+		logExecutionStep(log, "Products cache initialized successfully");
 
 		List<Product> mergedProducts = mergeProductsLanguageAttributes(productList);
-		log.info("Successfully merged {} products", mergedProducts.size());
+		logExecutionStep(log, "Successfully merged {} products", mergedProducts.size());
 		log.trace("Merged Products:");
 		for (Product prod : mergedProducts) {
 			log.trace("   " + prod);
 		}
 
 		ProductMigrationUtils.updateCategoryIdWithDestinationSystemCategoryId(config, mergedProducts);
-		log.info("Products category updated");
+		logExecutionStep(log, "Products category updated");
 
 		List<Product> updatedProducts = processNotMergedProducts(mergedProducts);
 
 		updatedProducts = fillUpProductsWithMissingLanguage(updatedProducts);
+		logExecutionStep(log, "Successfully filled up {} products", updatedProducts.size());
 
 		uploadProductsAndWriteMapping(updatedProducts);
-		log.info("Successfully migrated all products");
+		logExecutionStep(log, "Successfully migrated all products");
 	}
 
 	private void initializeProductsCache(List<MigrationProductData> productList) {
@@ -130,11 +130,12 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 	private void uploadProductsAndWriteMapping(List<Product> productsToBeWrittern) {
 		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
 		for (Product product : productsToBeWrittern) {
-			Long srcProdId = product.getId();
-			Product writtenProduct = writer.writeProduct(product);
-			productIdsMigration.addMapping(srcProdId, writtenProduct.getId());
+			if(!doesProductWithSkuExists(product.getSku())) {
+				writer.writeProduct(product);
+			} else {
+				log.trace("Product with sku {} already exists on destination system.");
+			}
 		}
-		productIdsMigration.writeMappingToFile("Mapping file which maps product ids from source system to product ids to destination system");
 	}
 
 	private void replaceNewlinesAttributesValues(ProductTranslateableAttributes attr) {
@@ -144,6 +145,6 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 
 	private String replaceNewlines(String value) {
 		String replacedValue = value.replaceAll("\r\n", "<br>");
-		return replacedValue = value.replaceAll("\n", "<br>");
+		return replacedValue.replaceAll("\n", "<br>");
 	}
 }

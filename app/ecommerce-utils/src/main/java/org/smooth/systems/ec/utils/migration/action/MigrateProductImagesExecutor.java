@@ -17,8 +17,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Created by David Monichi <david.monichi@smooth-systems.solutions> on
- * 29.05.18.
+ * Created by David Monichi <david.monichi@smooth-systems.solutions>
  */
 @Slf4j
 @Component
@@ -45,25 +44,16 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 
 	private void uploadProductImages(List<MigrationProductImagesObject> imagesInfo) {
 		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
-		for(MigrationProductImagesObject imageObject : imagesInfo) {
+		for (MigrationProductImagesObject imageObject : imagesInfo) {
 			log.info("Upload product images: {}", imageObject);
-			for(File imageUrl : imageObject.getImageUrls()) {
+			for (File imageUrl : imageObject.getImageUrls()) {
 				writer.uploadProductImages(imageObject.getDstProductId(), imageUrl);
 			}
 		}
 	}
 
 	private List<ProductId> initializeProductCacheAndRetrieveList() {
-		List<ProductId> mainProductIds = new ArrayList<>();
-		try {
-			for (Long prodId : productIdsSourceSystem.keySet()) {
-				Long mainProductId = productIdsSourceSystem.getMappedIdForId(prodId);
-				ProductId product = ProductId.builder().productId(mainProductId).langIso(config.getRootCategoryLanguage()).build();
-				mainProductIds.add(product);
-			}
-		} catch(NotFoundException e) {
-			throw new IllegalStateException("This exception shouldn't not happen.");
-		}
+		List<ProductId> mainProductIds = retrieveMainProductIds();
 		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
 		return mainProductIds;
 	}
@@ -71,26 +61,22 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 	private List<MigrationProductImagesObject> generateProductImagesObjects(List<ProductId> products) {
 		File imagesUrl = new File(config.getProductsImagesDirectory());
 		List<MigrationProductImagesObject> imagesObjects = new ArrayList<>();
-		products.forEach(prod -> {
-			try {
-				Product product = productsCache.getProductById(prod.getProductId());
-				List<String> imageUrls = product.getProductImageUrls();
-				List<File> absoluteImagesPaths = imageUrls.stream().map(url -> new File(imagesUrl, url)).collect(Collectors.toList());
-				MigrationProductImagesObject imagesObj = new MigrationProductImagesObject(prod.getProductId(), absoluteImagesPaths);
 
-				Long dstProductId = productIdsMigration.getMappedIdForId(prod.getProductId());
-				imagesObj.setDstProductId(dstProductId);
-				imagesObjects.add(imagesObj);
-			} catch (NotFoundException e) {
-				log.error("Error while loading product with id {}.", prod.getProductId());
-				throw new IllegalStateException("Error while loading products.", e);
+		for(ProductId prod : products) {
+			Product product = productsCache.getProductById(prod.getProductId());
+			Long dstProductId = getProductIdDestinationSystemForProductSku(product.getSku());
+			if(dstProductId == null) {
+				log.warn("Skip product images for product with sku '{}', does not exists on the destination system.", product.getSku());
+				continue;
 			}
-		});
-		return imagesObjects;
-	}
 
-	protected void initialize() {
-		super.initialize();
-		productIdsMigration.initializeIdMapperFromFile();
+			List<String> imageUrls = product.getProductImageUrls();
+			List<File> absoluteImagesPaths = imageUrls.stream().map(url -> new File(imagesUrl, url)).collect(Collectors.toList());
+			MigrationProductImagesObject imagesObj = new MigrationProductImagesObject(prod.getProductId(), absoluteImagesPaths);
+
+			imagesObj.setDstProductId(dstProductId);
+			imagesObjects.add(imagesObj);
+		}
+		return imagesObjects;
 	}
 }
