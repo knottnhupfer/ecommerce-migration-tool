@@ -56,6 +56,7 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 
     reader = readerWriterFactory.getMigrationReader();
     writer = readerWriterFactory.getMigrationWriter();
+
 		populateDestinationSystemProductCache();
   }
 
@@ -75,6 +76,7 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 	}
 
 	private void populateDestinationSystemProductCache() {
+    log.info("Read existing products from destination system ...");
 		try {
 			existingProductsDestinationSystem = new HashMap<>();
 			MigrationSystemReader reader = readerWriterFactory.getSystemReaderForType(config.getDestinationSystemName());
@@ -99,6 +101,7 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
     } catch (NotFoundException e) {
       throw new IllegalStateException("This exception shouldn't not happen.");
     }
+    log.info("Retrieved {} main product ids for processing.", mainProductIds.size());
     return mainProductIds;
   }
 }

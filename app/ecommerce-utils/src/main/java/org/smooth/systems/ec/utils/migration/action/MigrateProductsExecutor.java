@@ -128,14 +128,18 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 	}
 
 	private void uploadProductsAndWriteMapping(List<Product> productsToBeWrittern) {
+		long skippedProducts = 0;
 		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
 		for (Product product : productsToBeWrittern) {
 			if(!doesProductWithSkuExists(product.getSku())) {
 				writer.writeProduct(product);
 			} else {
-				log.trace("Product with sku {} already exists on destination system.");
+				log.debug("Product with sku {} already exists on destination system.", product.getSku());
+				skippedProducts++;
 			}
 		}
+		log.info("Migrate {} products: {} products created and {} products skipped.", productsToBeWrittern.size(),
+						productsToBeWrittern.size() - skippedProducts, skippedProducts);
 	}
 
 	private void replaceNewlinesAttributesValues(ProductTranslateableAttributes attr) {

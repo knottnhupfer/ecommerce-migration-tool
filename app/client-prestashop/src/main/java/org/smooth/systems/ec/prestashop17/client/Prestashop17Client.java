@@ -113,8 +113,8 @@ public class Prestashop17Client {
 		ResponseEntity<Products> response = client.getForEntity(baseUrl + "/products/", Products.class);
 		Assert.notNull(response.getBody(), "Response body is null");
 		Products products = response.getBody();
-		log.trace("Retrieved {} category references", products.getWrapper().getProductRefs().size());
-		return products.getWrapper().getProductRefs();
+		log.trace("Retrieved {} category references", products.getProductRefs().size());
+		return products.getProductRefs();
 	}
 
   public List<Category> getCategories() {

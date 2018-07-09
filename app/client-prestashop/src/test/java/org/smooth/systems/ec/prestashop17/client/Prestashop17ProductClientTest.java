@@ -64,4 +64,14 @@ public class Prestashop17ProductClientTest {
     ProductSpecificPrice uploadedSpecificPrice = client.writeProductSpecificPrice(specificPrice);
     log.info("ProductSpecificPrices: {}", uploadedSpecificPrice);
   }
+
+  @Test
+  public void getProductMetaDataTest() {
+//    List<ProductSpecificPrice> productSpecificPrices =
+    List<ProductRef> productsRefs = client.getProductsMetaData();
+    log.info("ProductSpecificPrices: {}", productsRefs.size());
+//    for (ProductSpecificPrice specificPrice: productSpecificPrices) {
+//      log.info("ProductSpecificPrice: {}", specificPrice);
+//    }
+  }
 }

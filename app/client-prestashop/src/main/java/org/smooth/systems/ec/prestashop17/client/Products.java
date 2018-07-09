@@ -1,5 +1,8 @@
 package org.smooth.systems.ec.prestashop17.client;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,14 +16,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 class Products {
 
-  @XmlElement(name = "products")
-  private CategoriesWrapper wrapper;
-
-  @Data
-  @XmlAccessorType(XmlAccessType.FIELD)
-  static class CategoriesWrapper {
-
-    @XmlElement(name = "product")
-    private List<ProductRef> productRefs;
-  }
+  @JacksonXmlElementWrapper(localName = "products")
+  @JacksonXmlProperty(localName = "product" )
+  private List<ProductRef> productRefs;
 }

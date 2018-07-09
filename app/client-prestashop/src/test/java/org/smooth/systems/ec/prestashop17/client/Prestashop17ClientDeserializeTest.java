@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.prestashop17.client;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -16,12 +17,13 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.prestashop17.model.ProductSpecificPrice;
+import org.springframework.util.Assert;
 
 @Slf4j
 public class Prestashop17ClientDeserializeTest {
 
   @Test
-  public void deserializeLanguagesResponse() throws JsonParseException, JsonMappingException, IOException {
+  public void deserializeLanguagesResponse() throws IOException {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/languages_response_prestashop_1-7-3.xml");
     Languages languages = xmlMapper.readValue(inputFile, Languages.class);
@@ -29,7 +31,7 @@ public class Prestashop17ClientDeserializeTest {
   }
 
   @Test
-  public void deserializeLanguageResponse() throws JsonParseException, JsonMappingException, IOException {
+  public void deserializeLanguageResponse() throws IOException {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/language_response_prestashop_1-7-3.xml");
     LanguageWrapper language = xmlMapper.readValue(inputFile, LanguageWrapper.class);
@@ -43,7 +45,7 @@ public class Prestashop17ClientDeserializeTest {
   }
 
   @Test
-  public void deserializeTagResponse() throws JsonParseException, JsonMappingException, IOException {
+  public void deserializeTagResponse() throws IOException {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/tag_response_prestashop_1-7-3.xml");
     TagWrapper tag = xmlMapper.readValue(inputFile, TagWrapper.class);
@@ -55,7 +57,7 @@ public class Prestashop17ClientDeserializeTest {
   }
 
   @Test
-  public void deserializeTagsResponse() throws JsonParseException, JsonMappingException, IOException {
+  public void deserializeTagsResponse() throws IOException {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/tags_response_prestashop_1-7-3.xml");
     Tags tags = xmlMapper.readValue(inputFile, Tags.class);
@@ -67,7 +69,7 @@ public class Prestashop17ClientDeserializeTest {
   }
 
   @Test
-  public void deserializeCategoriesResponse() throws JsonParseException, JsonMappingException, IOException {
+  public void deserializeCategoriesResponse() throws IOException {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/categories_response_prestashop_1-7-3.xml");
     Categories categories = xmlMapper.readValue(inputFile, Categories.class);
@@ -79,7 +81,7 @@ public class Prestashop17ClientDeserializeTest {
   }
 
   @Test
-  public void deserializeImageUploadResponse() throws JsonParseException, JsonMappingException, IOException {
+  public void deserializeImageUploadResponse() throws IOException {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/upload_product_image_prestashop_1-7-3.xml");
     ImageUploadResponse imageUploadResponse = xmlMapper.readValue(inputFile, ImageUploadResponse.class);
@@ -91,7 +93,7 @@ public class Prestashop17ClientDeserializeTest {
   }
 
   @Test
-  public void deserializeProductSpecificPrices() throws JsonParseException, JsonMappingException, IOException {
+  public void deserializeProductSpecificPrices() throws IOException {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/product_specific_prices_1-7-3.xml");
     ProductSpecificPrices productSpcificPricesResponse = xmlMapper.readValue(inputFile, ProductSpecificPrices.class);
@@ -105,7 +107,7 @@ public class Prestashop17ClientDeserializeTest {
   }
 
   @Test
-  public void deserializeProductSpecificPrice() throws JsonParseException, JsonMappingException, IOException {
+  public void deserializeProductSpecificPrice() throws IOException {
     XmlMapper xmlMapper = new XmlMapper();
     File inputFile = new File("src/test/resources/example_responses/product_specific_price_1-7-3.xml");
     ProductSpecificPriceWrapper productSpcificPriceResponse = xmlMapper.readValue(inputFile, ProductSpecificPriceWrapper.class);
@@ -117,5 +119,17 @@ public class Prestashop17ClientDeserializeTest {
     assertEquals(Double.valueOf("2.5"), specificPrice.getReduction());
     assertEquals(Long.valueOf(0), specificPrice.getReductionTax());
     assertEquals("amount", specificPrice.getReductionType());
+  }
+
+  @Test
+  public void deserializeProductMetaData() throws IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    File inputFile = new File("src/test/resources/example_responses/products_list_1-7-3.xml");
+    Products productResponse = xmlMapper.readValue(inputFile, Products.class);
+    log.info("Products: {}", productResponse);
+    Assert.notEmpty(productResponse.getProductRefs(), "Products references are empty.");
+    assertEquals(1025L,productResponse.getProductRefs().size());
+    assertEquals(new Long(270),productResponse.getProductRefs().get(0).getId());
+    assertEquals("http://prestashop.local/api/products/270",productResponse.getProductRefs().get(0).getHref());
   }
 }

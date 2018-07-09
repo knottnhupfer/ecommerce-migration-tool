@@ -12,4 +12,7 @@ class ProductRef {
 
   @XmlAttribute(name = "id")
   private Long id;
+
+  @XmlAttribute(name = "href")
+  private String href;
 }
