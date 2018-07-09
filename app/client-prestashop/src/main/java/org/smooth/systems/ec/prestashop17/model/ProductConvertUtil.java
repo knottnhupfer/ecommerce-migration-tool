@@ -9,10 +9,12 @@ import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslator
 import java.util.List;
 
 /**
- * Created by David Monichi <david.monichi@smooth-systems.solutions> on 11.06.18.
+ * Created by David Monichi <david.monichi@smooth-systems.solutions>
  */
 @UtilityClass
 public class ProductConvertUtil {
+
+  public static final Long DEFAULT_TAX_GROUP = 5L;
 
   public Product convertProduct(PrestashopLanguageTranslatorCache cache, org.smooth.systems.ec.migration.model.Product product) {
     Product prod = new Product();
@@ -41,6 +43,9 @@ public class ProductConvertUtil {
     prod.setFriendlyUrls(retrieveLinksRewrite(cache, attributes));
     prod.setShortDescriptions(retrieveShortDescriptions(cache, attributes));
     prod.setPrice(product.getCostPrice());
+
+    // TODO default values currently hard coded
+    prod.setTaxRuleGroup(DEFAULT_TAX_GROUP);
     return prod;
   }
 

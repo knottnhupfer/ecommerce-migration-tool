@@ -30,8 +30,6 @@ public class Product {
 
   private LocalDateTime creationDate;
 
-  // private long taxRuleId;
-
   private Double salesPrice;
 
   private Double costPrice;
