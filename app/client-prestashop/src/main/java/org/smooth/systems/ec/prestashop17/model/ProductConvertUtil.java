@@ -6,6 +6,8 @@ import org.smooth.systems.ec.migration.model.ProductTierPriceStrategy;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -42,11 +44,24 @@ public class ProductConvertUtil {
     prod.setDescriptions(retrieveDescriptions(cache, attributes));
     prod.setFriendlyUrls(retrieveLinksRewrite(cache, attributes));
     prod.setShortDescriptions(retrieveShortDescriptions(cache, attributes));
-    prod.setPrice(product.getCostPrice());
 
-    // TODO default values currently hard coded
+    // TODO default values currently hard coded and price calculation
+//    prod.setPrice(product.getCostPrice());
     prod.setTaxRuleGroup(DEFAULT_TAX_GROUP);
+    updatePrice(prod, product.getSalesPrice());
     return prod;
+  }
+
+  private void updatePrice(Product product, Double salesPrice) {
+    product.setPrice(round(salesPrice / new Double("1.22"), 2));
+  }
+
+  public static double round(double value, int places) {
+    if (places < 0) throw new IllegalArgumentException();
+
+    BigDecimal bd = new BigDecimal(value);
+    bd = bd.setScale(places, RoundingMode.HALF_UP);
+    return bd.doubleValue();
   }
 
   private Product.Visibility convertVisibility(org.smooth.systems.ec.migration.model.Product.ProductVisibility visibility) {
