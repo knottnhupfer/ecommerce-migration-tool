@@ -64,12 +64,12 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 
 		for(ProductId prod : products) {
 			Product product = productsCache.getProductById(prod.getProductId());
-			Long dstProductId = getProductIdDestinationSystemForProductSku(product.getSku());
-			if(dstProductId == null) {
+			if(!doesProductWithSkuExists(product.getSku())) {
 				log.warn("Skip product images for product with sku '{}', does not exists on the destination system.", product.getSku());
 				continue;
 			}
 
+			Long dstProductId = getProductIdDestinationSystemForProductSku(product.getSku());
 			List<String> imageUrls = product.getProductImageUrls();
 			List<File> absoluteImagesPaths = imageUrls.stream().map(url -> new File(imagesUrl, url)).collect(Collectors.toList());
 			MigrationProductImagesObject imagesObj = new MigrationProductImagesObject(prod.getProductId(), absoluteImagesPaths);
