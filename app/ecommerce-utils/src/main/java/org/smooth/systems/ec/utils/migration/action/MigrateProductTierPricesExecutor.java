@@ -17,8 +17,6 @@ import java.util.List;
 @Component
 public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationExecuter {
 
-  private long count = 0;
-
   @Override
   public String getActionName() {
     return EcommerceUtilsActions.PRODUCTS_TIER_PRICES_MIGRATION;
@@ -57,10 +55,7 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
     if (priceStrategy.getPriceStrategies().isEmpty()) {
       return;
     }
-    if(count > 2) {
-      throw new RuntimeException("Limit already reached ...");
-    }
-    count++;
+
     log.debug("uploadProductPriceStrategies({})", priceStrategy);
     writer.writeProductPriceTier(priceStrategy);
   }

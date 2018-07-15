@@ -182,7 +182,7 @@ public class Magento19DbProductsReader {
     ProductTierPriceStrategy productPriceStrategy = new ProductTierPriceStrategy();
     productPriceStrategy.setId(strategy.getId());
     // TODO do not know yet
-    productPriceStrategy.setDiscountTaxIncluded(false);
+    productPriceStrategy.setDiscountTaxIncluded(true);
     productPriceStrategy.setDiscountType(ProductTierPriceStrategy.DiscountType.PRICE);
     productPriceStrategy.setValue(strategy.getPrice());
     productPriceStrategy.setMinQuantity(strategy.getQuantity().longValue());
