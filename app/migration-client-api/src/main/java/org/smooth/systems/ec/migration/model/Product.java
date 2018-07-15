@@ -58,6 +58,7 @@ public class Product {
   }
 
   public String simpleDescription() {
-    return String.format("Product(id=%d, sku=%s, brandId=%d, categories=%s, productImageUrls=%s, activated=%b)", id, sku, brandId, categories, productImageUrls, activated);
+    return String.format("Product(id=%d, sku=%s, brandId=%d, price=%.2f, categories=%s, activated=%b, productImageUrls=%s)",
+            id, sku, brandId, netPrice, categories, activated, productImageUrls);
   }
 }

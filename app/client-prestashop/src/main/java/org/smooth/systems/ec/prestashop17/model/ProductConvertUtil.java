@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.smooth.systems.ec.migration.model.ProductTierPriceStrategy;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -44,9 +45,10 @@ public class ProductConvertUtil {
     prod.setFriendlyUrls(retrieveLinksRewrite(cache, attributes));
     prod.setShortDescriptions(retrieveShortDescriptions(cache, attributes));
 
-    // TODO default values currently hard coded and netPrice calculation
+    // TODO default values currently hard coded and price calculation
     prod.setTaxRuleGroup(DEFAULT_TAX_GROUP);
-    product.setNetPrice(round(product.getNetPrice(), 2));
+    prod.setNetPrice(round(product.getNetPrice(), 2));
+    Assert.notNull(prod.getNetPrice(), "prestashop 17 product net price is null");
     return prod;
   }
 

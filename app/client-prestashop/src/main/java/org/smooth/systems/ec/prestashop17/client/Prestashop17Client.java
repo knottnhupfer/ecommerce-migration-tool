@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.prestashop17.Prestashop17ClientConstants;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.Data;
@@ -110,11 +112,16 @@ public class Prestashop17Client {
 
 	public List<ProductRef> getProductsMetaData() {
 		log.debug("getProductsMetaData()");
-		ResponseEntity<Products> response = client.getForEntity(baseUrl + "/products/", Products.class);
-		Assert.notNull(response.getBody(), "Response body is null");
-		Products products = response.getBody();
-		log.trace("Retrieved {} category references", products.getProductRefs().size());
-		return products.getProductRefs();
+		try {
+      ResponseEntity<Products> response = client.getForEntity(baseUrl + "/products/", Products.class);
+      Assert.notNull(response.getBody(), "Response body is null");
+      Products products = response.getBody();
+      log.trace("Retrieved {} category references", products.getProductRefs().size());
+      return products.getProductRefs();
+    } catch(RestClientException e) {
+		  // TODO fix so that if no list since empty it will be recognized somehow, add it to filter?
+		  return Collections.emptyList();
+    }
 	}
 
   public List<Category> getCategories() {

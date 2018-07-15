@@ -29,17 +29,17 @@ public class Magento19DbObjectReaderTest {
 
   @Test
   public void retrieveProductFromDatabaseTest() {
-    List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(2971L).langIso("it").build());
+    List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(2233L).langIso("it").build());
     List<Product> retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     log.info("Product: {}", retrievedProducts.get(0).simpleDescription());
     log.info("");
 
-    productsList = Arrays.asList(ProductId.builder().productId(2971L).langIso("it").build());
-    retrievedProducts = reader.readAllProducts(productsList);
-    Assert.notEmpty(retrievedProducts, "no retrieved products");
-    log.info("Product: {}", retrievedProducts.get(0).simpleDescription());
-    log.info("");
+//    productsList = Arrays.asList(ProductId.builder().productId(2971L).langIso("it").build());
+//    retrievedProducts = reader.readAllProducts(productsList);
+//    Assert.notEmpty(retrievedProducts, "no retrieved products");
+//    log.info("Product: {}", retrievedProducts.get(0).simpleDescription());
+//    log.info("");
   }
 
   @Test
