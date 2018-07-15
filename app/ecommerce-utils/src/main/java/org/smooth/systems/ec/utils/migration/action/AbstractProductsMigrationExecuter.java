@@ -72,7 +72,7 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 		if(!doesProductWithSkuExists(sku)) {
 			throw new RuntimeException(String.format("Unable to retrieve productId for product sku: '{}'", sku));
 		}
-		return existingProductsDestinationSystem.get(sku).getProductId();
+    return existingProductsDestinationSystem.get(sku).getProductId();
 	}
 
 	private void populateDestinationSystemProductCache() {
@@ -102,6 +102,12 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
       throw new IllegalStateException("This exception shouldn't not happen.");
     }
     log.info("Retrieved {} main product ids for processing.", mainProductIds.size());
+    return mainProductIds;
+  }
+
+  protected List<ProductId> initializeProductCacheAndRetrieveList() {
+    List<ProductId> mainProductIds = retrieveMainProductIds();
+    productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
     return mainProductIds;
   }
 }

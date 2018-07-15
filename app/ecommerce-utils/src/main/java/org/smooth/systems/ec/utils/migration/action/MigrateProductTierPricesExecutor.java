@@ -2,14 +2,13 @@ package org.smooth.systems.ec.utils.migration.action;
 
 import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.api.ProductId;
-import org.smooth.systems.ec.exceptions.NotFoundException;
-import org.smooth.systems.ec.exceptions.NotImplementedException;
+import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductPriceStrategies;
 import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions>
@@ -17,6 +16,8 @@ import java.util.Set;
 @Slf4j
 @Component
 public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationExecuter {
+
+  private long count = 0;
 
   @Override
   public String getActionName() {
@@ -26,20 +27,40 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
   @Override
   public void execute() {
     initialize();
-    List<ProductId> mainProductIds = retrieveMainProductIds();
+
+    List<ProductId> mainProductIds = initializeProductCacheAndRetrieveList();
+    log.info("Read products and initialized cache ({})", mainProductIds.size());
+
     for (ProductId productIdSrcSystem : mainProductIds) {
       log.trace("Process price strategies for product with id:{}", productIdSrcSystem.getProductId());
+
+      Product product = productsCache.getProductById(productIdSrcSystem.getProductId());
+      Assert.notNull(product, String.format("No product found for"));
+
+      if (!doesProductWithSkuExists(product.getSku()) || hasProductAlreadyPricingStrategies(product)) {
+        log.warn("Skip product images for product with sku '{}', does not exists on the destination system.", product.getSku());
+        continue;
+      }
       ProductPriceStrategies priceStrategy = reader.readProductPriceStrategies(productIdSrcSystem.getProductId());
+      Long productIdDestinationSystem = getProductIdDestinationSystemForProductSku(product.getSku());
+      priceStrategy.setProductId(productIdDestinationSystem);
       uploadProductPriceStrategies(priceStrategy);
     }
   }
 
-  private void uploadProductPriceStrategies(ProductPriceStrategies priceStrategy) {
-    // TODO check sku if
+  private boolean hasProductAlreadyPricingStrategies(Product product) {
     // TODO check if strategies not already on destination system
+    return false;
+  }
+
+  private void uploadProductPriceStrategies(ProductPriceStrategies priceStrategy) {
     if (priceStrategy.getPriceStrategies().isEmpty()) {
       return;
     }
+    if(count > 2) {
+      throw new RuntimeException("Limit already reached ...");
+    }
+    count++;
     log.debug("uploadProductPriceStrategies({})", priceStrategy);
     writer.writeProductPriceTier(priceStrategy);
   }

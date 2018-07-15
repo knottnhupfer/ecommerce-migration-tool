@@ -30,7 +30,7 @@ public class Product {
 
   private LocalDateTime creationDate;
 
-  private Double salesPrice;
+  private Double netPrice;
 
   private Double costPrice;
 

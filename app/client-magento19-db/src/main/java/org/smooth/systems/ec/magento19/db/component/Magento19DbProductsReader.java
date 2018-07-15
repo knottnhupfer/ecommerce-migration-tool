@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class Magento19DbProductsReader {
 
-  public static Double DEFAULT_TAX_RATE = new Double("1.21");
+  public static Double DEFAULT_TAX_RATE = new Double("1.22");
 
   @Autowired
   private ProductRepository productRepo;
@@ -146,12 +146,10 @@ public class Magento19DbProductsReader {
   }
 
   private void updateProductPrice(Product product) {
-    Double salesPrice = productFieldsProvider.getProductSalesPrice(getId(product));
-    product.setSalesPrice(salesPrice);
-    Double costPrice = Math.round(salesPrice / DEFAULT_TAX_RATE * 100.0) / 100.0;
-    product.setCostPrice(costPrice);
-    logRetrievedValue("sales price", product.getSalesPrice(), product);
-    logRetrievedValue("cost price", product.getCostPrice(), product);
+    Double grossPrice = productFieldsProvider.getProductGrossPrice(getId(product));
+    Double netPrice = Math.round(grossPrice / DEFAULT_TAX_RATE * 100.0) / 100.0;
+    product.setNetPrice(netPrice);
+    logRetrievedValue("sales price", product.getNetPrice(), product);
   }
 
   private void updateCategories(Product product) {

@@ -76,11 +76,11 @@ public class Magento19DbProductUtilsTest {
 
   @Test
   public void productPriceRetrieveTest() {
-    Double salesPrice = productFieldsProvider.getProductSalesPrice(3717L);
+    Double salesPrice = productFieldsProvider.getProductGrossPrice(3717L);
     log.info("Sales price: {}", salesPrice);
     assertEquals(new Double("60.77"), salesPrice);
 
-    salesPrice = productFieldsProvider.getProductSalesPrice(78L);
+    salesPrice = productFieldsProvider.getProductGrossPrice(78L);
     log.info("Sales price: {}", salesPrice);
     assertEquals(new Double("31.30"), salesPrice);
   }

@@ -33,10 +33,10 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 		initialize();
 		log.trace("execute()");
 
-		List<ProductId> products = initializeProductCacheAndRetrieveList();
+		List<ProductId> mainProducts = initializeProductCacheAndRetrieveList();
 		log.info("Read products and initialized cache");
 
-		List<MigrationProductImagesObject> imagesInfo = generateProductImagesObjects(products);
+		List<MigrationProductImagesObject> imagesInfo = generateProductImagesObjects(mainProducts);
 		log.info("Generated information objects to start images upload for main products.");
 
 		uploadProductImages(imagesInfo);
@@ -52,19 +52,13 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 		}
 	}
 
-	private List<ProductId> initializeProductCacheAndRetrieveList() {
-		List<ProductId> mainProductIds = retrieveMainProductIds();
-		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
-		return mainProductIds;
-	}
-
 	private List<MigrationProductImagesObject> generateProductImagesObjects(List<ProductId> products) {
 		File imagesUrl = new File(config.getProductsImagesDirectory());
 		List<MigrationProductImagesObject> imagesObjects = new ArrayList<>();
 
-		for(ProductId prod : products) {
-			Product product = productsCache.getProductById(prod.getProductId());
-			if(!doesProductWithSkuExists(product.getSku())) {
+		for(ProductId productIdSrcSystem : products) {
+			Product product = productsCache.getProductById(productIdSrcSystem.getProductId());
+			if(!doesProductWithSkuExists(product.getSku()) || hasProductAlreadyAppendedImages(product)) {
 				log.warn("Skip product images for product with sku '{}', does not exists on the destination system.", product.getSku());
 				continue;
 			}
@@ -72,11 +66,16 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 			Long dstProductId = getProductIdDestinationSystemForProductSku(product.getSku());
 			List<String> imageUrls = product.getProductImageUrls();
 			List<File> absoluteImagesPaths = imageUrls.stream().map(url -> new File(imagesUrl, url)).collect(Collectors.toList());
-			MigrationProductImagesObject imagesObj = new MigrationProductImagesObject(prod.getProductId(), absoluteImagesPaths);
+			MigrationProductImagesObject imagesObj = new MigrationProductImagesObject(productIdSrcSystem.getProductId(), absoluteImagesPaths);
 
 			imagesObj.setDstProductId(dstProductId);
 			imagesObjects.add(imagesObj);
 		}
 		return imagesObjects;
+	}
+
+	private boolean hasProductAlreadyAppendedImages(Product prod) {
+		// TODO check existing images and print if already uploaded
+		return false;
 	}
 }

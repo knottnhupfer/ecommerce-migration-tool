@@ -1,7 +1,6 @@
 package org.smooth.systems.ec.prestashop17.model;
 
 import lombok.experimental.UtilityClass;
-import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.ProductTierPriceStrategy;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
@@ -48,7 +47,7 @@ public class ProductConvertUtil {
     // TODO default values currently hard coded and price calculation
 //    prod.setPrice(product.getCostPrice());
     prod.setTaxRuleGroup(DEFAULT_TAX_GROUP);
-    updatePrice(prod, product.getSalesPrice());
+    updatePrice(prod, product.getNetPrice());
     return prod;
   }
 
@@ -123,7 +122,6 @@ public class ProductConvertUtil {
     // TODO fix this, currently it works for default shops
     // must be retrieved and implemented somewhere else
     specificPrice.setShopId(1L);
-    throw new NotImplementedException();
-//    return specificPrice;
+    return specificPrice;
   }
 }

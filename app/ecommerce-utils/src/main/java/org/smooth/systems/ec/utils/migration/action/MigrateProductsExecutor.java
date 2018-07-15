@@ -40,7 +40,7 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 		logExecutionStep(log, "Generated basic product data ({}) for migration successfully", productList.size());
 
 		initializeProductsCache(productList);
-		logExecutionStep(log, "Products cache initialized successfully");
+		logExecutionStep(log, "Read products and initialized cache");
 
 		List<Product> mergedProducts = mergeProductsLanguageAttributes(productList);
 		logExecutionStep(log, "Successfully merged {} products", mergedProducts.size());

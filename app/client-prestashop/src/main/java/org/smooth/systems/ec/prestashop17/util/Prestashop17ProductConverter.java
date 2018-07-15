@@ -18,7 +18,7 @@ public final class Prestashop17ProductConverter {
 		product.getBrandId();
 		product.getCostPrice();
 		product.getDimension();
-		product.getSalesPrice();
+		product.getNetPrice();
 		product.getVisibility();
 		product.getCreationDate();
 		product.getRelatedProducts();

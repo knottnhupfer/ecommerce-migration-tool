@@ -101,7 +101,7 @@ public class Magento19DbProductFieldsProvider {
     return visibility.getVisibility();
   }
 
-  public Double getProductSalesPrice(Long productId) {
+  public Double getProductGrossPrice(Long productId) {
     Assert.notNull(productId, "productId is null");
     Magento19ProductDecimal decimalAttribute = productDecimalRepo.findByProductIdAndAttributeId(productId,
         PRODUCT_ATTRIBUTE_ID_PRODUCT_PRICE);

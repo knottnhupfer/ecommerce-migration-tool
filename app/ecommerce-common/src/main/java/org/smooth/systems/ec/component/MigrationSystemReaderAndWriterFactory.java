@@ -49,11 +49,15 @@ public class MigrationSystemReaderAndWriterFactory {
       log.error("Error while retrieve migration reader. Reason: {}", e.getMessage());
       throw new IllegalStateException(e.getMessage());
     }
-  }  
+  }
 
   public MigrationSystemWriter getMigrationWriter() {
+    return getMigrationWriter(config.getDestinationSystemName());
+  }
+
+  public MigrationSystemWriter getMigrationWriter(String systemName) {
     try {
-      return getSystemWriterForType(config.getDestinationSystemName());
+      return getSystemWriterForType(systemName);
     } catch (NotFoundException e) {
       log.error("Error while retrieve migration writer. Reason: {}", e.getMessage());
       throw new IllegalStateException(e.getMessage());
