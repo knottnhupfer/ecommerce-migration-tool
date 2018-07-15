@@ -43,7 +43,7 @@ public class Product {
   private Long defaultCategoryId = null;
 
   @XmlElement(name = "price")
-  private Double price;
+  private Double netPrice;
 
   @XmlElement(name = "visibility")
   private Visibility visibility;

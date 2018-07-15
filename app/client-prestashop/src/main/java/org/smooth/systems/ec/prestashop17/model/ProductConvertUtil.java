@@ -44,15 +44,10 @@ public class ProductConvertUtil {
     prod.setFriendlyUrls(retrieveLinksRewrite(cache, attributes));
     prod.setShortDescriptions(retrieveShortDescriptions(cache, attributes));
 
-    // TODO default values currently hard coded and price calculation
-//    prod.setPrice(product.getCostPrice());
+    // TODO default values currently hard coded and netPrice calculation
     prod.setTaxRuleGroup(DEFAULT_TAX_GROUP);
-    updatePrice(prod, product.getNetPrice());
+    product.setNetPrice(round(product.getNetPrice(), 2));
     return prod;
-  }
-
-  private void updatePrice(Product product, Double salesPrice) {
-    product.setPrice(round(salesPrice / new Double("1.22"), 2));
   }
 
   public static double round(double value, int places) {

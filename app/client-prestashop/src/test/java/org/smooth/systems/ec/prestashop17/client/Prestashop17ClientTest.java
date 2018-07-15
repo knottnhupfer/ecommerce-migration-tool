@@ -105,7 +105,7 @@ public class Prestashop17ClientTest {
     Product product = new Product();
     String random_string = UUID.randomUUID().toString().substring(16);
 
-    product.setPrice(23.6);
+    product.setNetPrice(23.6);
     product.setWeight("7.5");
     product.setReference("sku_created_" + random_string);
     product.setVisibility(Visibility.both);
@@ -128,6 +128,7 @@ public class Prestashop17ClientTest {
     PrestashopLangAttribute shortDescriptions = createTranslatableAttributes("short description", "Beschreibung kurz", "descrizione corta");
     product.setShortDescriptions(shortDescriptions);
 
+    product.setTaxRuleGroup(5L);
     client.writeProduct(product);
     // Product createdProduct = client.writeProduct(product);
     // log.info("Product: {}", createdProduct);
