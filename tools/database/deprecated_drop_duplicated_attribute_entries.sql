@@ -30,10 +30,17 @@ mysql> select * from catalog_category_entity where entity_id = 127;
 1 row in set (0,00 sec)
 
 
+
+
+
+
 -- ######################################################################################
 -- remove category which is linked to wrong language
 --
-mysql> delete FROM catalog_category_entity where entity_id = 127;
+mysql> 
+delete FROM catalog_category_product WHERE category_id = 127 AND product_id = 2971;
+
+delete FROM catalog_category_entity where entity_id = 127;
 Query OK, 1 row affected (0,03 sec)
 
 
@@ -90,15 +97,9 @@ UPDATE catalog_product_entity_varchar SET value = 'Striscia Led flessibile bianc
 
 select * from catalog_product_entity WHERE catalog_product_entity.sku = '_L6506DP';
 select * from catalog_product_entity_varchar WHERE entity_id = '2985';
-UPDATE catalog_product_entity_varchar
-SET value = 'LED Flex Strip HD Double Mono Premium, warm weiß, CRI 90+ 5m 24VDC'
-    WHERE entity_id = 2985
-    AND value_id = 103961;
-UPDATE catalog_product_entity_varchar
-SET value = 'LED Flex Strip HD Double Mono Premium, warm weiß, CRI 90+ 5m 24VDC'
-    WHERE entity_id = 2985
-    AND value_id = 103960;
 
+UPDATE catalog_product_entity_varchar SET value = 'LED Flex Strip HD Double Mono Premium, warm weiß, CRI 90+ 5m 24VDC' WHERE entity_id = 2985 AND value_id = 103961;
+UPDATE catalog_product_entity_varchar SET value = 'LED Flex Strip HD Double Mono Premium, warm weiß, CRI 90+ 5m 24VDC' WHERE entity_id = 2985 AND value_id = 103960;
 UPDATE catalog_product_entity_varchar SET value = 'Striscia Led flessibile bianco neutrale 5m 24V 24W CRI 90+' WHERE value_id = 20313;
 UPDATE catalog_product_entity_varchar SET value = 'Striscia Led flessibile super bianco caldo 2700K 5m 24V 48W CRI 90+' WHERE value_id = 20340;
 UPDATE catalog_product_entity_varchar SET value = 'Striscia Led flessibile bianco caldo 5m 24V 48W CRI 90+' WHERE value_id = 20367;
