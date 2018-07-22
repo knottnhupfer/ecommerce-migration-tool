@@ -23,5 +23,5 @@ public class Magento19ProductTierPrice {
   private Double quantity;
 
   @Column(name = "value")
-  private Double price;
+  private Double grossPrice;
 }

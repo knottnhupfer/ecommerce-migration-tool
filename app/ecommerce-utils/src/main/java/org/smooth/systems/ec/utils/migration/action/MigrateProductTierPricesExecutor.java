@@ -40,6 +40,7 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
         continue;
       }
       ProductPriceStrategies priceStrategy = reader.readProductPriceStrategies(productIdSrcSystem.getProductId());
+      priceStrategy.setNetPrice(product.getNetPrice());
       Long productIdDestinationSystem = getProductIdDestinationSystemForProductSku(product.getSku());
       priceStrategy.setProductId(productIdDestinationSystem);
       uploadProductPriceStrategies(priceStrategy);

@@ -29,7 +29,9 @@ public class Magento19DbObjectReaderTest {
 
   @Test
   public void retrieveProductFromDatabaseTest() {
-    List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(2233L).langIso("it").build());
+//    List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(2233L).langIso("it").build());
+    List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(2303L).langIso("it").build());
+
     List<Product> retrievedProducts = reader.readAllProducts(productsList);
     Assert.notEmpty(retrievedProducts, "no retrieved products");
     log.info("Product: {}", retrievedProducts.get(0).simpleDescription());
@@ -97,9 +99,5 @@ public class Magento19DbObjectReaderTest {
     desc = desc.replaceAll("\n", "<br>");
     log.info("Product replaced: {}", desc);
     log.info("");
-  }
-
-  private static String simpleProductDescription(Product prod) {
-    return String.format("Product: id=%s, sku=%s, activated=", prod.getId(), prod.getSku(), prod.getVisibility());
   }
 }

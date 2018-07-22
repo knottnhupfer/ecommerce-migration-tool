@@ -23,11 +23,9 @@ public class ProductTierPriceStrategy {
   private LocalDateTime to;
 
   /**
-   * Depending on the discountType this can be either the reduced price or the discount percentage
+   * Depending on the discountType this can be either the reduced net price or the discount percentage
    */
   private Double value;
 
   private DiscountType discountType;
-
-  private boolean discountTaxIncluded;
 }

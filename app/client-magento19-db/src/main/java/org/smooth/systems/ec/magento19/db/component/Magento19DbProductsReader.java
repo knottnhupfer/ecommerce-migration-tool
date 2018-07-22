@@ -1,11 +1,14 @@
 package org.smooth.systems.ec.magento19.db.component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
+import org.smooth.systems.ec.client.util.PriceConvertUtil;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.magento19.db.model.Magento19Product;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
@@ -35,8 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class Magento19DbProductsReader {
-
-  public static Double DEFAULT_TAX_RATE = new Double("1.22");
 
   @Autowired
   private ProductRepository productRepo;
@@ -147,8 +148,7 @@ public class Magento19DbProductsReader {
 
   private void updateProductPrice(Product product) {
     Double grossPrice = productFieldsProvider.getProductGrossPrice(getId(product));
-    Double netPrice = Math.round(grossPrice / DEFAULT_TAX_RATE * 100.0) / 100.0;
-    product.setNetPrice(netPrice);
+    product.setNetPrice(PriceConvertUtil.convertGrossPriceToNetPrice(grossPrice));
     logRetrievedValue("sales price", product.getNetPrice(), product);
   }
 
@@ -181,10 +181,8 @@ public class Magento19DbProductsReader {
   private ProductTierPriceStrategy convertMagentoTierPriceStrategy(Magento19ProductTierPrice strategy) {
     ProductTierPriceStrategy productPriceStrategy = new ProductTierPriceStrategy();
     productPriceStrategy.setId(strategy.getId());
-    // TODO do not know yet
-    productPriceStrategy.setDiscountTaxIncluded(true);
     productPriceStrategy.setDiscountType(ProductTierPriceStrategy.DiscountType.PRICE);
-    productPriceStrategy.setValue(strategy.getPrice());
+    productPriceStrategy.setValue(PriceConvertUtil.convertGrossPriceToNetPrice(strategy.getGrossPrice()));
     productPriceStrategy.setMinQuantity(strategy.getQuantity().longValue());
     return productPriceStrategy;
   }

@@ -149,7 +149,6 @@ public class Magento19DbProductUtilsTest {
     assertEquals(Long.valueOf(3714),priceStrategy.getProductId());
     assertEquals(3,priceStrategy.getPriceStrategies().size());
     assertEquals(ProductTierPriceStrategy.DiscountType.PRICE,priceStrategy.getPriceStrategies().get(0).getDiscountType());
-    assertEquals(false,priceStrategy.getPriceStrategies().get(0).isDiscountTaxIncluded());
     assertEquals(Long.valueOf(2),priceStrategy.getPriceStrategies().get(0).getMinQuantity());
     assertEquals(Double.valueOf("35.47"),priceStrategy.getPriceStrategies().get(0).getValue());
 
@@ -157,5 +156,19 @@ public class Magento19DbProductUtilsTest {
     assertEquals(Double.valueOf("32.78"),priceStrategy.getPriceStrategies().get(1).getValue());
     assertEquals(Long.valueOf(6),priceStrategy.getPriceStrategies().get(2).getMinQuantity());
     assertEquals(Double.valueOf("31.89"),priceStrategy.getPriceStrategies().get(2).getValue());
+  }
+
+  @Test
+  public void productTierPriceRetrieverNetTest() {
+    Long productId = new Long(2303L);
+    Product product = productRetriever.getProduct(productId, "it");
+    log.info("{}",product.simpleDescription());
+
+    ProductPriceStrategies priceStrategy = productRetriever.getProductPriceStrategy(productId);
+    assertEquals(Long.valueOf(2303),priceStrategy.getProductId());
+    assertEquals(1,priceStrategy.getPriceStrategies().size());
+    assertEquals(ProductTierPriceStrategy.DiscountType.PRICE,priceStrategy.getPriceStrategies().get(0).getDiscountType());
+    assertEquals(Long.valueOf(5),priceStrategy.getPriceStrategies().get(0).getMinQuantity());
+    assertEquals(Double.valueOf("129.79"),priceStrategy.getPriceStrategies().get(0).getValue());
   }
 }

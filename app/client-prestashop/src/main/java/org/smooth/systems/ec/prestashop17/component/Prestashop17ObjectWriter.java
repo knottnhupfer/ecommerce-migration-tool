@@ -33,7 +33,7 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
   @Autowired
   public Prestashop17ObjectWriter(MigrationConfiguration config, PrestashopLanguageTranslatorCache languagesCache,
-      Prestashop17Client client) {
+                                  Prestashop17Client client) {
     super(config, client);
     this.languagesCache = languagesCache;
   }
@@ -86,8 +86,8 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
     throw new NotImplementedException();
   }
 
-	@Override
-	public Product writeProduct(Product product) {
+  @Override
+  public Product writeProduct(Product product) {
     log.info("writeProduct({})", product);
     org.smooth.systems.ec.prestashop17.model.Product prod = ProductConvertUtil.convertProduct(languagesCache, product);
     prod = client.writeProduct(prod);
@@ -98,13 +98,13 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
       log.error("Error while waiting for 200ms ...");
     }
     return product;
-	}
+  }
 
-	@Override
-	public void uploadProductImages(Long prodId, File productImage) {
+  @Override
+  public void uploadProductImages(Long prodId, File productImage) {
     ImageUploadResponse.UploadedImage image = client.uploadProductImage(prodId, productImage);
     log.info("Successfully uploaded product image.");
-	}
+  }
 
   @Override
   public Manufacturer writeManufacturer(String manufacturerName) {
@@ -119,8 +119,8 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   @Override
   public void writeProductPriceTier(ProductPriceStrategies priceStrategies) {
     log.debug("writeProductPriceTier({})", priceStrategies);
-    for(ProductTierPriceStrategy priceStrategy : priceStrategies.getPriceStrategies()) {
-      ProductSpecificPrice specificPrice = ProductConvertUtil.convertProductPriceStrategy(priceStrategies.getProductId(), priceStrategy);
+    for (ProductTierPriceStrategy priceStrategy : priceStrategies.getPriceStrategies()) {
+      ProductSpecificPrice specificPrice = ProductConvertUtil.convertProductPriceStrategy(priceStrategies.getNetPrice(), priceStrategies.getProductId(), priceStrategy);
       client.writeProductSpecificPrice(specificPrice);
     }
   }
@@ -142,7 +142,7 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
     @Override
     protected Long writeCategory(Category category, int level) {
       org.smooth.systems.ec.prestashop17.model.Category cat = CategoryMapper.convertCategoryToSystemModel(languagesCache, category,
-          false);
+              false);
       log.info("Write category[{}]: {}", ++counter, cat);
       org.smooth.systems.ec.prestashop17.model.Category createdCategory = client.writeCategory(languagesCache, cat);
       return createdCategory.getId();
