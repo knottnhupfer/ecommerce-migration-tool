@@ -18,6 +18,9 @@ public class ProductSpecificPrice {
   public static final String REDUCTION_TYPE_AMOUNT = "amount";
   public static final String REDUCTION_TYPE_PERCENTAGE = "percentage";
 
+  @JsonProperty("id")
+  private Long id;
+
   @JsonProperty("from_quantity")
   private Long quantity;
 

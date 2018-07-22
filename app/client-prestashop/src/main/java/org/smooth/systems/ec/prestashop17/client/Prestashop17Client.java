@@ -317,6 +317,11 @@ public class Prestashop17Client {
     return response.getBody().getSpecificPrice();
   }
 
+  public void removeProductSpecificPrice(Long productSpecificPriceId) {
+    log.info("removeProductSpecificPrice({})", productSpecificPriceId);
+    client.delete(baseUrl + Prestashop17ClientConstants.getProductSpecificPriceUrl(productSpecificPriceId));
+  }
+
   private void updateProductStock(Product product) {
     // FIXME read product amount and set it if not null
     enableIgnoreStock(product.getId());

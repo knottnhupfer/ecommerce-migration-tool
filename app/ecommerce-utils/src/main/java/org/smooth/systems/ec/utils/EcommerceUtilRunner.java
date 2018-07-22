@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +22,10 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 
 	private Map<String, IActionExecuter> actions = new HashMap<>();
 
+	private MigrationUtilsConfiguration configuration;
+
 	@Autowired
-	public EcommerceUtilRunner(List<IActionExecuter> actionsList) {
+	public EcommerceUtilRunner(List<IActionExecuter> actionsList, MigrationUtilsConfiguration configuration) {
 		for (IActionExecuter action : actionsList) {
 			log.info("Add action: {}", action.getActionName());
 			if(actions.containsKey(action.getActionName())) {
@@ -32,6 +35,8 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 			}
 			actions.put(action.getActionName(), action);
 		}
+//		Assert.notNull(configuration.getAction(), "action is null");
+		this.configuration = configuration;
 	}
 
 	@Override
@@ -39,13 +44,17 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 		log.info("run({})", args);
 
 		List<String> actionParams = args.getOptionValues(PARAM_ACTION);
-		if(actionParams == null || actionParams.isEmpty()) {
+		if((actionParams == null || actionParams.isEmpty()) && !"skip".equalsIgnoreCase(configuration.getAction())) {
 		  log.warn("");
 			log.error("No action parameter '{}' defined.", PARAM_ACTION);
 			log.error("Valid actions are:");
 			log.error("  [ACTIONS]  -  {}", actions.keySet());
 			log.warn("");
 			System.exit(5);
+		}
+		if("skip".equalsIgnoreCase(configuration.getAction())) {
+			log.warn("Skip any action, current action is {}", configuration.getAction());
+			return;
 		}
 		String actionParam = actionParams.get(0);
 		log.info("Execute action name '{}'", actionParam);

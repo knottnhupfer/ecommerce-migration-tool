@@ -133,11 +133,14 @@ public class ProductConvertUtil {
    * @return net price reduction; difference between full net price and reduced net price
    */
   private static Double calculateNetPriceReduction(Double fullNetPrice, Double reducedNetPrice) {
-    BigDecimal fullNetPricePrecise = BigDecimal.valueOf(reducedNetPrice);
+    BigDecimal fullNetPricePrecise = BigDecimal.valueOf(fullNetPrice);
     BigDecimal reducedNetPricePrecise = BigDecimal.valueOf(reducedNetPrice);
     if(reducedNetPricePrecise.compareTo(fullNetPricePrecise) >= 0) {
       log.error("Invalid price reduction, reduced net price equal or higher then the full net price");
-      throw new NotImplementedException();
+      log.error("Comparing result: {}, reduced net price: {}, full net price: {}", reducedNetPricePrecise.compareTo(fullNetPricePrecise),
+              reducedNetPricePrecise, fullNetPricePrecise);
+      return reducedNetPrice;
+//      throw new IllegalStateException("Invalid price reduction, reduced net price equal or higher then the full net price");
     }
     return PriceConvertUtil.round(fullNetPricePrecise.subtract(reducedNetPricePrecise)).doubleValue();
   }

@@ -45,10 +45,22 @@ public class Prestashop17ProductClientTest {
   @Test
   public void getProductSpecificPriceTest() {
     List<ProductSpecificPrice> productSpecificPrices = client.readAllProductSpecificPrices();
-    log.info("ProductSpecificPrices:");
-    for (ProductSpecificPrice specificPrice: productSpecificPrices) {
-      log.info("ProductSpecificPrice: {}", specificPrice);
-    }
+    log.info("ProductSpecificPrices ({})", productSpecificPrices.size());
+//    for (ProductSpecificPrice specificPrice: productSpecificPrices) {
+//      log.info("ProductSpecificPrice: {}", specificPrice);
+//    }
+  }
+
+  @Test
+  public void removeAllProductSpecificPricesTest() {
+    List<ProductSpecificPrice> productSpecificPrices = client.readAllProductSpecificPrices();
+    log.info("ProductSpecificPrices ({})", productSpecificPrices.size());
+    // TODO for safety reason limit to 1
+//    productSpecificPrices = productSpecificPrices.subList(0, 1);
+//    for (ProductSpecificPrice productSpecificPrice : productSpecificPrices) {
+//      log.info("Id to be removed: {}", productSpecificPrice.getId());
+//      client.removeProductSpecificPrice(productSpecificPrice.getId());
+//    }
   }
 
   @Test

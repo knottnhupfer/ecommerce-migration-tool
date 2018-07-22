@@ -5,6 +5,7 @@ import org.smooth.systems.ec.prestashop17.Prestashop17ConnectorConfiguration;
 public interface Prestashop17TestConfiguration {
 
   public static final String BASE_URL = "http://prestashop.local/api";
+//  public static final String BASE_URL = "http://prestashop.monichi.com/api";
   // public static final String BASE_URL =
   // "http://domain2-prestashop.local/api";
 

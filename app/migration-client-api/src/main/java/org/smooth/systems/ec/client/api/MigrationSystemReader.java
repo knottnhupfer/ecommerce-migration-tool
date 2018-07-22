@@ -2,6 +2,7 @@ package org.smooth.systems.ec.client.api;
 
 import java.util.List;
 
+import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.*;
 
 public interface MigrationSystemReader extends RegisterableComponent {
@@ -40,11 +41,8 @@ public interface MigrationSystemReader extends RegisterableComponent {
    * Retrieves a complete list of products of a specific category incl. sub
    * categories
    *
-   * @param categoryId
-   *          category id to be searched in
-   * @param searchSubcategories
-   *          if true also products of sub categories will be searched in,
-   *          otherwise sub categories will be skipped.
+   * @param categories
+   *          category ids to be searched in
    * @return list of products of the specified category
    */
   List<Product> readAllProductsForCategories(List<SimpleCategory> categories);
@@ -58,4 +56,8 @@ public interface MigrationSystemReader extends RegisterableComponent {
   ProductPriceStrategies readProductPriceStrategies(Long productId);
 
   List<IProductMetaData> readAllProductsMetaData();
+
+  default List<Long> readAllProductSpecificPrices() {
+    throw new NotImplementedException();
+  }
 }

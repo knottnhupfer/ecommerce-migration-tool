@@ -99,4 +99,9 @@ public class Prestashop17ObjectReader extends AbstractPrestashop17Connector impl
 		List<org.smooth.systems.ec.prestashop17.model.Product> products = client.getAllProducts();
 		return products.stream().map(prod -> Prestashop17ProductConverter.convertFromPrestashop17Product(prod)).collect(Collectors.toList());
 	}
+
+  @Override
+  public  List<Long> readAllProductSpecificPrices() {
+    throw new NotImplementedException();
+  }
 }

@@ -126,6 +126,12 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   }
 
   @Override
+  public void removeProductSpecificPrices(Long productSpecificPriceId) {
+    log.debug("removeProductSpecificPrices({})", productSpecificPriceId);
+    client.removeProductSpecificPrice(productSpecificPriceId);
+  }
+
+  @Override
   public void repairAndValidateData() {
     // TODO check all category data
   }

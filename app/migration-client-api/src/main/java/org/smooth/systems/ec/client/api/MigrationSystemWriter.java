@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
+import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.*;
 
@@ -73,4 +74,8 @@ public interface MigrationSystemWriter extends RegisterableComponent {
   Manufacturer writeManufacturer(String manufacturerName);
 
   void writeProductPriceTier(ProductPriceStrategies priceStrategy);
+
+  default void removeProductSpecificPrices(Long productSpecificPriceId) {
+    throw new NotImplementedException();
+  }
 }
