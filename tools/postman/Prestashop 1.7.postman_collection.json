@@ -166,16 +166,73 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "http://prestashop.local/api/products/26",
-							"protocol": "http",
+							"raw": "{{prestahop_url}}/api/products/270",
 							"host": [
-								"prestashop",
-								"local"
+								"{{prestahop_url}}"
 							],
 							"path": [
 								"api",
 								"products",
-								"26"
+								"270"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve single product Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{prestahop_url}}/api/products/270",
+							"host": [
+								"{{prestahop_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"270"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve all product specific prices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{prestahop_url}}/api/specific_prices",
+							"host": [
+								"{{prestahop_url}}"
+							],
+							"path": [
+								"api",
+								"specific_prices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve product specific price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{prestahop_url}}/api/specific_prices/1",
+							"host": [
+								"{{prestahop_url}}"
+							],
+							"path": [
+								"api",
+								"specific_prices",
+								"1"
 							]
 						}
 					},
@@ -188,11 +245,9 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "http://prestashop.local/api/categories/1",
-							"protocol": "http",
+							"raw": "{{prestahop_url}}/api/categories/1",
 							"host": [
-								"prestashop",
-								"local"
+								"{{prestahop_url}}"
 							],
 							"path": [
 								"api",
@@ -216,7 +271,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "<TagWrapper>\n\t<tag><id/>\n\t\t<name>tag1</name>\n\t\t<id_lang>1</id_lang>\n\t</tag>\n</TagWrapper>"
+							"raw": "<TagWrapper>\n  <tag><id/>\n    <name>tag1</name>\n    <id_lang>1</id_lang>\n  </tag>\n</TagWrapper>"
 						},
 						"url": {
 							"raw": "http://prestashop.local/api/tags",
@@ -288,7 +343,29 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <product>\n        <associations>\n            <categories>\n                <category>\n                    <id>147</id>\n                </category>\n            </categories>\n            <tags/>\n        </associations>\n        <reference>sku_created_4b-94b1-97d594bd232b</reference>\n        <weight>7.5</weight>\n        <id_manufacturer>1</id_manufacturer>\n        <price>23.6</price>\n        <visibility>both</visibility>\n        <name>\n            <language id=\"1\">English product</language>\n            <language id=\"2\">Deutsch Produkt</language>\n            <language id=\"3\">Prodotto italiano</language>\n        </name>\n        <description>\n            <language id=\"1\">description</language>\n            <language id=\"2\">Beschreibung</language>\n            <language id=\"3\">descrizione</language>\n        </description>\n        <description_short>\n            <language id=\"1\">short description</language>\n            <language id=\"2\">Beschreibung kurz</language>\n            <language id=\"3\">descrizione corta</language>\n        </description_short>\n        <link_rewrite>\n            <language id=\"1\">4b-94b1-97d594bd232b-en</language>\n            <language id=\"2\">4b-94b1-97d594bd232b-de</language>\n            <language id=\"3\">4b-94b1-97d594bd232b-it</language>\n        </link_rewrite>\n        <state>1</state>\n        <active>1</active>\n        <indexed>1</indexed>\n        <show_price>1</show_price>\n        <id_tax_rules_group>1</id_tax_rules_group>\n    </product>\n</prestashop>"
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <product>\n        <associations>\n            <categories>\n                <category>\n                    <id>147</id>\n                </category>\n            </categories>\n            <tags/>\n        </associations>\n        <reference>sku_created_4b-94b1-97d594bd232b</reference>\n        <weight>7.5</weight>\n        <id_manufacturer>1</id_manufacturer>\n        <price>3.44</price>\n        <visibility>both</visibility>\n        <name>\n            <language id=\"1\">English product</language>\n            <language id=\"2\">Deutsch Produkt</language>\n            <language id=\"3\">Prodotto italiano</language>\n        </name>\n        <description>\n            <language id=\"1\">description</language>\n            <language id=\"2\">Beschreibung</language>\n            <language id=\"3\">descrizione</language>\n        </description>\n        <description_short>\n            <language id=\"1\">short description</language>\n            <language id=\"2\">Beschreibung kurz</language>\n            <language id=\"3\">descrizione corta</language>\n        </description_short>\n        <link_rewrite>\n            <language id=\"1\">4b-94b1-97d594bd232b-en</language>\n            <language id=\"2\">4b-94b1-97d594bd232b-de</language>\n            <language id=\"3\">4b-94b1-97d594bd232b-it</language>\n        </link_rewrite>\n        <state>1</state>\n        <active>1</active>\n        <indexed>1</indexed>\n        <show_price>1</show_price>\n        <id_tax_rules_group>5</id_tax_rules_group>\n        <low_stock_alert>0</low_stock_alert>\n    </product>\n</prestashop>"
+						},
+						"url": {
+							"raw": "{{prestahop_url}}/api/products",
+							"host": [
+								"{{prestahop_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new product Testing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <product>\n        <low_stock_alert>0</low_stock_alert>\n        <additional_delivery_times>1</additional_delivery_times>\n        <associations>\n            <categories>\n                <category>\n                    <id>429</id>\n                </category>\n            </categories>\n            <tags/>\n        </associations>\n        <reference>L69F00R</reference>\n        <weight>1.0</weight>\n        <id_manufacturer>2</id_manufacturer>\n        <id_category_default>429</id_category_default>\n        <price>33.75</price>\n        <visibility>both</visibility>\n        <name>\n            <language id=\"3\">Profilo alluminio L-Line Rec 2m</language>\n            <language id=\"2\">Aluminium Profil L-Line Rec 2m</language>\n        </name>\n        <description>\n            <language id=\"3\">Profilo alluminio per montaggio striscia a led&#13;&lt;br&gt;Versione L-Line Rec&#13;&lt;br&gt;Lunghezza: 2m&#13;&lt;br&gt;Per striscia a led flessibile o rigida</language>\n            <language id=\"2\">Die PROLED Aluminiumprofile sind die perfekte Ergänzung zu den PROLED FLEX STRIPS und dem MBNLED DMX STRIP 30. Die FLEX STRIPS können ins Profil eingeklebt werden. Der MBNLED DMX STRIP 30 kann in die dafür vorgesehene Führungsschiene eingeschoben werden (nicht alle Profile für DMX STRIP 30 geeignet). Die Aluminiumprofile sind eloxiert. Mit den optional erhältlichen Befestigungsclips (nicht für alle Profile erhältlich) kann das Profil problemlos mit bereits bestückten Strips montiert werden. Die Profile können bauseits einfach auf jede beliebige Länge zugesägt werden. Es stehen verschiedene Varianten von Aluminiumprofilen und unterschiedliche Formen von Kunststoffabdeckungen zur Verfügung.&#13;&lt;br&gt;&#13;&lt;br&gt;L-LINE REC (zum Wand- oder Deckeneinbau)&#13;&lt;br&gt;&#13;&lt;br&gt;Für L-LINE REC steht eine plane Kunststoffabdeckung in vier Varianten zur Verfügung:&#13;&lt;br&gt;&#13;&lt;br&gt;    glasklar&#13;&lt;br&gt;    frost (halbklar)&#13;&lt;br&gt;    milchig frost (opal)&#13;&lt;br&gt;    mit Mikroprismen&#13;&lt;br&gt;&#13;&lt;br&gt;Alle PROLED Aluminiumprofile, Kunststoffabdeckungen und Endkappen sind durch Gemeinschaftsgeschmacksmuster (internationale Designpatente) geschützt.&#13;&lt;br&gt;&#13;&lt;br&gt;Achtung!&#13;&lt;br&gt;Mindestbestellmenge bei den Aluprofilen = 80,00 € netto&#13;&lt;br&gt;(Auch Mischware) ansonten Extra Transportkosten 15,00 €&#13;&lt;br&gt;wird im System nicht automatisch verrechnet! </language>\n        </description>\n        <description_short>\n            <language id=\"3\">Profilo alluminio L-Line Rec 2m</language>\n            <language id=\"2\">Aluminium Profil L-Line Rec 2m</language>\n        </description_short>\n        <link_rewrite>\n            <language id=\"3\">profilo-alluminio-l-line-rec.html</language>\n            <language id=\"2\">aluminium-profil-l-line-rec-2m.html</language>\n        </link_rewrite>\n        <state>1</state>\n        <active>1</active>\n        <indexed>1</indexed>\n        <show_price>1</show_price>\n        <id_tax_rules_group>1</id_tax_rules_group>\n        <redirect_type>404</redirect_type>\n        <available_for_order>1</available_for_order>\n    </product>\n</prestashop>"
 						},
 						"url": {
 							"raw": "http://prestashop.local/api/products",
@@ -312,18 +389,60 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<prestashop>\n    <product>\n        <low_stock_alert>0</low_stock_alert>\n        <associations>\n            <categories>\n                <category>\n                    <id>383</id>\n                </category>\n            </categories>\n            <tags/>\n        </associations>\n        <reference>AL3000</reference>\n        <weight>4500.0</weight>\n        <id_manufacturer>2</id_manufacturer>\n        <price>2413.22</price>\n        <visibility>both</visibility>\n        <name>\n            <language id=\"3\">Faro a Led Powershine S Ultra Spot RGBW</language>\n            <language id=\"2\">Led Scheinwerfer Powershine S Ultra Spot RGBW</language>\n        </name>\n        <description>\n            <language id=\"3\">Molto più di una configurazione ottica alternativa.</language>\n            <language id=\"2\">Led Architektur Outdoor Scheinwerfer Powershine S Ultra Spot</language>\n        </description>\n        <description_short>\n            <language id=\"3\">Faro a Led architetturale Powershine S Ultra Spot RGBW per utilizzo esterno con cambiacolore</language>\n            <language id=\"2\">Led Architektur Outdoor Scheinwerfer Powershine S Ultra Spot RGBW</language>\n        </description_short>\n        <link_rewrite>\n            <language id=\"3\">faro-a-led-powershine-s-ultra-spot-rgbw.html</language>\n            <language id=\"2\">led-scheinwerfer-powershine-s-ultra-spot-rgbw.html</language>\n        </link_rewrite>\n        <state>1</state>\n        <active>1</active>\n        <indexed>1</indexed>\n        <show_price>1</show_price>\n        <id_tax_rules_group>1</id_tax_rules_group>\n        <redirect_type>404</redirect_type>\n        <position_in_category notFilterable=\"true\">0</position_in_category>\n        <id_category_default>383</id_category_default>\n        <available_for_order>1</available_for_order>\n    </product>\n</prestashop>"
+							"raw": "<prestashop>\n    <product>\n        <low_stock_alert>0</low_stock_alert>\n        <additional_delivery_times>1</additional_delivery_times>\n        <associations>\n            <categories>\n                <category>\n                    <id>271</id>\n                </category>\n            </categories>\n            <tags/>\n        </associations>\n        <reference>L690S3BX</reference>\n        <weight>1.0</weight>\n        <id_manufacturer>2</id_manufacturer>\n        <id_category_default>271</id_category_default>\n        <price>30.7</price>\n        <visibility>both</visibility>\n        <name>\n            <language id=\"3\">Copertura piatta M-Line 3m nera</language>\n            <language id=\"2\">Plane schwarze Abdeckung für Alu Profil M-Line 3m</language>\n        </name>\n        <description>\n            <language id=\"3\">Copertura per profilo in alluminio&lt;br&gt;Ideale per tutti i profili M-Line&lt;br&gt;Modello piatto &lt;br&gt;Colore nero&lt;br&gt;Lunghezza 3m</language>\n            <language id=\"2\">Plane schwarze Kunststoffabdeckung (nicht für MBNLED DMX STRIP 30 geeignet)&lt;br&gt;Ideal für alle Profile der M-Line Serie&lt;br&gt;&lt;br&gt;&lt;br&gt;Länge 3m&lt;br&gt;&lt;br&gt;&lt;br&gt;Achtung!&lt;br&gt;Mindestbestellmenge bei den Aluprofilen = 80,00 € netto&lt;br&gt;(Auch Mischware) ansonten Extra Transportkosten 15,00 €&lt;br&gt;wird im System nicht automatisch verrechnet! </language>\n        </description>\n        <description_short>\n            <language id=\"3\">Copertura / schermo modello piatto nero 3m per profilo in alluminio M-Line</language>\n            <language id=\"2\">Plane schwarze Kunststoffabdeckung für Alu Profil M-Line 3m</language>\n        </description_short>\n        <link_rewrite>\n            <language id=\"3\">copertura-piatta-nera-milky-3m.html</language>\n            <language id=\"2\">plane-schwarze-abdeckung-fur-alu-profil-3m.html</language>\n        </link_rewrite>\n        <state>1</state>\n        <active>1</active>\n        <indexed>1</indexed>\n        <show_price>1</show_price>\n        <id_tax_rules_group>5</id_tax_rules_group>\n        <redirect_type>404</redirect_type>\n        <available_for_order>1</available_for_order>\n    </product>\n</prestashop>"
 						},
 						"url": {
-							"raw": "http://prestashop.local/api/products",
-							"protocol": "http",
+							"raw": "{{prestahop_url}}/api/products",
 							"host": [
-								"prestashop",
-								"local"
+								"{{prestahop_url}}"
 							],
 							"path": [
 								"api",
 								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change stock availability",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<prestashop>\n    <stock_available>\n        <id>881</id>\n        <id_product>881</id_product>\n        <id_product_attribute>0</id_product_attribute>\n        <id_shop>1</id_shop>\n        <id_shop_group>0</id_shop_group>\n        <quantity>0</quantity>\n        <depends_on_stock>0</depends_on_stock>\n        <out_of_stock>1</out_of_stock>\n    </stock_available>\n</prestashop>"
+						},
+						"url": {
+							"raw": "{{prestahop_url}}/api/stock_availables",
+							"host": [
+								"{{prestahop_url}}"
+							],
+							"path": [
+								"api",
+								"stock_availables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new product specific price",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<prestashop xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <specific_price>\n        <id></id>\n        <id_shop_group>0</id_shop_group>\n        <id_shop>1</id_shop>\n        <id_cart>0</id_cart>\n        <id_product>251</id_product>\n        <id_product_attribute>0</id_product_attribute>\n        <id_currency>0</id_currency>\n        <id_country>0</id_country>\n        <id_group>0</id_group>\n        <id_customer>0</id_customer>\n        <id_specific_price_rule>0</id_specific_price_rule>\n        <price>-1.0000</price>\n        <from_quantity>5</from_quantity>\n        <reduction>6.83</reduction>\n        <reduction_tax>0</reduction_tax>\n        <reduction_type>amount</reduction_type>\n        <from>0000-00-00 00:00:00</from>\n        <to>0000-00-00 00:00:00</to>\n    </specific_price>\n</prestashop>"
+						},
+						"url": {
+							"raw": "{{prestahop_url}}/api/specific_prices",
+							"host": [
+								"{{prestahop_url}}"
+							],
+							"path": [
+								"api",
+								"specific_prices"
 							]
 						}
 					},
@@ -379,6 +498,62 @@
 								"api",
 								"stock_availables",
 								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update stock availables Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<prestashop>\n    <stock_available>\n        <id_product>1</id_product>\n        <id_product_attribute>0</id_product_attribute>\n        <id_shop>0</id_shop>\n        <id_shop_group>1</id_shop_group>\n        <quantity>0</quantity>\n        <depends_on_stock>0</depends_on_stock>\n        <out_of_stock>1</out_of_stock>\n    </stock_available>\n</prestashop>"
+						},
+						"url": {
+							"raw": "{{prestahop_url}}/api/stock_availables",
+							"host": [
+								"{{prestahop_url}}"
+							],
+							"path": [
+								"api",
+								"stock_availables"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Remove requests",
+			"description": "",
+			"item": [
+				{
+					"name": "Remove specific price",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{prestahop_url}}/api/specific_prices/275",
+							"host": [
+								"{{prestahop_url}}"
+							],
+							"path": [
+								"api",
+								"specific_prices",
+								"275"
 							]
 						}
 					},
