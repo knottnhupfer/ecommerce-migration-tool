@@ -76,6 +76,7 @@ public class MigrateProductImagesExecutor extends AbstractProductsMigrationExecu
 
 	private boolean hasProductAlreadyAppendedImages(Product prod) {
 		// TODO check existing images and print if already uploaded
-		return false;
+		throw new IllegalStateException("NIY");
+//		return false;
 	}
 }

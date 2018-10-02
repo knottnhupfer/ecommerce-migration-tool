@@ -6,8 +6,7 @@ import org.smooth.systems.ec.client.api.ProductId;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-public class ProductMetaDataToMigrate {
+public class MigrationProductDataBuilder {
 
 	private List<MigrationProductData> products = new ArrayList<>();
 
@@ -19,7 +18,7 @@ public class ProductMetaDataToMigrate {
 		addProduct(createProduct(prodId1, "it", prodId2, "de"));
 	}
 
-	public static MigrationProductData createProduct(Long prodId1, String lang1, Long prodId2, String lang2) {
+	public MigrationProductData createProduct(Long prodId1, String lang1, Long prodId2, String lang2) {
 		ProductId prod1 = ProductId.builder().productId(prodId1).langIso(lang1).build();
 		ProductId prod2 = ProductId.builder().productId(prodId2).langIso(lang2).build();
 		return new MigrationProductData(prod1, prod2);

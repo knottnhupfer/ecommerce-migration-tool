@@ -49,7 +49,8 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
 
   private boolean hasProductAlreadyPricingStrategies(Product product) {
     // TODO check if strategies not already on destination system
-    return false;
+		throw new IllegalStateException("NIY");
+//		return false;
   }
 
   private void uploadProductPriceStrategies(ProductPriceStrategies priceStrategy) {

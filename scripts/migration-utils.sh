@@ -21,6 +21,9 @@ if [ ! -f ${UTILS_JAR} ]; then
   exit 9
 fi
 
+echo ""
+echo "${INFO} Action is: $1"
+echo ""
 
 echo ""
 echo "${INFO} Using configuration file ${CONFIG_FILE}"
@@ -43,6 +46,10 @@ case "$1" in
     printInfo "Migrate product images ..."
     ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-image-migrate ${CONFIG_FILE_PARAM}
     ;;
+  migrate-products-from-list)
+    printInfo "Migrate main product tier prices ..."
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-migrate-from-list ${CONFIG_FILE_PARAM}
+    ;;
   migrate-product-tier-prices)
     printInfo "Migrate main product tier prices ..."
     ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-tier-prices-migrate ${CONFIG_FILE_PARAM}
@@ -54,7 +61,16 @@ case "$1" in
     echo " # ########################################################################"
     echo " # Prepare mapping files before products migration:"
     echo ""
-    echo "   Usage: ${0}   generate-merged-product-ids | migrate-products | migrate-product-images | create-led-brands | migrate-product-tier-prices"
+    echo "   Usage: ${0} <action>"
+    echo ""
+    echo "      supported actions:"
+    echo ""
+    echo "          generate-merged-product-ids"
+    echo "          create-led-brands"
+    echo "          migrate-products"
+    echo "          migrate-product-images"
+    echo "          migrate-product-tier-prices"
+    echo "          products-migrate-from-list"
     echo ""
     ;;
 esac

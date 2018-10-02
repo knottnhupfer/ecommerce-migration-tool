@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
@@ -48,6 +49,9 @@ public class Prestashop17Client {
 
   public static final String URL_STOCK_AVAILABLES = "/stock_availables";
   public static final String URL_STOCK_AVAILABLE = "/stock_availables/%d";
+
+  private final static Long SHOP_ID = 1L;
+  private final static Long SHOP_GROUP_ID = 0L;
 
   private final String baseUrl;
 
@@ -119,6 +123,7 @@ public class Prestashop17Client {
       log.trace("Retrieved {} category references", products.getProductRefs().size());
       return products.getProductRefs();
     } catch(RestClientException e) {
+		  e.printStackTrace();
 		  // TODO fix so that if no list since empty it will be recognized somehow, add it to filter?
 		  return Collections.emptyList();
     }
@@ -266,15 +271,22 @@ public class Prestashop17Client {
     return postedManufacturer;
   }
 
+
   public StockAvailable enableIgnoreStock(Long productId) {
+    return enableIgnoreStock(productId, productId, SHOP_ID, SHOP_GROUP_ID);
+  }
+
+  public StockAvailable enableIgnoreStock(Long stockAvaiableId, Long productId, Long shopId, Long shopGroupId) {
     Assert.notNull(productId, "productId is null");
     log.info("enableIgnoreStock({})", productId);
 
     StockAvailable stockAvailable = new StockAvailable();
-    stockAvailable.setId(productId);
+    stockAvailable.setId(stockAvaiableId);
     stockAvailable.setProductId(productId);
     stockAvailable.setDependsOnStock(0L);
     stockAvailable.setOutOfStock(1L);
+    stockAvailable.setShopId(shopId);
+    stockAvailable.setShopGroupId(shopGroupId);
     StockAvailableWrapper wrapper = new StockAvailableWrapper();
     wrapper.setStockAvailable(stockAvailable);
 
@@ -283,7 +295,6 @@ public class Prestashop17Client {
     log.info("Update stockAvailable: {}", stockAvailable);
     return stockAvailable;
   }
-
 
   public List<ProductSpecificPrice> readAllProductSpecificPrices() {
     log.debug("readAllProductSpecificPrices()");

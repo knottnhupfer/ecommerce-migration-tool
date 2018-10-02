@@ -36,7 +36,7 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 		initialize();
 		log.trace("execute()");
 
-		List<MigrationProductData> productList = generateProductsList("it", "de");
+		List<MigrationProductData> productList = generateProductsList();
 		logExecutionStep(log, "Generated basic product data ({}) for migration successfully", productList.size());
 
 		initializeProductsCache(productList);
@@ -59,6 +59,10 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 
 		uploadProductsAndWriteMapping(updatedProducts);
 		logExecutionStep(log, "Successfully migrated all products");
+	}
+
+	protected List<MigrationProductData> generateProductsList() {
+		return generateProductsList("it", "de");
 	}
 
 	private void initializeProductsCache(List<MigrationProductData> productList) {

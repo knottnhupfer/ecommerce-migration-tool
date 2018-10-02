@@ -81,7 +81,46 @@ UPDATE catalog_product_entity_text SET value = '<p>Lampada da tavolo LED pendent
 
 
 
++-------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| sku                     | value                                                                                                                                                                                                                               |
++-------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+<div><iframe width="100%" height="100%" src="https://www.youtube.com/embed/XA72-mzHkAY" frameborder="0"></iframe></div>
+
+
+| L710086  | <iframe src="http://www.youtube.com/embed/mQVCFgF-fr8" height="100%" width="100%" frameborder="0"></iframe>
+| L710396  | <iframe src="http://www.youtube.com/embed/QdELYQ_Cxz4" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/QdELYQ_Cxz4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| L6BCU0   | <iframe src="http://www.youtube.com/embed/krcNjC4cYgU" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/krcNjC4cYgU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| _L6BCU0  | <iframe src="http://www.youtube.com/embed/krcNjC4cYgU" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/krcNjC4cYgU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| _L6BCU0R | <iframe src="http://www.youtube.com/embed/krcNjC4cYgU" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/krcNjC4cYgU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| L51313   | <iframe src="http://www.youtube.com/embed/WFeoqkZVUng" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/WFeoqkZVUng" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| L71B346W | <iframe src="http://www.youtube.com/embed/AcQV82qccfk" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/AcQV82qccfk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| L71B346S | <iframe src="http://www.youtube.com/embed/AcQV82qccfk" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/AcQV82qccfk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| L71B346B | <iframe src="http://www.youtube.com/embed/AcQV82qccfk" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/AcQV82qccfk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| L50002B1 | <iframe src="http://www.youtube.com/embed/D2tjszcVYU8" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/D2tjszcVYU8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| L6BCL0   | <iframe src="http://www.youtube.com/embed/a_z29v8ioc4" height="100%" width="100%" frameborder="0"></iframe>
+| _L6BCL0  | <iframe src="http://www.youtube.com/embed/a_z29v8ioc4" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/a_z29v8ioc4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+
+
+
+# not found
+| K843140  | <iframe src="http://www.youtube.com/embed/sLdFdaMFkoA" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/sLdFdaMFkoA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| lampada pendente custom | <iframe src="http://www.youtube.com/embed/x0zLEJF39jQ" height="100%" width="100%" frameborder="0"></iframe>
+| K843141  | <iframe src="http://www.youtube.com/embed/sLdFdaMFkoA" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/sLdFdaMFkoA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+| DLA12481 | <iframe src="http://www.youtube.com/embed/YbbUPLcSvHM" height="100%" width="100%" frameborder="0"></iframe>
+<div><iframe width="100%" height="250px" src="https://www.youtube.com/embed/YbbUPLcSvHM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
 
 
 -- invalid name

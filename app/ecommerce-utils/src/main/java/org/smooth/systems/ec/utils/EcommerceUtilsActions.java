@@ -13,5 +13,7 @@ public interface EcommerceUtilsActions {
 
   String PRODUCTS_TIER_PRICES_MIGRATION = "products-tier-prices-migrate";
 
+	String PRODUCTS_MIGRATE_FROM_LIST = "products-migrate-from-list";
+
   String CATEGORIES_MIGRATION = "migrate-categories";
 }
