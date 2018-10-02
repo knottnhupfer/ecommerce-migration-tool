@@ -1,0 +1,11 @@
+<ProductSpecificPriceWrapper>
+    <specific_price>
+        <from_quantity>3</from_quantity>
+        <reduction>12.5</reduction>
+        <reduction_tax>1</reduction_tax>
+        <reduction_type>amount</reduction_type>
+        <id_product>5</id_product>
+        <id_shop>1</id_shop>
+        <id_cart>0</id_cart>
+    </specific_price>
+</ProductSpecificPriceWrapper>
