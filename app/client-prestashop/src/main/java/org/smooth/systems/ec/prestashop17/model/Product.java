@@ -84,6 +84,9 @@ public class Product {
   @XmlElement(name = "available_for_order")
   private Long availableForOrder = 1L;
 
+  @XmlElement(name = "minimal_quantity")
+  private Long minimalQuantity = 1L;
+
   @JsonIgnore
   public void addCategoryIds(List<Long> categoryIds) {
     if(defaultCategoryId == null && !ObjectUtils.isEmpty(categoryIds)) {
