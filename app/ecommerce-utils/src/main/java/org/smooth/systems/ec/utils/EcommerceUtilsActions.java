@@ -15,5 +15,7 @@ public interface EcommerceUtilsActions {
 
 	String PRODUCTS_MIGRATE_FROM_LIST = "products-migrate-from-list";
 
+	String PRODUCTS_IMAGE_MIGRATION_MISSING = "products-image-migrate-missing";
+
   String CATEGORIES_MIGRATION = "migrate-categories";
 }

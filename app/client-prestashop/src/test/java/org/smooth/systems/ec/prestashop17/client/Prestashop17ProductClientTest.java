@@ -86,4 +86,12 @@ public class Prestashop17ProductClientTest {
 //      log.info("ProductSpecificPrice: {}", specificPrice);
 //    }
   }
+
+	@Test
+	public void getProductIdsWithImages() {
+		List<Long> productIdsWithImages = client.retrieveProductsIdsWithImages();
+		log.info("Product ids with images: {}", productIdsWithImages.size());
+		log.info("Product ids with images: {}", productIdsWithImages.contains(1026L));
+		log.info("Product ids with images: {}", productIdsWithImages.contains(1027L));
+	}
 }

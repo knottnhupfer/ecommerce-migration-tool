@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -49,6 +50,8 @@ public class Prestashop17Client {
 
   public static final String URL_STOCK_AVAILABLES = "/stock_availables";
   public static final String URL_STOCK_AVAILABLE = "/stock_availables/%d";
+
+	public static final String URL_PRODUCTS_IMAGES = "/images/products";
 
   private final static Long SHOP_ID = 1L;
   private final static Long SHOP_GROUP_ID = 0L;
@@ -327,6 +330,11 @@ public class Prestashop17Client {
     log.info("Wrote product specific price: {}", response.getBody().getSpecificPrice());
     return response.getBody().getSpecificPrice();
   }
+
+	public List<Long> retrieveProductsIdsWithImages() {
+		ResponseEntity<ProductImagesProductIds> response = client.getForEntity(baseUrl + URL_PRODUCTS_IMAGES, ProductImagesProductIds.class);
+		return response.getBody().getImages().stream().map(productId -> productId.getId()).collect(Collectors.toList());
+	}
 
   public void removeProductSpecificPrice(Long productSpecificPriceId) {
     log.info("removeProductSpecificPrice({})", productSpecificPriceId);

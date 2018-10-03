@@ -57,6 +57,10 @@ public interface MigrationSystemReader extends RegisterableComponent {
 
   List<IProductMetaData> readAllProductsMetaData();
 
+	default List<Long> readAllProductsImagesProductIds() {
+		throw new NotImplementedException();
+	}
+
   default List<Long> readAllProductSpecificPrices() {
     throw new NotImplementedException();
   }

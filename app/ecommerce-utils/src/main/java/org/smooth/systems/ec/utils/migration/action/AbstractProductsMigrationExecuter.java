@@ -15,9 +15,7 @@ import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by David Monichi <david.monichi@smooth-systems.solutions>
@@ -54,11 +52,14 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
     productIdsSourceSystem = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
     productIdsSourceSystem.initializeIdMapperFromFile();
 
-    reader = readerWriterFactory.getMigrationReader();
-    writer = readerWriterFactory.getMigrationWriter();
-
+		initializeReaderAndWriter();
 		populateDestinationSystemProductCache();
   }
+
+	protected void initializeReaderAndWriter() {
+		reader = readerWriterFactory.getMigrationReader();
+		writer = readerWriterFactory.getMigrationWriter();
+	}
 
 	protected void logExecutionStep(Logger logger, String msg, Object... params) {
 		logger.info("EXECUTION: " + msg, params);
@@ -75,19 +76,13 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
     return existingProductsDestinationSystem.get(sku).getProductId();
 	}
 
-	private void populateDestinationSystemProductCache() {
-    log.info("Read existing products from destination system ...");
-		try {
-			existingProductsDestinationSystem = new HashMap<>();
-			MigrationSystemReader reader = readerWriterFactory.getSystemReaderForType(config.getDestinationSystemName());
-			List<IProductMetaData> productMetaData = reader.readAllProductsMetaData();
-			productMetaData.forEach(prod -> existingProductsDestinationSystem.put(prod.getSku(), prod));
-			log.info("Retrieved and cached {} products meta data", productMetaData.size());
-		} catch (NotFoundException e) {
-			String msg = String.format("Destination system '{}' does not provide any reader.");
-			log.error(msg);
-			throw new RuntimeException(msg);
-		}
+	protected void populateDestinationSystemProductCache() {
+		log.info("Read existing products from destination system ...");
+		existingProductsDestinationSystem = new HashMap<>();
+		MigrationSystemReader reader = getReaderForDestinationSystem();
+		List<IProductMetaData> productMetaData = reader.readAllProductsMetaData();
+		productMetaData.forEach(prod -> existingProductsDestinationSystem.put(prod.getSku(), prod));
+		log.info("Retrieved and cached {} products meta data", productMetaData.size());
 	}
 
   protected List<ProductId> retrieveMainProductIds() {
@@ -110,4 +105,27 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
     productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
     return mainProductIds;
   }
+
+	protected IProductMetaData getProductsMetaDataFromDestinationSystemForSku(String sku) {
+  	if(!doesProductWithSkuExists(sku)) {
+			String msg = String.format("No product exists on destination system with sku '{}'", sku);
+			log.error(msg);
+			throw new IllegalStateException(msg);
+		}
+		return existingProductsDestinationSystem.get(sku);
+	}
+
+  protected List<IProductMetaData> getProductsMetaDataFromDestinationSystem() {
+		return Collections.unmodifiableList(new ArrayList<>(existingProductsDestinationSystem.values()));
+	}
+
+	protected MigrationSystemReader getReaderForDestinationSystem() {
+		try {
+			return readerWriterFactory.getSystemReaderForType(config.getDestinationSystemName());
+		} catch (NotFoundException e) {
+			String msg = String.format("Destination system '%s' does not provide any reader.", config.getDestinationSystemName());
+			log.error(msg);
+			throw new RuntimeException(msg);
+		}
+	}
 }

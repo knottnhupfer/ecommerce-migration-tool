@@ -100,7 +100,12 @@ public class Prestashop17ObjectReader extends AbstractPrestashop17Connector impl
 		return products.stream().map(prod -> Prestashop17ProductConverter.convertFromPrestashop17Product(prod)).collect(Collectors.toList());
 	}
 
-  @Override
+	@Override
+	public List<Long> readAllProductsImagesProductIds() {
+  	return client.retrieveProductsIdsWithImages();
+	}
+
+	@Override
   public  List<Long> readAllProductSpecificPrices() {
     throw new NotImplementedException();
   }
