@@ -1,6 +1,7 @@
 package org.smooth.systems.ec.client.api;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.*;
@@ -64,4 +65,8 @@ public interface MigrationSystemReader extends RegisterableComponent {
   default List<Long> readAllProductSpecificPrices() {
     throw new NotImplementedException();
   }
+
+	default Product readProductBySku(String sku, String langCode) {
+		throw new NotImplementedException();
+	}
 }

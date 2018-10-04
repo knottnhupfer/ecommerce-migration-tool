@@ -18,8 +18,9 @@ public class MigrationProductImagesObject {
 
 	private List<File> imageUrls;
 
-	public MigrationProductImagesObject(Long prodId, List<File> imageUrls) {
-		srcProductId = prodId;
+	public MigrationProductImagesObject(Long srcProdId, Long dstProdId, List<File> imageUrls) {
+		srcProductId = srcProdId;
+		dstProductId = dstProdId;
 		this.imageUrls = imageUrls != null ? imageUrls : new ArrayList<>();
 	}
 }

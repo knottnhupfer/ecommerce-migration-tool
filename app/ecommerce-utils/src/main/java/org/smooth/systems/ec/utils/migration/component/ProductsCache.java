@@ -1,7 +1,9 @@
 package org.smooth.systems.ec.utils.migration.component;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
@@ -12,21 +14,27 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
-public class ProductsCache {
+public final class ProductsCache {
+
+	private MigrationSystemReader reader;
 
   private HashMap<Long, Product> products = new HashMap<>();
 
-  private ProductsCache() {
+  private ProductsCache(MigrationSystemReader reader) {
+  	this.reader = reader;
   }
+
+	public static ProductsCache createProductsCache(MigrationSystemReader reader) {
+		return createProductsCache(reader, Collections.emptyList(), true);
+	}
 
   public static ProductsCache createProductsCache(MigrationSystemReader reader, List<ProductId> productsInfo) {
     return createProductsCache(reader, productsInfo, true);
   }
 
   public static ProductsCache createProductsCache(MigrationSystemReader reader, List<ProductId> productsInfo, boolean ignoreDeactivatedProducts) {
-    ProductsCache cache = new ProductsCache();
-    cache.initializeProductsCache(reader, productsInfo, ignoreDeactivatedProducts);
+    ProductsCache cache = new ProductsCache(reader);
+    cache.initializeProductsCache(productsInfo, ignoreDeactivatedProducts);
     return cache;
   }
 
@@ -42,9 +50,7 @@ public class ProductsCache {
 		log.trace("getProductBySku({})", sku);
 		List<Product> matchingProducts = products.values().stream().filter(p -> sku.equalsIgnoreCase(p.getSku())).collect(Collectors.toList());
 		if(matchingProducts.isEmpty()) {
-			String msg = String.format("Unable to find product with sku '%s'", sku);
-			log.error(msg);
-			throw new IllegalStateException(msg);
+			return reader.readProductBySku(sku, "it");
 		} else if(matchingProducts.size() != 1) {
 			String msg = String.format("Found more then 1 product [size=%d] with sku '%s'", matchingProducts.size(), sku);
 			log.error(msg);
@@ -53,7 +59,7 @@ public class ProductsCache {
 		return matchingProducts.get(0);
 	}
 
-  private void initializeProductsCache(MigrationSystemReader reader, List<ProductId> productsInfo, boolean ignoreDeactivatedProducts) {
+  private void initializeProductsCache(List<ProductId> productsInfo, boolean ignoreDeactivatedProducts) {
     log.info("initializeProductsCache({})", productsInfo);
     List<Product> retrievedProducts = reader.readAllProducts(productsInfo);
     for(Product prod : retrievedProducts) {

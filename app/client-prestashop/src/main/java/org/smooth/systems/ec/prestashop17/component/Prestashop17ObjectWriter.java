@@ -103,7 +103,7 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   @Override
   public void uploadProductImages(Long prodId, File productImage) {
     ImageUploadResponse.UploadedImage image = client.uploadProductImage(prodId, productImage);
-    log.info("Successfully uploaded product image.");
+    log.debug("Successfully uploaded product image.");
   }
 
   @Override

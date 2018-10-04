@@ -55,13 +55,15 @@ public abstract class AbstractImagesMigrationExecutor extends AbstractProductsMi
 		File imagesUrl = new File(config.getProductsImagesDirectory());
 		List<String> imageUrls = product.getProductImageUrls();
 		List<File> absoluteImagesPaths = imageUrls.stream().map(url -> new File(imagesUrl, url)).collect(Collectors.toList());
-		return new MigrationProductImagesObject(productIdDestinationSystem, absoluteImagesPaths);
+		return new MigrationProductImagesObject(product.getId(), productIdDestinationSystem, absoluteImagesPaths);
 	}
 
 	private void uploadProductImages(MigrationProductImagesObject productImagesInfo) {
 		log.info("Upload product images: {}", productImagesInfo);
-//		for (File imageUrl : productImagesInfo.getImageUrls()) {
-//			writer.uploadProductImages(productImagesInfo.getDstProductId(), imageUrl);
-//		}
+		for (File imageUrl : productImagesInfo.getImageUrls()) {
+			writer.uploadProductImages(productImagesInfo.getDstProductId(), imageUrl);
+		}
+		log.info("Uploaded successfully product images from product with id: {} to destination id: {}",
+			productImagesInfo.getSrcProductId(), productImagesInfo.getDstProductId());
 	}
 }

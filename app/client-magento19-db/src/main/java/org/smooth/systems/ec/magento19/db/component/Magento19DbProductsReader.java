@@ -79,27 +79,36 @@ public class Magento19DbProductsReader {
     return product;
   }
 
+	public Product getProduct(String sku, String langCode) {
+		Assert.notNull(sku, "sku is null");
+		Magento19Product retrievedProduct = productRepo.findBySku(sku);
+		return populateRetrievedProduct(langCode, retrievedProduct, String.format("sku: %s", sku));
+	}
+
   public Product getProduct(Long productId, String langCode) {
     Assert.notNull(productId, "productId is null");
-
     Magento19Product retrievedProduct = productRepo.findById(productId);
-    Assert.notNull(retrievedProduct, "no product found for id " + productId);
-    LocalDateTime creationDate = LocalDateTime.ofInstant(retrievedProduct.getCreatedAt().toInstant(), ZoneId.systemDefault());
-    Product product = new Product(retrievedProduct.getId(), retrievedProduct.getSku(), creationDate);
+		return populateRetrievedProduct(langCode, retrievedProduct, String.format("id: %d", productId));
+	}
 
-    updateProductPrice(product);
-    updateCategories(product);
-    updateProductVisibility(product);
-    updateProductManufacturer(product);
-    updateDimensionAndShippingForProduct(product);
-    updateImagesUrls(product);
-    updateProductAttributes(product);
+	private Product populateRetrievedProduct(String langCode, Magento19Product retrievedProduct, String errorMsg) {
+		Assert.notNull(retrievedProduct, String.format("no product found for %s", errorMsg));
+		LocalDateTime creationDate = LocalDateTime.ofInstant(retrievedProduct.getCreatedAt().toInstant(), ZoneId.systemDefault());
+		Product product = new Product(retrievedProduct.getId(), retrievedProduct.getSku(), creationDate);
 
-    product.getAttributes().add(getTranslateablAttributesForProduct(productId, langCode));
-    return product;
-  }
+		updateProductPrice(product);
+		updateCategories(product);
+		updateProductVisibility(product);
+		updateProductManufacturer(product);
+		updateDimensionAndShippingForProduct(product);
+		updateImagesUrls(product);
+		updateProductAttributes(product);
 
-  public ProductPriceStrategies getProductPriceStrategy(Long productId) {
+		product.getAttributes().add(getTranslateablAttributesForProduct(retrievedProduct.getId(), langCode));
+		return product;
+	}
+
+	public ProductPriceStrategies getProductPriceStrategy(Long productId) {
     ProductPriceStrategies strategies = new ProductPriceStrategies();
     List<Magento19ProductTierPrice> tierPrices = productTierPriceRepo.findByProductId(productId);
     strategies.setProductId(productId);

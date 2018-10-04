@@ -1,7 +1,6 @@
 package org.smooth.systems.ec.utils.migration.action;
 
 import lombok.extern.slf4j.Slf4j;
-import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.springframework.stereotype.Component;
@@ -16,12 +15,10 @@ import java.util.stream.Collectors;
 @Component
 public class MigrateMissingProductImagesExecutor extends AbstractImagesMigrationExecutor {
 
-	private List<Long> productIdsWithImages;
-
 	@Override
 	public void execute() {
 		initialize();
-		initializeProductCacheAndRetrieveList();
+		initializeEmptyProductCache();
 		log.info("Initialized readers and writer ...");
 
 		List<IProductMetaData> productsWithMissingImages = filterDestinationProductsWithNoImages();

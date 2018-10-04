@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -103,5 +104,11 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 	public List<IProductMetaData> readAllProductsMetaData() {
 		log.debug("readAllProductsMetaData()");
 		throw new RuntimeException("Not implemented yet");
+	}
+
+	@Override
+	public Product readProductBySku(String sku, String langCode) {
+		log.debug("readProductBySku({}, {})", sku, langCode);
+		return productsReader.getProduct(sku, langCode);
 	}
 }

@@ -8,5 +8,7 @@ import org.springframework.data.repository.Repository;
  */
 public interface ProductRepository extends Repository<Magento19Product, Long> {
 
+	Magento19Product findBySku(String sku);
+
   Magento19Product findById(Long categoryId);
 }

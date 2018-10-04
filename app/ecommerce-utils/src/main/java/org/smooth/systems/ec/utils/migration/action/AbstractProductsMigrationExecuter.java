@@ -100,7 +100,17 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
     return mainProductIds;
   }
 
+	protected void initializeEmptyProductCache() {
+  	if(productsCache != null) {
+  		throw new IllegalStateException("Product cache already initialized.");
+		}
+		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader());
+	}
+
   protected List<ProductId> initializeProductCacheAndRetrieveList() {
+		if(productsCache != null) {
+			throw new IllegalStateException("Product cache already initialized.");
+		}
     List<ProductId> mainProductIds = retrieveMainProductIds();
     productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
     return mainProductIds;

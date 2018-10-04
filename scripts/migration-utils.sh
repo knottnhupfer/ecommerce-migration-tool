@@ -75,7 +75,7 @@ case "$1" in
     echo "          migrate-product-images"
     echo "          migrate-product-tier-prices"
     echo "          migrate-missing-product-images"
-    echo "          products-migrate-from-list"
+    echo "          migrate-products-from-list"
     echo ""
     ;;
 esac
