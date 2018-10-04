@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
 @Component
 public class MigrateMissingProductImagesExecutor extends AbstractImagesMigrationExecutor {
 
+	public MigrateMissingProductImagesExecutor() {
+		super(EcommerceUtilsActions.PRODUCTS_IMAGE_MIGRATION_MISSING);
+	}
+
 	@Override
 	public void execute() {
 		initialize();
@@ -33,10 +37,5 @@ public class MigrateMissingProductImagesExecutor extends AbstractImagesMigration
 	private List<IProductMetaData> filterDestinationProductsWithNoImages() {
 		List<IProductMetaData> products = getProductsMetaDataFromDestinationSystem();
 		return products.stream().filter(this::hasProductNoUploadedImages).collect(Collectors.toList());
-	}
-
-	@Override
-	public String getActionName() {
-		return EcommerceUtilsActions.PRODUCTS_IMAGE_MIGRATION_MISSING;
 	}
 }

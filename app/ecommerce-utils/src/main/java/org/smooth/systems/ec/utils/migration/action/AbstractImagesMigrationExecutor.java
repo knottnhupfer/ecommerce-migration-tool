@@ -15,6 +15,10 @@ public abstract class AbstractImagesMigrationExecutor extends AbstractProductsMi
 
 	private List<Long> productIdsWithImages;
 
+	public AbstractImagesMigrationExecutor(String actionName) {
+		super(actionName);
+	}
+
 	protected boolean hasProductNoUploadedImages(IProductMetaData iProductMetaData) {
 		return hasProductNoUploadedImages(iProductMetaData.getSku());
 	}

@@ -11,6 +11,7 @@ import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
+import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 
   @Autowired
   protected MigrationSystemReaderAndWriterFactory readerWriterFactory;
+
+  private String actionName;
 
   /**
    * Maps the product id from the alternative language to the product id of the
@@ -47,7 +50,16 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 
 	private HashMap<String, IProductMetaData> existingProductsDestinationSystem;
 
-  protected void initialize() {
+	public AbstractProductsMigrationExecuter(String actionName) {
+		this.actionName = actionName;
+	}
+
+	@Override
+	public String getActionName() {
+		return actionName;
+	}
+
+	protected void initialize() {
     log.info("Read product merging mapping from: {}", config.getGeneratedProductsMergingFile());
     productIdsSourceSystem = new ObjectIdMapper(config.getGeneratedProductsMergingFile());
     productIdsSourceSystem.initializeIdMapperFromFile();

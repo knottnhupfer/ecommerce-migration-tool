@@ -26,9 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 
-	@Override
-	public String getActionName() {
-		return EcommerceUtilsActions.PRODUCTS_MIGRATION;
+	public MigrateProductsExecutor() {
+		super(EcommerceUtilsActions.PRODUCTS_MIGRATION);
 	}
 
 	@Override

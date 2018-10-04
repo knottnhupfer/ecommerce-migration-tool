@@ -17,10 +17,9 @@ import java.util.List;
 @Component
 public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationExecuter {
 
-  @Override
-  public String getActionName() {
-    return EcommerceUtilsActions.PRODUCTS_TIER_PRICES_MIGRATION;
-  }
+	public MigrateProductTierPricesExecutor() {
+		super(EcommerceUtilsActions.PRODUCTS_TIER_PRICES_MIGRATION);
+	}
 
   @Override
   public void execute() {
