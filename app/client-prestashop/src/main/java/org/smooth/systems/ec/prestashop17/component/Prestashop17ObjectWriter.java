@@ -125,7 +125,17 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
     }
   }
 
-  @Override
+	@Override
+	public void writeRelatedProducts(RelatedProducts relatedProducts) {
+		log.debug("writeRelatedProducts({})", relatedProducts);
+		// TODO
+		// retrieve current product from system
+		// add related products to product
+		// upload new merged product
+		throw new NotImplementedException();
+	}
+
+	@Override
   public void removeProductSpecificPrices(Long productSpecificPriceId) {
     log.debug("removeProductSpecificPrices({})", productSpecificPriceId);
     client.removeProductSpecificPrice(productSpecificPriceId);

@@ -75,6 +75,10 @@ public interface MigrationSystemWriter extends RegisterableComponent {
 
   void writeProductPriceTier(ProductPriceStrategies priceStrategy);
 
+	default void writeRelatedProducts(RelatedProducts relatedProducts) {
+		throw new NotImplementedException();
+	}
+
   default void removeProductSpecificPrices(Long productSpecificPriceId) {
     throw new NotImplementedException();
   }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<completeProduct>
+    <id>965</id>
+    <lowStockAlert>0</lowStockAlert>
+    <deliveryType>1</deliveryType>
+    <associations>
+        <categories>
+            <categoryId>554</categoryId>
+        </categories>
+        <images>
+            <id>3206</id>
+        </images>
+        <images>
+            <id>3207</id>
+        </images>
+        <images>
+            <id>6648</id>
+        </images>
+        <images>
+            <id>6649</id>
+        </images>
+    </associations>
+    <reference>L58103G5</reference>
+    <weight>1500.000000</weight>
+    <manufacturerId>2</manufacturerId>
+    <defaultCategoryId>554</defaultCategoryId>
+    <netPrice>362.15</netPrice>
+    <visibility>both</visibility>
+    <names>
+        <id>2</id>
+        <value>MBNLED RGBAW Multi Netzteil 3G 12V 90W CA</value>
+    </names>
+    <descriptions>
+        <id>2</id>
+        <value>Die MBNLED RGBAW MULTI Netzteile dienen als Stromversorgung für alle PROLED RGBA, RGBW oder RGBAW Produkte. Mit den MBNLED RGBAW MULTI Netzteilen können fantastische Farbmischungen und Farbwechsel für die PROLED Produkte erzeugt werden (durch Autoprogramme oder per DMX, DALI oder 1-10 V Ansteuerung). Auch kann eine beliebige feste Farbe eingestellt und gedimmt werden. Die Autoprogramme können mit dem PC-DMX/RDM INTERFACE und der zugehörigen Software per RDM beliebig geändert werden. Ebenso können mit dem PC-DMX/RDM Interface auch sämtliche Einstellungen per RDM vorgenommen werden. Bei Verwendung des IR Receivers oder RF Receivers können sämtliche Programme per IR oder RF Fernbedienung abgerufen werden.
+			Es sind zwei Versionen erhältlich:
+			CA (Common Anode – gemeinsamer Plus) und CC (Common Cathode – gemeinsamer Minus). Jede dieser Version ist mit einer Ausgangsspannung von 5 Volt, 12 Volt oder 24 Volt und in verschiedenen Leistungsklassen (50 - 300 Watt) erhältlich. Auch können die MBNLED RGBAW MULTI Netzteile als 5-Kanal Dimmer für die monochromen PROLED Produkte eingesetzt werden.
+			Jedes Netzteil hat fünf Kanäle – R (rot), G (grün), B (blau), A (amber), W (weiß)
+			MULTI Eingang: DMX 512, DALI, 1-10 V ansteuerbar
+			Fernsteuerbar per RDM mit dem PC-DMX/RDM INTERFACE und der zugehörigen Software
+			Fernsteuerbar per IR oder RF Fernbedienung bei Verwendung des IR Receivers oder RF Receivers
+			16 eingebaute Standalone Programme (mit PC-DMX/RDM Interface beliebig änderbar)
+			Jedes Programm mit Geschwindigkeitseinstellung von 0,05 Sek. – 30 Min.
+			Gewünschte Farbe manuell einstell- und dimmbar
+			Eine Farbe als Defaultfarbe speicherbar, die nach dem Aus- und Wiedereinschalten des Gerätes wieder ausgegeben wird
+			Einstellbare PWM Frequenz von 80-1200 Hz
+			Überhitzungsschutz mit Temperaturanzeige im Display und per RDM
+			Master – Slave Betrieb möglich
+			Grafik LCD Display und vier Bedientasten
+			Ausgangsspannung: 12 V
+			Leistung: 90 Watt
+			Version: Common Anode
+			Gewicht: 2,9 kg
+			Maße (b x h x t): 240 x 75 x 300 mm</value>
+    </descriptions>
+    <shortDescriptions>
+        <id>2</id>
+        <value>MBNLED Netzteil
+			RGBWA MULTI 3G
+			12 Volt, 90 Watt
+			Common Anode</value>
+    </shortDescriptions>
+    <friendlyUrls>
+        <id>2</id>
+        <value>mbnled-rgbaw-multi-netzteil-3g-12v-90w-cahtml</value>
+    </friendlyUrls>
+    <state>1</state>
+    <active>1</active>
+    <indexed>1</indexed>
+    <showPrice>1</showPrice>
+    <taxRuleGroup>1</taxRuleGroup>
+    <redirectType>404</redirectType>
+    <availableForOrder>1</availableForOrder>
+    <minimalQuantity>0</minimalQuantity>
+    <supplierId>0</supplierId>
+    <newStatus></newStatus>
+    <cacheDefaultAttribute>0</cacheDefaultAttribute>
+    <defaultImageId>3206</defaultImageId>
+    <defaultCombinationId></defaultCombinationId>
+    <positionInCategory>0</positionInCategory>
+    <type>simple</type>
+    <shopDefaultId>1</shopDefaultId>
+    <supplierReference></supplierReference>
+    <location></location>
+    <width>0.000000</width>
+    <height>0.000000</height>
+    <depth>0.000000</depth>
+    <quantityDiscount>0</quantityDiscount>
+    <ean13></ean13>
+    <isbn></isbn>
+    <upc></upc>
+    <cacheIsPack>0</cacheIsPack>
+    <cacheHasAttachments>0</cacheHasAttachments>
+    <isVirtual>0</isVirtual>
+    <onSale>0</onSale>
+    <onlineOnly>0</onlineOnly>
+    <ecotax>0.000000</ecotax>
+    <lowStockThreshold>0</lowStockThreshold>
+    <wholesalePrice>0.000000</wholesalePrice>
+    <unity></unity>
+    <unitPriceRatio>0.000000</unitPriceRatio>
+    <additionalShippingCost>0.00</additionalShippingCost>
+    <customizable>0</customizable>
+    <textFields>0</textFields>
+    <uploadableFiles>0</uploadableFiles>
+    <typeRedirectedId>0</typeRedirectedId>
+    <availableDate>0000-00-00</availableDate>
+    <showCondition>0</showCondition>
+    <condition>new</condition>
+    <advancedStockManagement>0</advancedStockManagement>
+    <dateAdd>2018-06-24 10:30:43</dateAdd>
+    <dateUpd>2018-10-06 12:37:21</dateUpd>
+    <packStockType>0</packStockType>
+</completeProduct>

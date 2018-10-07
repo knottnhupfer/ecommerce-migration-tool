@@ -11,7 +11,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.prestashop17.Prestashop17ClientConstants;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
@@ -25,6 +27,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestClientException;
@@ -64,6 +67,7 @@ public class Prestashop17Client {
     Assert.notNull(authToken, "authToken is null");
     this.baseUrl = baseUrl;
     client = new RestTemplate();
+		client.getMessageConverters().add(0, new Jaxb2RootElementHttpMessageConverter());
     client.getInterceptors().add(new BasicAuthorizationInterceptor(authToken, "invalid"));
     log.info("Initialized client for url: {}", baseUrl);
   }
@@ -177,6 +181,30 @@ public class Prestashop17Client {
     ProductWrapper categoryWrapper = response.getBody();
     return categoryWrapper.getProduct();
   }
+
+	public CompleteProduct getCompleteProduct(Long productId) {
+		String url = baseUrl + String.format(URL_PRODUCT, productId);
+		log.debug("getProduct({})", url);
+		ResponseEntity<CompleteProductWrapper> completeResponse = client.getForEntity(url, CompleteProductWrapper.class);
+
+		client.getMessageConverters().add(0, new Jaxb2RootElementHttpMessageConverter());
+		ResponseEntity<String> response = client.getForEntity(url, String.class);
+//		client.getMessageConverters().add(0, new Jaxb2RootElementHttpMessageConverter());
+		String responseAsString = response.getBody();
+		responseAsString = responseAsString.replaceAll("<!\\[CDATA\\[", "");
+		responseAsString = responseAsString.replaceAll("]]>", "");
+		responseAsString = responseAsString.replaceAll(" xlink:href=\".*\"", "");
+		responseAsString = responseAsString.replaceAll("<br />", "");
+		responseAsString = responseAsString.replaceAll("<br/>", "");
+		responseAsString = responseAsString.replaceAll("<p>", "");
+		responseAsString = responseAsString.replaceAll("</p>", "");
+		try {
+			XmlMapper xmlMapper = new XmlMapper();
+			return xmlMapper.readValue(responseAsString, CompleteProductWrapper.class).getProduct();
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
   public Category writeCategory(PrestashopLanguageTranslatorCache languagesCache, Category category) {
     log.debug("writeCategory({})", category);
@@ -341,12 +369,16 @@ public class Prestashop17Client {
     client.delete(baseUrl + Prestashop17ClientConstants.getProductSpecificPriceUrl(productSpecificPriceId));
   }
 
+	public void uploadRelatedProducts() {
+		throw new IllegalStateException("NIY");
+	}
+
   private void updateProductStock(Product product) {
     // FIXME read product amount and set it if not null
     enableIgnoreStock(product.getId());
   }
 
-  private <T> String objectToString(T objectWrapper, Class<T> clazz) {
+  public <T> String objectToString(T objectWrapper, Class<T> clazz) {
     try {
       JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
       Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -388,4 +420,29 @@ public class Prestashop17Client {
   private String getProductImageUrl(Long productId) {
     return String.format(baseUrl + URL_PRODUCT_IMAGE, productId);
   }
+
+	public CompleteProduct updateProduct(CompleteProduct product) {
+		log.debug("updateProduct({})", product);
+		CompleteProductWrapper productWrapper = new CompleteProductWrapper();
+		productWrapper.setProduct(product);
+
+		putXmlObject(baseUrl + URL_PRODUCTS, productWrapper);
+		return getCompleteProduct(product.getId());
+	}
+
+	private void putXmlObject(String url, Object object) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_XML);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_XML));
+
+		XmlMapper xmlMapper = new XmlMapper();
+		try {
+			String objectAsString =  Prestashop17ClientUtil.convertToUTF8(xmlMapper.writeValueAsString(object));
+			HttpEntity<String> httpEntity = new HttpEntity<>(objectAsString, headers);
+			ResponseEntity<String> response = client.exchange(url, HttpMethod.PUT, httpEntity, String.class);
+			Assert.isTrue(response.getStatusCode().is2xxSuccessful());
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

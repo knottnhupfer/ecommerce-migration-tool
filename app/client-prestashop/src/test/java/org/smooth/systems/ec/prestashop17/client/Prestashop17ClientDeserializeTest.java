@@ -1,23 +1,23 @@
 package org.smooth.systems.ec.prestashop17.client;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import org.junit.Test;
-import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
-import org.smooth.systems.ec.prestashop17.model.Language;
+import org.smooth.systems.ec.prestashop17.model.*;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.smooth.systems.ec.prestashop17.model.ProductSpecificPrice;
+import org.smooth.systems.ec.prestashop17.util.Prestashop17ClientUtil;
 import org.springframework.util.Assert;
+import org.springframework.util.StreamUtils;
 
 @Slf4j
 public class Prestashop17ClientDeserializeTest {
@@ -132,4 +132,46 @@ public class Prestashop17ClientDeserializeTest {
     assertEquals(new Long(270),productResponse.getProductRefs().get(0).getId());
     assertEquals("http://prestashop.local/api/products/270",productResponse.getProductRefs().get(0).getHref());
   }
+
+	@Test
+	public void deserializeCompleteProduct() throws IOException {
+		XmlMapper xmlMapper = new XmlMapper();
+		InputStream is = Prestashop17ClientDeserializeTest.class.getResourceAsStream("/example_responses/product_complete_production_1-7-3.xml");
+		String fileAsString = convert(is);
+		fileAsString = fileAsString.replaceAll("<br />", "");
+		fileAsString = fileAsString.replaceAll("<br/>", "");
+		CompleteProductWrapper product = xmlMapper.readValue(fileAsString, CompleteProductWrapper.class);
+//		log.info("Product: {}", product);
+
+
+
+
+
+		try {
+//			XmlMapper xmlMapper = new XmlMapper();
+			String objectAsString = Prestashop17ClientUtil.convertToUTF8(xmlMapper.writeValueAsString(product));
+			System.out.println(objectAsString);
+		} catch(Exception e) {
+
+		}
+	}
+
+	@Test
+	public void deserializeTestList() throws IOException {
+		XmlMapper xmlMapper = new XmlMapper();
+		File inputFile = new File("src/test/resources/example_responses/testList.xml");
+		TestList product = xmlMapper.readValue(inputFile, TestList.class);
+		assertThat(product.getFriendlyUrls().size()).isEqualTo(1);
+		assertThat(product.getFriendlyUrls().get(0).getId()).isEqualTo(2);
+		assertThat(product.getFriendlyUrls().get(0).getValue().trim()).isEqualTo("led-scheinwerfer-powershine-mk2-d-dynamisch-weisshtml");
+		log.info("Product: {}", product);
+	}
+
+	private static String convert(InputStream is) {
+		try {
+			return StreamUtils.copyToString(is, Charset.forName("UTF-8"));
+		} catch(Exception e) {
+			throw new IllegalStateException(e);
+		}
+	}
 }

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+	<product>
+		<id>5</id>
+		<id_manufacturer>2</id_manufacturer>
+		<id_supplier>0</id_supplier>
+		<id_category_default>531</id_category_default>
+		<new></new>
+		<cache_default_attribute>0</cache_default_attribute>
+		<id_default_image xlink:href="http://prestashop.local/api/images/products/5/11" notFilterable="true">11</id_default_image>
+		<id_default_combination notFilterable="true"></id_default_combination>
+		<id_tax_rules_group>1</id_tax_rules_group>
+		<position_in_category notFilterable="true">2</position_in_category>
+		<manufacturer_name notFilterable="true">MBNLED</manufacturer_name>
+		<quantity notFilterable="true">0</quantity>
+		<type notFilterable="true">simple</type>
+		<id_shop_default>1</id_shop_default>
+		<reference>AL3696</reference>
+		<supplier_reference></supplier_reference>
+		<location></location>
+		<width>0.000000</width>
+		<height>0.000000</height>
+		<depth>0.000000</depth>
+		<weight>4500.000000</weight>
+		<quantity_discount>0</quantity_discount>
+		<ean13></ean13>
+		<isbn></isbn>
+		<upc></upc>
+		<cache_is_pack>0</cache_is_pack>
+		<cache_has_attachments>0</cache_has_attachments>
+		<is_virtual>0</is_virtual>
+		<state>1</state>
+		<additional_delivery_times>1</additional_delivery_times>
+		<delivery_in_stock><language id="2" xlink:href="http://prestashop.local/api/languages/2"></language></delivery_in_stock>
+		<delivery_out_stock><language id="2" xlink:href="http://prestashop.local/api/languages/2"></language></delivery_out_stock>
+		<on_sale>0</on_sale>
+		<online_only>0</online_only>
+		<ecotax>0.000000</ecotax>
+		<minimal_quantity>0</minimal_quantity>
+		<low_stock_threshold></low_stock_threshold>
+		<low_stock_alert>0</low_stock_alert>
+		<price>3933.880000</price>
+		<wholesale_price>0.000000</wholesale_price>
+		<unity></unity>
+		<unit_price_ratio>0.000000</unit_price_ratio>
+		<additional_shipping_cost>0.00</additional_shipping_cost>
+		<customizable>0</customizable>
+		<text_fields>0</text_fields>
+		<uploadable_files>0</uploadable_files>
+		<active>1</active>
+		<redirect_type>404</redirect_type>
+		<id_type_redirected>0</id_type_redirected>
+		<available_for_order>1</available_for_order>
+		<available_date>0000-00-00</available_date>
+		<show_condition>0</show_condition>
+		<condition>new</condition>
+		<show_price>1</show_price>
+		<indexed>1</indexed>
+		<visibility>both</visibility>
+		<advanced_stock_management>0</advanced_stock_management>
+		<date_add>2018-06-24 10:23:24</date_add>
+		<date_upd>2018-06-24 10:23:24</date_upd>
+		<pack_stock_type>0</pack_stock_type>
+		<meta_description><language id="2" xlink:href="http://prestashop.local/api/languages/2"></language></meta_description>
+		<meta_keywords><language id="2" xlink:href="http://prestashop.local/api/languages/2"></language></meta_keywords>
+		<meta_title><language id="2" xlink:href="http://prestashop.local/api/languages/2"></language></meta_title>
+		<link_rewrite><language id="2" xlink:href="http://prestashop.local/api/languages/2">led-scheinwerfer-powershine-mk2-d-dynamisch-weisshtml</language></link_rewrite>
+		<name><language id="2" xlink:href="http://prestashop.local/api/languages/2">Led Scheinwerfer Powershine MK2 D dynamisch weiß</language></name>
+		<description><language id="2" xlink:href="http://prestashop.local/api/languages/2">Led Architektur Outdoor Scheinwerfer Powershine MK2 D
+<br />Lichtfarbe dynamisch weiß
+<br /><br /><br />POWERSHINE MK2 D DYNAMIC WHITE, using a total of 192 powerful cold and warm white LEDs offers full independent digital control of each LED bank and is available with a vast choice of optics for the maximum lighting design flexibility. The pure white light spectrum intensity management creates a stunning visual rendering of warm tones, natural hues and cool shades altogether, thus offering an unmatched control over the creation of a vast range of the white light chromatic scale.
+<br />POWERSHINE MK2 D DW Polar Edition features an integrated de-icing system with electrically heated glass, which assures a comfortable functioning even in the utmost severe cold weather conditions.
+<br /><br /><br />TECHNISCHE DATEN:
+<br /><br />SOURCE:
+<br />192 high brightness cold and warm white power LEDs unit
+<br />Continuously variable light intensity
+<br />1-100% electronic dimming facility
+<br />No UV / No infrared
+<br />Virtually instant light production (10 ns)
+<br />Strobe facility (20 fps)
+<br /><br />SOURCE LIFE:
+<br />The LED light sources used have an exceptionally long life: predicted 50,000 hours under normal operating conditions as mentioned by the LED manufacturer
+<br /><br />LED COLOUR TEMPERATURE:
+<br />Cold White 6300K CRI:75
+<br />Warm White 3000K CRI:80
+<br />LEDs featuring a higher index (CRI&gt;80, CRI&gt;85 and CRI&gt;90) are available on request
+<br /><br />OPTICS:
+<br />AL3710 SPOT OPTICS
+<br />AL3712 NARROW OPTICS
+<br />AL3714 MEDIUM OPTICS
+<br />AL3716 WIDE OPTICS
+<br />AL3718 ELLIPTICAL OPTICS
+<br />AL3720 ELLIPTICAL WIDE OPTIC
+<br /><br />DIGITAL CONTROL:
+<br />Remote firmware update (RFU)
+<br />RDM function
+<br />On-board control panel with display readout for digital data assignment and standalone operation control
+<br />Pre-set selectable colour sequences and blends
+<br />Master-Slave function for multi-unit synchronisation
+<br />2/3/4/6 channels of DMX 512 protocol
+<br />IP65 optional universal DMX controller (ordering code AD4110)
+<br />Programming software with USB compatible download IP65 box(ordering code AD4118)
+<br />Enhanced programming software with ETHERNET compatible download IP65 box (ordering code AD4119)
+<br />LED D.O.P. Controller (ordering code AL1419)
+<br />New wireless DMX control system (AL3360/ AL3362/ AL3364/ AL3366)
+<br /><br />ELECTRICAL SPECIFICATIONS:
+<br />Power supply:
+<br />90÷250V / 50-60 Hz
+<br />Power consumption:
+<br />2.9A@230V / 604W
+<br />Self-resetting fuse protection
+<br />Electrical class: I
+<br />Meets CE safety standards
+<br /><br />HOUSING:
+<br />Die cast aluminium body
+<br />Scratch resistant polyester grey finish, protected against UV deterioration and general corrosion
+<br />Easy mounting system for wall, ceiling and floor with full orientation capability
+<br />Fixing yoke included
+<br />IP66 protection rating
+<br /><br />WEIGHT:
+<br />54 Kg </language></description>
+		<description_short><language id="2" xlink:href="http://prestashop.local/api/languages/2">Led Architektur Outdoor Scheinwerfer Powershine MK2 D dynamisch weiß</language></description_short>
+		<available_now><language id="2" xlink:href="http://prestashop.local/api/languages/2"></language></available_now>
+		<available_later><language id="2" xlink:href="http://prestashop.local/api/languages/2"></language></available_later>
+		<associations>
+			<categories nodeType="category" api="categories">
+				<category xlink:href="http://prestashop.local/api/categories/531">
+					<id>531</id>
+				</category>
+			</categories>
+			<images nodeType="image" api="images">
+				<image xlink:href="http://prestashop.local/api/images/products/5/11">
+					<id>11</id>
+				</image>
+				<image xlink:href="http://prestashop.local/api/images/products/5/3453">
+					<id>3453</id>
+				</image>
+			</images>
+			<combinations nodeType="combination" api="combinations"/>
+			<product_option_values nodeType="product_option_value" api="product_option_values"/>
+			<product_features nodeType="product_feature" api="product_features"/>
+			<tags nodeType="tag" api="tags"/>
+			<stock_availables nodeType="stock_available" api="stock_availables">
+				<stock_available xlink:href="http://prestashop.local/api/stock_availables/5">
+					<id>5</id>
+					<id_product_attribute>0</id_product_attribute>
+				</stock_available>
+			</stock_availables>
+			<accessories nodeType="product" api="products"/>
+			<product_bundle nodeType="product" api="products"/>
+		</associations>
+	</product>
+</prestashop>

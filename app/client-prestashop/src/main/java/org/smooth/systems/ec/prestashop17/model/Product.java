@@ -1,13 +1,15 @@
 package org.smooth.systems.ec.prestashop17.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Data;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 @Data
@@ -18,73 +20,73 @@ public class Product {
     both;
   }
 
-  @XmlElement(name = "id")
+  @JsonProperty("id")
   private Long id;
 
-  @XmlElement(name = "low_stock_alert")
+  @JsonProperty("low_stock_alert")
   private Long lowStockAlert = 0L;
 
-  @XmlElement(name = "additional_delivery_times")
+  @JsonProperty("additional_delivery_times")
   private Long deliveryType = 1L;
 
-  @XmlElement(name = "associations")
+  @JsonProperty("associations")
   private ProductAssociations associations = new ProductAssociations();
 
-  @XmlElement(name = "reference")
+  @JsonProperty("reference")
   private String reference;
 
-  @XmlElement(name = "weight")
+  @JsonProperty("weight")
   private String weight;
 
-  @XmlElement(name = "id_manufacturer")
+  @JsonProperty("id_manufacturer")
   private Long manufacturerId;
 
-  @XmlElement(name = "id_category_default")
+  @JsonProperty("id_category_default")
   private Long defaultCategoryId = null;
 
-  @XmlElement(name = "price")
+  @JsonProperty("price")
   private Double netPrice;
 
-  @XmlElement(name = "visibility")
+  @JsonProperty("visibility")
   private Visibility visibility;
 
-  @XmlElement(name = "name")
-  private PrestashopLangAttribute names;
+	@JacksonXmlElementWrapper(localName = "name")
+	private List<LanguageAttribute> names;
 
-  @XmlElement(name = "description")
-  private PrestashopLangAttribute descriptions;
+	@JacksonXmlElementWrapper(localName = "description")
+	private List<LanguageAttribute> descriptions;
 
-  @XmlElement(name = "description_short")
-  private PrestashopLangAttribute shortDescriptions;
+	@JacksonXmlElementWrapper(localName = "description_short")
+	private List<LanguageAttribute> shortDescriptions;
 
-  @XmlElement(name = "link_rewrite")
-  private PrestashopLangAttribute friendlyUrls;
+	@JacksonXmlElementWrapper(localName = "link_rewrite")
+	private List<LanguageAttribute> friendlyUrls;
 
   /**
    * Initialized with default value
    */
-  @XmlElement(name = "state")
+  @JsonProperty("state")
   private Long state = 1L;
 
-  @XmlElement(name = "active")
+  @JsonProperty("active")
   private Long active = 1L;
 
-  @XmlElement(name = "indexed")
+  @JsonProperty("indexed")
   private Long indexed = 1L;
 
-  @XmlElement(name = "show_price")
+  @JsonProperty("show_price")
   private Long showPrice = 1L;
 
-  @XmlElement(name = "id_tax_rules_group")
+  @JsonProperty("id_tax_rules_group")
   private Long taxRuleGroup = 1L;
 
-  @XmlElement(name = "redirect_type")
+  @JsonProperty("redirect_type")
   private String redirectType = "404";
 
-  @XmlElement(name = "available_for_order")
+  @JsonProperty("available_for_order")
   private Long availableForOrder = 1L;
 
-  @XmlElement(name = "minimal_quantity")
+  @JsonProperty("minimal_quantity")
   private Long minimalQuantity = 1L;
 
   @JsonIgnore

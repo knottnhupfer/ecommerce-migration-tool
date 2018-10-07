@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.smooth.systems.ec.client.util.PriceConvertUtil.DEFAULT_ROUND_PLACES;
@@ -71,35 +72,35 @@ public class ProductConvertUtil {
     throw new IllegalStateException("Unknown type:" + visibility);
   }
 
-  private PrestashopLangAttribute retrieveNames(PrestashopLanguageTranslatorCache cache, List<ProductTranslateableAttributes> attributes) {
-    PrestashopLangAttribute attrs = new PrestashopLangAttribute();
+  private  List<LanguageAttribute> retrieveNames(PrestashopLanguageTranslatorCache cache, List<ProductTranslateableAttributes> attributes) {
+		List<LanguageAttribute> attrs = new ArrayList<>();
     attributes.forEach(attr -> {
-      attrs.addAttribute(cache.getLangId(attr.getLangCode()), attr.getName());
+			attrs.add(new LanguageAttribute(cache.getLangId(attr.getLangCode()), attr.getName()));
     });
     return attrs;
   }
 
-  private PrestashopLangAttribute retrieveDescriptions(PrestashopLanguageTranslatorCache cache, List<ProductTranslateableAttributes> attributes) {
-    PrestashopLangAttribute attrs = new PrestashopLangAttribute();
+  private  List<LanguageAttribute> retrieveDescriptions(PrestashopLanguageTranslatorCache cache, List<ProductTranslateableAttributes> attributes) {
+		List<LanguageAttribute> attrs = new ArrayList<>();
     attributes.forEach(attr -> {
-      attrs.addAttribute(cache.getLangId(attr.getLangCode()), attr.getDescription());
+			attrs.add(new LanguageAttribute(cache.getLangId(attr.getLangCode()), attr.getDescription()));
     });
     return attrs;
   }
 
-  private PrestashopLangAttribute retrieveShortDescriptions(PrestashopLanguageTranslatorCache cache, List<ProductTranslateableAttributes> attributes) {
-    PrestashopLangAttribute attrs = new PrestashopLangAttribute();
+  private  List<LanguageAttribute> retrieveShortDescriptions(PrestashopLanguageTranslatorCache cache, List<ProductTranslateableAttributes> attributes) {
+		List<LanguageAttribute> attrs = new ArrayList<>();
     attributes.forEach(attr -> {
-      attrs.addAttribute(cache.getLangId(attr.getLangCode()), attr.getShortDescription());
+			attrs.add(new LanguageAttribute(cache.getLangId(attr.getLangCode()), attr.getShortDescription()));
     });
     return attrs;
   }
 
-  private PrestashopLangAttribute retrieveLinksRewrite(PrestashopLanguageTranslatorCache cache, List<ProductTranslateableAttributes> attributes) {
-    PrestashopLangAttribute attrs = new PrestashopLangAttribute();
-    attributes.forEach(attr -> {
-      attrs.addAttribute(cache.getLangId(attr.getLangCode()), attr.getFriendlyUrl());
-    });
+  private List<LanguageAttribute> retrieveLinksRewrite(PrestashopLanguageTranslatorCache cache, List<ProductTranslateableAttributes> attributes) {
+		List<LanguageAttribute> attrs = new ArrayList<>();
+		attributes.forEach(attr -> {
+			attrs.add(new LanguageAttribute(cache.getLangId(attr.getLangCode()), attr.getFriendlyUrl()));
+		});
     return attrs;
   }
 

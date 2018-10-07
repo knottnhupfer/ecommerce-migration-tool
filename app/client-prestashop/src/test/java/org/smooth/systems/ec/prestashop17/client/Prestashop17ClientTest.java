@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -12,13 +15,9 @@ import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
-import org.smooth.systems.ec.prestashop17.model.Category;
+import org.smooth.systems.ec.prestashop17.model.*;
 import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse.UploadedImage;
-import org.smooth.systems.ec.prestashop17.model.Language;
-import org.smooth.systems.ec.prestashop17.model.PrestashopLangAttribute;
-import org.smooth.systems.ec.prestashop17.model.Product;
 import org.smooth.systems.ec.prestashop17.model.Product.Visibility;
-import org.smooth.systems.ec.prestashop17.model.Tag;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -115,17 +114,16 @@ public class Prestashop17ClientTest {
     // product.addTagId(PrestashopConstantsTests.EXISTING_TAG_ID_2);
     product.addCategoryId(PrestashopConstantsTests.EXISTING_CATEGORY_ID);
 
-    PrestashopLangAttribute descriptions = createTranslatableAttributes("description", "Beschreibung", "descrizione");
+		List<LanguageAttribute> descriptions = createTranslatableAttributesList("description", "Beschreibung", "descrizione");
     product.setDescriptions(descriptions);
 
-    PrestashopLangAttribute friendlyUrls = createTranslatableAttributes(random_string + "-en", random_string + "-de",
-        random_string + "-it");
-    product.setFriendlyUrls(friendlyUrls);
+		List<LanguageAttribute> friendlyUrls = createTranslatableAttributesList(random_string + "-en", random_string + "-de", random_string + "-it");
+		product.setFriendlyUrls(friendlyUrls);
 
-    PrestashopLangAttribute names = createTranslatableAttributes("English product", "Deutsch Produkt", "Prodotto italiano");
+		List<LanguageAttribute> names = createTranslatableAttributesList("English product", "Deutsch Produkt", "Prodotto italiano");
     product.setNames(names);
 
-    PrestashopLangAttribute shortDescriptions = createTranslatableAttributes("short description", "Beschreibung kurz", "descrizione corta");
+		List<LanguageAttribute> shortDescriptions = createTranslatableAttributesList("short description", "Beschreibung kurz", "descrizione corta");
     product.setShortDescriptions(shortDescriptions);
 
     product.setTaxRuleGroup(5L);
@@ -158,13 +156,37 @@ public class Prestashop17ClientTest {
     assertEquals(tagsList.size() + 1, updatedTagsList.size());
   }
 
+	@Test
+	public void fetchAndUploadTest() {
+  	Long productId = 965L;
+  	String path = "src/test/resources/expected_result/";
+		CompleteProduct product = readCompleteProductAndWriteToFile(productId, path + "retrieved_result_beginning.xml");
+
+		product.setWeight("2500.000000");
+		client.updateProduct(product);
+		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_new_weight.xml");
+
+		product.setWeight("1500.000000");
+		client.updateProduct(product);
+		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_reverted_back.xml");
+	}
+
   @Test
   public void enableIgnoreOutOfStockTest() {
     client.enableIgnoreStock(38L);
   }
 
+	private List<LanguageAttribute> createTranslatableAttributesList(String... values) {
+		long index = 1;
+		List<LanguageAttribute> attrs = new ArrayList<>();
+		for(String value : values) {
+			attrs.add(new LanguageAttribute(index++, value));
+		}
+		return attrs;
+	}
+
   private PrestashopLangAttribute createTranslatableAttributes(String... values) {
-    int index = 1;
+    long index = 1;
     PrestashopLangAttribute attr = new PrestashopLangAttribute();
     for (String value : values) {
       attr.addAttribute(new Long(index++), value);
@@ -180,6 +202,15 @@ public class Prestashop17ClientTest {
     }
   }
 
+  private void writeToFile(String data, String fileName) {
+  	try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+			writer.write(data);
+			writer.close();
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
   // public static PrestashopLangAttribute createAttributes(String...
   // attributes) {
   // assertTrue(attributes.length >= 0 && attributes.length <= 3);
@@ -190,4 +221,11 @@ public class Prestashop17ClientTest {
   // }
   // return result;
   // }
+
+	private CompleteProduct readCompleteProductAndWriteToFile(Long productId, String filePath) {
+		CompleteProduct product = client.getCompleteProduct(productId);
+		String productAsString = client.objectToString(product, CompleteProduct.class);
+		writeToFile(productAsString, filePath);
+		return product;
+	}
 }
