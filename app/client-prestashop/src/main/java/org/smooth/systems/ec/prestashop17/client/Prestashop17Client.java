@@ -423,6 +423,15 @@ public class Prestashop17Client {
 
 	public CompleteProduct updateProduct(CompleteProduct product) {
 		log.debug("updateProduct({})", product);
+		if(product.getAssociations() != null) {
+			product.getAssociations().setCategories(null);
+		}
+		updateProduct0(product);
+		product.setAssociations(null);
+		return updateProduct0(product);
+	}
+
+	private CompleteProduct updateProduct0(CompleteProduct product) {
 		CompleteProductWrapper productWrapper = new CompleteProductWrapper();
 		productWrapper.setProduct(product);
 

@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.prestashop17.client;
 
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
@@ -151,7 +153,7 @@ public class Prestashop17ClientTest {
 
 	@Test
 	public void fetchAndUploadTest() {
-  	Long productId = 965L;
+  	Long productId = 968L;
   	String path = "src/test/resources/expected_result/";
 		CompleteProduct product = readCompleteProductAndWriteToFile(productId, path + "retrieved_result_beginning.xml");
 
@@ -217,8 +219,21 @@ public class Prestashop17ClientTest {
 
 	private CompleteProduct readCompleteProductAndWriteToFile(Long productId, String filePath) {
 		CompleteProduct product = client.getCompleteProduct(productId);
-		String productAsString = client.objectToString(product, CompleteProduct.class);
-		writeToFile(productAsString, filePath);
-		return product;
+		try {
+			XmlMapper xmlMapper = new XmlMapper();
+			String productAsString = xmlMapper.writeValueAsString(product);
+			writeToFile(productAsString, filePath);
+			return product;
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void sleep(long milliseconds) {
+  	try {
+			Thread.sleep(milliseconds);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

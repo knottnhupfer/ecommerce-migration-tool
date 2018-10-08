@@ -141,10 +141,8 @@ public class Prestashop17ClientDeserializeTest {
 		fileAsString = fileAsString.replaceAll("<br />", "");
 		fileAsString = fileAsString.replaceAll("<br/>", "");
 		CompleteProductWrapper product = xmlMapper.readValue(fileAsString, CompleteProductWrapper.class);
-//		log.info("Product: {}", product);
 
 		try {
-//			XmlMapper xmlMapper = new XmlMapper();
 			String objectAsString = Prestashop17ClientUtil.convertToUTF8(xmlMapper.writeValueAsString(product));
 			System.out.println(objectAsString);
 		} catch(Exception e) {

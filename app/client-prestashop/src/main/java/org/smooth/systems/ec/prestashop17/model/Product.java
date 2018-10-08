@@ -52,23 +52,15 @@ public class Product {
 
 	@JsonProperty("name")
 	private LanguageContainer names;
-//	@JacksonXmlElementWrapper(localName = "name")
-//	private List<LanguageAttribute> names;
 
 	@JsonProperty("description")
 	private LanguageContainer descriptions;
-//	@JacksonXmlElementWrapper(localName = "description")
-//	private List<LanguageAttribute> descriptions;
 
 	@JsonProperty("description_short")
 	private LanguageContainer shortDescriptions;
-//	@JacksonXmlElementWrapper(localName = "description_short")
-//	private List<LanguageAttribute> shortDescriptions;
 
 	@JsonProperty("link_rewrite")
 	private LanguageContainer friendlyUrls;
-//	@JacksonXmlElementWrapper(localName = "link_rewrite")
-//	private List<LanguageAttribute> friendlyUrls;
 
   /**
    * Initialized with default value
