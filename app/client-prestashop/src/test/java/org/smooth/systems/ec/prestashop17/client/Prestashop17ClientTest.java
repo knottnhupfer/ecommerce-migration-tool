@@ -114,17 +114,10 @@ public class Prestashop17ClientTest {
     // product.addTagId(PrestashopConstantsTests.EXISTING_TAG_ID_2);
     product.addCategoryId(PrestashopConstantsTests.EXISTING_CATEGORY_ID);
 
-		List<LanguageAttribute> descriptions = createTranslatableAttributesList("description", "Beschreibung", "descrizione");
-    product.setDescriptions(descriptions);
-
-		List<LanguageAttribute> friendlyUrls = createTranslatableAttributesList(random_string + "-en", random_string + "-de", random_string + "-it");
-		product.setFriendlyUrls(friendlyUrls);
-
-		List<LanguageAttribute> names = createTranslatableAttributesList("English product", "Deutsch Produkt", "Prodotto italiano");
-    product.setNames(names);
-
-		List<LanguageAttribute> shortDescriptions = createTranslatableAttributesList("short description", "Beschreibung kurz", "descrizione corta");
-    product.setShortDescriptions(shortDescriptions);
+    product.setNames(createTranslatableAttributesList("English product", "Deutsch Produkt", "Prodotto italiano"));
+    product.setDescriptions(createTranslatableAttributesList("description", "Beschreibung", "descrizione"));
+		product.setFriendlyUrls(createTranslatableAttributesList(random_string + "-en", random_string + "-de", random_string + "-it"));
+    product.setShortDescriptions(createTranslatableAttributesList("short description", "Beschreibung kurz", "descrizione corta"));
 
     product.setTaxRuleGroup(5L);
     client.writeProduct(product);
@@ -176,13 +169,13 @@ public class Prestashop17ClientTest {
     client.enableIgnoreStock(38L);
   }
 
-	private List<LanguageAttribute> createTranslatableAttributesList(String... values) {
+	private LanguageContainer createTranslatableAttributesList(String... values) {
 		long index = 1;
 		List<LanguageAttribute> attrs = new ArrayList<>();
 		for(String value : values) {
 			attrs.add(new LanguageAttribute(index++, value));
 		}
-		return attrs;
+		return new LanguageContainer(attrs);
 	}
 
   private PrestashopLangAttribute createTranslatableAttributes(String... values) {

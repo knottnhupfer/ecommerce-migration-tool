@@ -1,7 +1,10 @@
 <product>
 	<link_rewrite>
-		<language id="2">
-			led-scheinwerfer-powershine-mk2-d-dynamisch-weisshtml
-		</language>
+		<language id="1">first language rewrite link</language>
+		<language id="2">second language rewrite link</language>
 	</link_rewrite>
+	<name>
+		<language id="1">first language name</language>
+		<language id="2">second language name</language>
+	</name>
 </product>

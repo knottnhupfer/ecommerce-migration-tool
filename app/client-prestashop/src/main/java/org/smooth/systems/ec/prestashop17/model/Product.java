@@ -50,17 +50,25 @@ public class Product {
   @JsonProperty("visibility")
   private Visibility visibility;
 
-	@JacksonXmlElementWrapper(localName = "name")
-	private List<LanguageAttribute> names;
+	@JsonProperty("name")
+	private LanguageContainer names;
+//	@JacksonXmlElementWrapper(localName = "name")
+//	private List<LanguageAttribute> names;
 
-	@JacksonXmlElementWrapper(localName = "description")
-	private List<LanguageAttribute> descriptions;
+	@JsonProperty("description")
+	private LanguageContainer descriptions;
+//	@JacksonXmlElementWrapper(localName = "description")
+//	private List<LanguageAttribute> descriptions;
 
-	@JacksonXmlElementWrapper(localName = "description_short")
-	private List<LanguageAttribute> shortDescriptions;
+	@JsonProperty("description_short")
+	private LanguageContainer shortDescriptions;
+//	@JacksonXmlElementWrapper(localName = "description_short")
+//	private List<LanguageAttribute> shortDescriptions;
 
-	@JacksonXmlElementWrapper(localName = "link_rewrite")
-	private List<LanguageAttribute> friendlyUrls;
+	@JsonProperty("link_rewrite")
+	private LanguageContainer friendlyUrls;
+//	@JacksonXmlElementWrapper(localName = "link_rewrite")
+//	private List<LanguageAttribute> friendlyUrls;
 
   /**
    * Initialized with default value

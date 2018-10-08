@@ -143,10 +143,6 @@ public class Prestashop17ClientDeserializeTest {
 		CompleteProductWrapper product = xmlMapper.readValue(fileAsString, CompleteProductWrapper.class);
 //		log.info("Product: {}", product);
 
-
-
-
-
 		try {
 //			XmlMapper xmlMapper = new XmlMapper();
 			String objectAsString = Prestashop17ClientUtil.convertToUTF8(xmlMapper.writeValueAsString(product));
@@ -161,9 +157,18 @@ public class Prestashop17ClientDeserializeTest {
 		XmlMapper xmlMapper = new XmlMapper();
 		File inputFile = new File("src/test/resources/example_responses/testList.xml");
 		TestList product = xmlMapper.readValue(inputFile, TestList.class);
-		assertThat(product.getFriendlyUrls().size()).isEqualTo(1);
-		assertThat(product.getFriendlyUrls().get(0).getId()).isEqualTo(2);
-		assertThat(product.getFriendlyUrls().get(0).getValue().trim()).isEqualTo("led-scheinwerfer-powershine-mk2-d-dynamisch-weisshtml");
+
+		assertThat(product.getFriendlyUrls().getLanguages().size()).isEqualTo(2);
+		assertThat(product.getFriendlyUrls().getLanguages().get(0).getId()).isEqualTo(1);
+		assertThat(product.getFriendlyUrls().getLanguages().get(0).getValue().trim()).isEqualTo("first language rewrite link");
+
+		assertThat(product.getNames().getLanguages().size()).isEqualTo(2);
+		assertThat(product.getNames().getLanguages().get(1).getId()).isEqualTo(2);
+		assertThat(product.getNames().getLanguages().get(1).getValue().trim()).isEqualTo("second language name");
+
+		String stringValue = xmlMapper.writeValueAsString(product);
+		System.out.println(stringValue);
+		assertThat(stringValue.contains("<language id=\"")).isTrue();
 		log.info("Product: {}", product);
 	}
 

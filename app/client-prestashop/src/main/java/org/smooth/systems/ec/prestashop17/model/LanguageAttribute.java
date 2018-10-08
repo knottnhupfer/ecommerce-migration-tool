@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonRootName("language")
 @JsonIgnoreProperties({ "href" })
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LanguageAttribute {
