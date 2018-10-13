@@ -16,6 +16,7 @@ import org.smooth.systems.ec.magento19.db.model.Magento19ProductTierPrice;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
 import org.smooth.systems.ec.magento19.db.repository.ProductRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductTierPriceRepository;
+import org.smooth.systems.ec.magento19.db.repository.RelatedProductsRepository;
 import org.smooth.systems.ec.migration.model.*;
 import org.smooth.systems.ec.migration.model.Product.ProductVisibility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class Magento19DbProductsReader {
 
   @Autowired
   private ProductRepository productRepo;
+
+	@Autowired
+	private RelatedProductsRepository relatedProductsRepo;
 
   @Autowired
   private ProductTierPriceRepository productTierPriceRepo;

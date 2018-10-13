@@ -58,6 +58,10 @@ case "$1" in
     printInfo "Migrate missing images ..."
     ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-image-migrate-missing ${CONFIG_FILE_PARAM}
     ;;
+  migrate-missing-related-products)
+    printInfo "Migrate missing images ..."
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-related-products-missing ${CONFIG_FILE_PARAM}
+    ;;
   *)
     echo ""
     echo " [WARN] No command specified!"
@@ -75,6 +79,7 @@ case "$1" in
     echo "          migrate-product-images"
     echo "          migrate-product-tier-prices"
     echo "          migrate-missing-product-images"
+    echo "          migrate-missing-related-products"
     echo "          migrate-products-from-list"
     echo ""
     ;;

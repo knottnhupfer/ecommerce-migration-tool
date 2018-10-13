@@ -53,5 +53,10 @@ public final class Prestashop17ProductConverter {
 			Assert.notEmpty(prod.getAssociations().getCategories(), "no category set on retrieved product with id: " + prod.getId());
 			return prod.getAssociations().getCategories().get(0).getCategoryId();
 		}
+
+		@Override
+		public boolean hasRelatedProducts() {
+			return prod.getAssociations() != null && prod.getAssociations().getAccessories() != null && !prod.getAssociations().getAccessories().isEmpty();
+		}
 	}
 }

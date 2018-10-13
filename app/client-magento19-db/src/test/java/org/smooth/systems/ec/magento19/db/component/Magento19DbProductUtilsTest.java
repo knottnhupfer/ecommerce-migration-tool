@@ -3,6 +3,7 @@ package org.smooth.systems.ec.magento19.db.component;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,8 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.smooth.systems.ec.magento19.db.model.Magento19Product;
 import org.smooth.systems.ec.magento19.db.model.Magento19ProductVisibility;
+import org.smooth.systems.ec.magento19.db.model.Magento19RelatedProduct;
 import org.smooth.systems.ec.magento19.db.repository.ProductRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductVisibilityRepository;
+import org.smooth.systems.ec.magento19.db.repository.RelatedProductsRepository;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductPriceStrategies;
 import org.smooth.systems.ec.migration.model.ProductTierPriceStrategy;
@@ -45,6 +48,9 @@ public class Magento19DbProductUtilsTest {
 
   @Autowired
   private Magento19DbProductsReader productRetriever;
+
+  @Autowired
+	private RelatedProductsRepository relatedProductsRepository;
 
   @Test
   public void simpleRetrieveRootCategories() {
@@ -171,4 +177,14 @@ public class Magento19DbProductUtilsTest {
     assertEquals(Long.valueOf(5),priceStrategy.getPriceStrategies().get(0).getMinQuantity());
     assertEquals(Double.valueOf("129.79"),priceStrategy.getPriceStrategies().get(0).getValue());
   }
+
+	@Test
+	public void retrieveRelatedProductsTest() {
+  	Long productId = 3698L;
+		List<Magento19RelatedProduct> relatedProducts = relatedProductsRepository.findRelatedProductsByProductId(productId);
+		assertEquals(relatedProducts.size(),4);
+		relatedProducts.forEach(prod -> {
+			log.info("Product: {}", prod);
+		});
+	}
 }

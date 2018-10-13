@@ -111,4 +111,12 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 		log.debug("readProductBySku({}, {})", sku, langCode);
 		return productsReader.getProduct(sku, langCode);
 	}
+
+	@Override
+	public RelatedProducts readRelatedProduct(Product product) {
+		RelatedProducts relatedProducts = new RelatedProducts(product.getSku(), product.getId());
+//		product.getR
+		throw new NotImplementedException();
+//		return relatedProducts;
+	}
 }

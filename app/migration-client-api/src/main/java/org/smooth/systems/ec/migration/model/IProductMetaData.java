@@ -7,4 +7,6 @@ public interface IProductMetaData {
 	Long getProductId();
 
 	Long getCategoryId();
+
+	boolean hasRelatedProducts();
 }

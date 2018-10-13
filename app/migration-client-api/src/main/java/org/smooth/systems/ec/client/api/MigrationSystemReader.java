@@ -69,4 +69,8 @@ public interface MigrationSystemReader extends RegisterableComponent {
 	default Product readProductBySku(String sku, String langCode) {
 		throw new NotImplementedException();
 	}
+
+	default RelatedProducts readRelatedProduct(Product product) {
+		throw new NotImplementedException();
+	}
 }
