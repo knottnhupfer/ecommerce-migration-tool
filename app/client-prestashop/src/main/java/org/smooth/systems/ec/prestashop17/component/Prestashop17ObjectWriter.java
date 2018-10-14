@@ -132,24 +132,14 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 	public void writeRelatedProducts(RelatedProducts relatedProducts) {
 		log.info("writeRelatedProducts({})", relatedProducts);
 		CompleteProduct completeProduct = client.getCompleteProduct(relatedProducts.getProduct().getDstProductId());
-
 		completeProduct.getAssociations().setAccessories(convertToPrestashopRelatedProductList(relatedProducts));
-		// TODO
-		// retrieve current product from system
-		// add related products to product
-		// upload new merged product
-//		throw new NotImplementedException();
+		client.updateProduct(completeProduct);
 	}
 
 	@Override
   public void removeProductSpecificPrices(Long productSpecificPriceId) {
     log.debug("removeProductSpecificPrices({})", productSpecificPriceId);
     client.removeProductSpecificPrice(productSpecificPriceId);
-  }
-
-  @Override
-  public void repairAndValidateData() {
-    // TODO check all category data
   }
 
 	private List<Id> convertToPrestashopRelatedProductList(RelatedProducts relatedProducts) {

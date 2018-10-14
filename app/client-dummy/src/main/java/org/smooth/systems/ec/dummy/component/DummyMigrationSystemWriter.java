@@ -37,11 +37,6 @@ public class DummyMigrationSystemWriter implements MigrationSystemWriter {
   }
 
   @Override
-  public void repairAndValidateData() {
-    throw new NotImplementedException();
-  }
-
-  @Override
   public ObjectIdMapper getCategoriesObjectIdMapper() {
     throw new NotImplementedException();
   }

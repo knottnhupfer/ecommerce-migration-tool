@@ -40,11 +40,6 @@ public class MagentoObjectWriter extends AbstractMagentoConnector implements Mig
   }
 
   @Override
-  public void repairAndValidateData() {
-    throw new NotImplementedException();
-  }
-
-  @Override
   public ObjectIdMapper getCategoriesObjectIdMapper() {
     throw new NotImplementedException();
   }

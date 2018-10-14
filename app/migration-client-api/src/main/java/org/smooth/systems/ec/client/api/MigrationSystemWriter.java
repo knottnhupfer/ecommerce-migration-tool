@@ -61,8 +61,6 @@ public interface MigrationSystemWriter extends RegisterableComponent {
    */
   void writeCategories(Category rootCategory, boolean updateIfExists) throws ObjectAlreadyExistsException;
 
-  void repairAndValidateData();
-
   ObjectIdMapper getCategoriesObjectIdMapper();
 
   ObjectIdMapper getProductsObjectIdMapper();

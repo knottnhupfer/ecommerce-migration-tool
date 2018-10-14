@@ -1,35 +1,23 @@
-<CompleteProduct><id>968</id><low_stock_alert>0</low_stock_alert><additional_delivery_times>1</additional_delivery_times><associations><categories><categories><id>554</id></categories></categories><tags/><images><images><id>3212</id></images><images><id>3213</id></images><images><id>6654</id></images><images><id>6655</id></images></images><accessories><accessories><id>7</id></accessories><accessories><id>10</id></accessories></accessories></associations><reference>L57203G5</reference><weight>1500.000000</weight><id_manufacturer>2</id_manufacturer><id_category_default>554</id_category_default><price>404.88</price><visibility>both</visibility><name><language id="2">MBNLED RGBAW Multi Netzteil 3G 12V 180W CC</language></name><description><language id="2">Die MBNLED RGBAW MULTI Netzteile dienen als Stromversorgung für alle PROLED RGBA, RGBW oder
-			RGBAW Produkte. Mit den MBNLED RGBAW MULTI Netzteilen können fantastische Farbmischungen und Farbwechsel für
-			die PROLED Produkte erzeugt werden (durch Autoprogramme oder per DMX, DALI oder 1-10 V Ansteuerung). Auch
-			kann eine beliebige feste Farbe eingestellt und gedimmt werden. Die Autoprogramme können mit dem PC-DMX/RDM
-			INTERFACE und der zugehörigen Software per RDM beliebig geändert werden. Ebenso können mit dem PC-DMX/RDM
-			Interface auch sämtliche Einstellungen per RDM vorgenommen werden. Bei Verwendung des IR Receivers oder RF
-			Receivers können sämtliche Programme per IR oder RF Fernbedienung abgerufen werden.
-			Es sind zwei Versionen erhältlich:
-			CA (Common Anode – gemeinsamer Plus) und CC (Common Cathode – gemeinsamer Minus). Jede dieser Version ist
-			mit einer Ausgangsspannung von 5 Volt, 12 Volt oder 24 Volt und in verschiedenen Leistungsklassen (50 - 300
-			Watt) erhältlich. Auch können die MBNLED RGBAW MULTI Netzteile als 5-Kanal Dimmer für die monochromen PROLED
-			Produkte eingesetzt werden.
-			Jedes Netzteil hat fünf Kanäle – R (rot), G (grün), B (blau), A (amber), W (weiß)
-			MULTI Eingang: DMX 512, DALI, 1-10 V ansteuerbar
-			Fernsteuerbar per RDM mit dem PC-DMX/RDM INTERFACE und der zugehörigen Software
-			Fernsteuerbar per IR oder RF Fernbedienung bei Verwendung des IR Receivers oder RF Receivers
-			16 eingebaute Standalone Programme (mit PC-DMX/RDM Interface beliebig änderbar)
-			Jedes Programm mit Geschwindigkeitseinstellung von 0,05 Sek. – 30 Min.
-			Gewünschte Farbe manuell einstell- und dimmbar
-			Eine Farbe als Defaultfarbe speicherbar, die nach dem Aus- und Wiedereinschalten des Gerätes wieder
-			ausgegeben wird
-			Einstellbare PWM Frequenz von 80-1200 Hz
-			Überhitzungsschutz mit Temperaturanzeige im Display und per RDM
-			Master – Slave Betrieb möglich
-			Grafik LCD Display und vier Bedientasten
-			Ausgangsspannung: 12 V
-			Leistung: 180 Watt
-			Version: Common Cathode
-			Gewicht: 3,0 kg
-			Maße (b x h x t): 240 x 75 x 300 mm
-		</language></description><description_short><language id="2">MBNLED Netzteil
-			RGBWA MULTI 3G
-			12 Volt, 180 Watt
-			Common Cathode
-		</language></description_short><link_rewrite><language id="2">mbnled-rgbaw-multi-netzteil-3g-12v-180w-cchtml</language></link_rewrite><state>1</state><active>1</active><indexed>1</indexed><show_price>1</show_price><id_tax_rules_group>1</id_tax_rules_group><redirect_type>404</redirect_type><available_for_order>1</available_for_order><minimal_quantity>0</minimal_quantity><id_supplier>0</id_supplier><new></new><cache_default_attribute>0</cache_default_attribute><id_default_image>3212</id_default_image><id_default_combination></id_default_combination><position_in_category>31</position_in_category><type>simple</type><id_shop_default>1</id_shop_default><supplier_reference></supplier_reference><location></location><width>0.000000</width><height>0.000000</height><depth>0.000000</depth><quantity_discount>0</quantity_discount><ean13></ean13><isbn></isbn><upc></upc><cache_is_pack>0</cache_is_pack><cache_has_attachments>0</cache_has_attachments><is_virtual>0</is_virtual><on_sale>0</on_sale><online_only>0</online_only><ecotax>0.000000</ecotax><low_stock_threshold>56</low_stock_threshold><wholesale_price>0.000000</wholesale_price><unity></unity><unit_price_ratio>0.000000</unit_price_ratio><additional_shipping_cost>0.00</additional_shipping_cost><customizable>0</customizable><text_fields>0</text_fields><uploadable_files>0</uploadable_files><id_type_redirected>0</id_type_redirected><available_date>0000-00-00</available_date><show_condition>0</show_condition><condition>new</condition><advanced_stock_management>0</advanced_stock_management><date_add>2018-06-24 10:30:45</date_add><date_upd>2018-10-13 19:30:35</date_upd><pack_stock_type>0</pack_stock_type></CompleteProduct>
+<CompleteProduct><id>970</id><low_stock_alert>0</low_stock_alert><additional_delivery_times>1</additional_delivery_times><associations><categories><categories><id>554</id></categories></categories><tags/><images><images><id>3216</id></images><images><id>3217</id></images><images><id>6658</id></images><images><id>6659</id></images></images><accessories/></associations><reference>L57303G5</reference><weight>1500.000000</weight><id_manufacturer>2</id_manufacturer><id_category_default>554</id_category_default><price>431.74</price><visibility>both</visibility><name><language id="2"><![CDATA[MBNLED RGBAW Multi Netzteil 3G 12V 300W CC]]></language></name><description><language id="2"><![CDATA[Die MBNLED RGBAW MULTI Netzteile dienen als Stromversorgung für alle PROLED RGBA, RGBW oder RGBAW Produkte. Mit den MBNLED RGBAW MULTI Netzteilen können fantastische Farbmischungen und Farbwechsel für die PROLED Produkte erzeugt werden (durch Autoprogramme oder per DMX, DALI oder 1-10 V Ansteuerung). Auch kann eine beliebige feste Farbe eingestellt und gedimmt werden. Die Autoprogramme können mit dem PC-DMX/RDM INTERFACE und der zugehörigen Software per RDM beliebig geändert werden. Ebenso können mit dem PC-DMX/RDM Interface auch sämtliche Einstellungen per RDM vorgenommen werden. Bei Verwendung des IR Receivers oder RF Receivers können sämtliche Programme per IR oder RF Fernbedienung abgerufen werden.
+<br />Es sind zwei Versionen erhältlich:
+<br />CA (Common Anode – gemeinsamer Plus) und CC (Common Cathode – gemeinsamer Minus). Jede dieser Version ist mit einer Ausgangsspannung von 5 Volt, 12 Volt oder 24 Volt und in verschiedenen Leistungsklassen (50 - 300 Watt) erhältlich. Auch können die MBNLED RGBAW MULTI Netzteile als 5-Kanal Dimmer für die monochromen PROLED Produkte eingesetzt werden.
+<br /><br />Jedes Netzteil hat fünf Kanäle – R (rot), G (grün), B (blau), A (amber), W (weiß)
+<br />MULTI Eingang: DMX 512, DALI, 1-10 V ansteuerbar
+<br />Fernsteuerbar per RDM mit dem PC-DMX/RDM INTERFACE und der zugehörigen Software
+<br />Fernsteuerbar per IR oder RF Fernbedienung bei Verwendung des IR Receivers oder RF Receivers
+<br />16 eingebaute Standalone Programme (mit PC-DMX/RDM Interface beliebig änderbar)
+<br />Jedes Programm mit Geschwindigkeitseinstellung von 0,05 Sek. – 30 Min.
+<br />Gewünschte Farbe manuell einstell- und dimmbar
+<br />Eine Farbe als Defaultfarbe speicherbar, die nach dem Aus- und Wiedereinschalten des Gerätes wieder ausgegeben wird
+<br />Einstellbare PWM Frequenz von 80-1200 Hz
+<br />Überhitzungsschutz mit Temperaturanzeige im Display und per RDM
+<br />Master – Slave Betrieb möglich
+<br />Grafik LCD Display und vier Bedientasten
+<br /><br />Ausgangsspannung: 12 V
+<br />Leistung: 300 Watt
+<br />Version: Common Cathode
+<br />Gewicht: 3,3 kg
+<br />Maße (b x h x t): 240 x 75 x 300 mm]]></language></description><description_short><language id="2"><![CDATA[MBNLED Netzteil
+<br />RGBWA MULTI 3G 
+<br />12 Volt, 300 Watt
+<br />Common Cathode]]></language></description_short><link_rewrite><language id="2"><![CDATA[mbnled-rgbaw-multi-netzteil-3g-12v-300w-cchtml]]></language></link_rewrite><state>1</state><active>1</active><indexed>1</indexed><show_price>1</show_price><id_tax_rules_group>1</id_tax_rules_group><redirect_type>404</redirect_type><available_for_order>1</available_for_order><minimal_quantity>0</minimal_quantity><id_supplier>0</id_supplier><new></new><cache_default_attribute>0</cache_default_attribute><id_default_image>3216</id_default_image><id_default_combination></id_default_combination><position_in_category>33</position_in_category><type>simple</type><id_shop_default>1</id_shop_default><supplier_reference></supplier_reference><location></location><width>0.000000</width><height>0.000000</height><depth>0.000000</depth><quantity_discount>0</quantity_discount><ean13></ean13><isbn></isbn><upc></upc><cache_is_pack>0</cache_is_pack><cache_has_attachments>0</cache_has_attachments><is_virtual>0</is_virtual><on_sale>0</on_sale><online_only>0</online_only><ecotax>0.000000</ecotax><low_stock_threshold></low_stock_threshold><wholesale_price>0.000000</wholesale_price><unity></unity><unit_price_ratio>0.000000</unit_price_ratio><additional_shipping_cost>0.00</additional_shipping_cost><customizable>0</customizable><text_fields>0</text_fields><uploadable_files>0</uploadable_files><id_type_redirected>0</id_type_redirected><available_date>0000-00-00</available_date><show_condition>0</show_condition><condition>new</condition><advanced_stock_management>0</advanced_stock_management><date_add>2018-06-24 10:30:46</date_add><date_upd>2018-06-24 10:30:46</date_upd><pack_stock_type>0</pack_stock_type></CompleteProduct>

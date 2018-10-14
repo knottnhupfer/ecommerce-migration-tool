@@ -162,18 +162,18 @@ public class Prestashop17ClientTest {
 
 	@Test
 	public void fetchAndUploadTest() {
-  	Long productId = 968L;
+  	Long productId = 970L;
   	String path = "src/test/resources/expected_result/";
 		CompleteProduct product = readCompleteProductAndWriteToFile(productId, path + "retrieved_result_beginning.xml");
 
 		log.info("Product:\n{}", product);
-//		product.setWeight("2500.000000");
-//		client.updateProduct(product);
-//		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_new_weight.xml");
-//
-//		product.setWeight("1500.000000");
-//		client.updateProduct(product);
-//		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_reverted_back.xml");
+		product.setWeight("2500.000000");
+		client.updateProduct(product);
+		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_new_weight.xml");
+
+		product.setWeight("1500.000000");
+		client.updateProduct(product);
+		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_reverted_back.xml");
 	}
 
 	@Test

@@ -55,13 +55,13 @@ public class MigrateMissingRelatedProductsExecutor extends AbstractProductsMigra
 		RelatedProducts relatedProducts = reader.readRelatedProduct(srcProductsCache, product);
 		if(!relatedProducts.getRelatedProducts().isEmpty()) {
 			log.info("uploadRelatedProductsIdNotExists({})", relatedProducts);
-			populateRelatedProducts(relatedProducts);
+			populateDestinationRelatedProductIds(relatedProducts);
 			writer.writeRelatedProducts(relatedProducts);
 			log.info("Upload related products for product ... DONE");
 		}
 	}
 
-	private void populateRelatedProducts(RelatedProducts relatedProducts) {
+	private void populateDestinationRelatedProductIds(RelatedProducts relatedProducts) {
 		populateProductMapping(relatedProducts.getProduct());
 		List<ProductMapping> missingProducts = new ArrayList<>();
 		relatedProducts.getRelatedProducts().forEach( relProduct -> {
