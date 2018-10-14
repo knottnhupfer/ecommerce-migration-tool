@@ -1,17 +1,10 @@
 package org.smooth.systems.ec.utils.migration.action;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.client.api.ProductId;
-import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.utils.EcommerceUtilsActions;
-import org.smooth.systems.ec.utils.migration.component.ProductsCache;
-import org.smooth.systems.ec.utils.migration.model.MigrationProductImagesObject;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +35,7 @@ public class MigrateProductImagesExecutor extends AbstractImagesMigrationExecuto
 	private void uploadProductImages(List<ProductId> products) {
 		log.info("uploadProductImages({})", products.size());
 		for(ProductId productIdSrcSystem : products) {
-			Product product = productsCache.getProductById(productIdSrcSystem.getProductId());
+			Product product = srcProductsCache.getProductById(productIdSrcSystem.getProductId());
 
 			if(!doesProductWithSkuExists(product.getSku())) {
 				log.warn("Skip product images for product with sku '{}', does not exists on the destination system.", product.getSku());

@@ -70,7 +70,7 @@ public interface MigrationSystemReader extends RegisterableComponent {
 		throw new NotImplementedException();
 	}
 
-	default RelatedProducts readRelatedProduct(Product product) {
+	default RelatedProducts readRelatedProduct(IProductCache productCache, Product product) {
 		throw new NotImplementedException();
 	}
 }

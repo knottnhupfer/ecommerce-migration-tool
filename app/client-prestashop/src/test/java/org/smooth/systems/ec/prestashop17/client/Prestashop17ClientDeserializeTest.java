@@ -151,6 +151,23 @@ public class Prestashop17ClientDeserializeTest {
 	}
 
 	@Test
+	public void deserializeCompleteProductCDataExample() throws IOException {
+		XmlMapper xmlMapper = new XmlMapper();
+		InputStream is = Prestashop17ClientDeserializeTest.class.getResourceAsStream("/example_responses/product_complete_production_with_cdata_1-7-3.xml");
+		String fileAsString = convert(is);
+//		fileAsString = fileAsString.replaceAll("<br />", "");
+//		fileAsString = fileAsString.replaceAll("<br/>", "");
+		ProductDescriptionsWrapper product = xmlMapper.readValue(fileAsString, ProductDescriptionsWrapper.class);
+
+		try {
+			String objectAsString = Prestashop17ClientUtil.convertToUTF8(xmlMapper.writeValueAsString(product));
+			System.out.println(objectAsString);
+		} catch(Exception e) {
+
+		}
+	}
+
+	@Test
 	public void deserializeTestList() throws IOException {
 		XmlMapper xmlMapper = new XmlMapper();
 		File inputFile = new File("src/test/resources/example_responses/testList.xml");

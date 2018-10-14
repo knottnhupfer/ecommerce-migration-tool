@@ -3,18 +3,17 @@ package org.smooth.systems.ec.utils.migration.component;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.migration.model.IProductCache;
 import org.smooth.systems.ec.migration.model.Product;
-import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class ProductsCache {
+public final class ProductsCache implements IProductCache {
 
 	private MigrationSystemReader reader;
 
@@ -38,6 +37,7 @@ public final class ProductsCache {
     return cache;
   }
 
+  @Override
   public Product getProductById(Long productId) {
     log.trace("getProductById({})", productId);
     if (!products.containsKey(productId)) {
@@ -46,6 +46,7 @@ public final class ProductsCache {
     return products.get(productId);
   }
 
+	@Override
 	public Product getProductBySku(String sku) {
 		log.trace("getProductBySku({})", sku);
 		List<Product> matchingProducts = products.values().stream().filter(p -> sku.equalsIgnoreCase(p.getSku())).collect(Collectors.toList());

@@ -5,6 +5,8 @@ import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
+import org.smooth.systems.ec.magento19.db.model.Magento19RelatedProduct;
+import org.smooth.systems.ec.magento19.db.repository.RelatedProductsRepository;
 import org.smooth.systems.ec.migration.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -14,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +32,9 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 
   @Autowired
   private Magento19DbProductsReader productsReader;
+
+	@Autowired
+	private RelatedProductsRepository relatedProductsRepository;
 
   @Override
   public String getName() {
@@ -113,10 +117,14 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 	}
 
 	@Override
-	public RelatedProducts readRelatedProduct(Product product) {
+	public RelatedProducts readRelatedProduct(IProductCache productCache, Product product) {
 		RelatedProducts relatedProducts = new RelatedProducts(product.getSku(), product.getId());
-//		product.getR
-		throw new NotImplementedException();
-//		return relatedProducts;
+		List<Magento19RelatedProduct> relatedProductsList = relatedProductsRepository.findRelatedProductsByProductId(relatedProducts.getProduct().getSrcProductId());
+
+		relatedProductsList.forEach(relatedProduct -> {
+			Long prodId = relatedProduct.getRelatedProductId();
+			relatedProducts.addRelatedProduct(new ProductMapping(productCache.getProductById(prodId).getSku(), prodId));
+		});
+		return relatedProducts;
 	}
 }

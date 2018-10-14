@@ -1,7 +1,5 @@
 package org.smooth.systems.ec.magento19.db.component;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -10,10 +8,7 @@ import java.util.stream.Collectors;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.client.util.PriceConvertUtil;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
-import org.smooth.systems.ec.magento19.db.model.Magento19Product;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductText;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductTierPrice;
-import org.smooth.systems.ec.magento19.db.model.Magento19ProductVarchar;
+import org.smooth.systems.ec.magento19.db.model.*;
 import org.smooth.systems.ec.magento19.db.repository.ProductRepository;
 import org.smooth.systems.ec.magento19.db.repository.ProductTierPriceRepository;
 import org.smooth.systems.ec.magento19.db.repository.RelatedProductsRepository;
@@ -199,4 +194,9 @@ public class Magento19DbProductsReader {
     productPriceStrategy.setMinQuantity(strategy.getQuantity().longValue());
     return productPriceStrategy;
   }
+
+	public List<Magento19RelatedProduct> getRelatedProducts(Long productId) {
+  	Assert.notNull(productId, "productId is null");
+		return relatedProductsRepo.findRelatedProductsByProductId(productId);
+	}
 }

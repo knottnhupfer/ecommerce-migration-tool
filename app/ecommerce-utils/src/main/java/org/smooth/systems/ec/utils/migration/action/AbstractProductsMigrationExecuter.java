@@ -11,7 +11,6 @@ import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
-import org.smooth.systems.ec.utils.EcommerceUtilsActions;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.smooth.systems.ec.utils.migration.component.ProductsCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +38,7 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
    * <ul>
    * <li>key ... product id german language source system</li>
    * <li>value ... main product id source system (italian language)</li>
+   * <li>value ... main product id source system (italian language)</li>
    * </ul>
    */
   protected ObjectIdMapper productIdsSourceSystem;
@@ -46,7 +46,7 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
   protected MigrationSystemReader reader;
   protected MigrationSystemWriter writer;
 
-  protected ProductsCache productsCache;
+  protected ProductsCache srcProductsCache;
 
 	private HashMap<String, IProductMetaData> existingProductsDestinationSystem;
 
@@ -113,18 +113,18 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
   }
 
 	protected void initializeEmptyProductCache() {
-  	if(productsCache != null) {
+  	if(srcProductsCache != null) {
   		throw new IllegalStateException("Product cache already initialized.");
 		}
-		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader());
+		srcProductsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader());
 	}
 
   protected List<ProductId> initializeProductCacheAndRetrieveList() {
-		if(productsCache != null) {
+		if(srcProductsCache != null) {
 			throw new IllegalStateException("Product cache already initialized.");
 		}
     List<ProductId> mainProductIds = retrieveMainProductIds();
-    productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
+    srcProductsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
     return mainProductIds;
   }
 

@@ -1,7 +1,6 @@
 package org.smooth.systems.ec.utils.migration.action;
 
 import lombok.extern.slf4j.Slf4j;
-import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.utils.migration.model.MigrationProductImagesObject;
@@ -35,7 +34,7 @@ public abstract class AbstractImagesMigrationExecutor extends AbstractProductsMi
 
 	private void uploadProductImagesWithSku(String sku, Long productIdDestinationSystem) {
 		log.debug("uploadProductImagesWithSku({}, {})", sku, productIdDestinationSystem);
-		Product productSourceSystem = productsCache.getProductBySku(sku);
+		Product productSourceSystem = srcProductsCache.getProductBySku(sku);
 		MigrationProductImagesObject productImagesObject = generateProductImagesObject(productIdDestinationSystem, productSourceSystem);
 		uploadProductImages(productImagesObject);
 	}

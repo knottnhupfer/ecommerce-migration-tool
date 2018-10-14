@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.api.MigrationClientConstants;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
@@ -16,6 +17,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+@Slf4j
 @Component
 @ConditionalOnProperty(prefix = Prestashop17Constants.PRESTASHOP17_CONFIG_PREFIX, name = MigrationClientConstants.MIGRATION_CLIENT_BASE_URL)
 public class PrestashopLanguageTranslatorCache {
@@ -35,6 +37,7 @@ public class PrestashopLanguageTranslatorCache {
   public void initialize() {
     List<Language> languages = client.getLanguages();
     for (Language language : languages) {
+    	log.info("Language: {}", language);
       String code = language.getIsoCode().substring(0, 2);
       codeToIdMapping.put(code, language.getId());
       idToCodeMapping.put(language.getId(), code);

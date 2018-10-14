@@ -31,7 +31,7 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
     for (ProductId productIdSrcSystem : mainProductIds) {
       log.trace("Process price strategies for product with id:{}", productIdSrcSystem.getProductId());
 
-      Product product = productsCache.getProductById(productIdSrcSystem.getProductId());
+      Product product = srcProductsCache.getProductById(productIdSrcSystem.getProductId());
       Assert.notNull(product, String.format("No product found for"));
 
       if (!doesProductWithSkuExists(product.getSku()) || hasProductAlreadyPricingStrategies(product)) {

@@ -9,12 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.prestashop17.Prestashop17ClientConstants;
 import org.smooth.systems.ec.prestashop17.component.PrestashopLanguageTranslatorCache;
 import org.smooth.systems.ec.prestashop17.model.*;
@@ -27,7 +23,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestClientException;
@@ -67,7 +62,6 @@ public class Prestashop17Client {
     Assert.notNull(authToken, "authToken is null");
     this.baseUrl = baseUrl;
     client = new RestTemplate();
-		client.getMessageConverters().add(0, new Jaxb2RootElementHttpMessageConverter());
     client.getInterceptors().add(new BasicAuthorizationInterceptor(authToken, "invalid"));
     log.info("Initialized client for url: {}", baseUrl);
   }
@@ -177,36 +171,66 @@ public class Prestashop17Client {
   public Product getProduct(Long productId) {
     String url = baseUrl + String.format(URL_PRODUCT, productId);
     log.debug("getProduct({})", url);
-    ResponseEntity<ProductWrapper> response = client.getForEntity(url, ProductWrapper.class);
-    ProductWrapper categoryWrapper = response.getBody();
-    return categoryWrapper.getProduct();
+		return getCompleteProduct(productId);
   }
 
 	public CompleteProduct getCompleteProduct(Long productId) {
 		String url = baseUrl + String.format(URL_PRODUCT, productId);
-		log.debug("getProduct({})", url);
-		ResponseEntity<CompleteProductWrapper> completeResponse = client.getForEntity(url, CompleteProductWrapper.class);
+		log.debug("getCompleteProduct({})", url);
 
-		client.getMessageConverters().add(0, new Jaxb2RootElementHttpMessageConverter());
-		ResponseEntity<String> response = client.getForEntity(url, String.class);
-//		client.getMessageConverters().add(0, new Jaxb2RootElementHttpMessageConverter());
-		String responseAsString = response.getBody();
-		responseAsString = responseAsString.replaceAll("<!\\[CDATA\\[", "");
-		responseAsString = responseAsString.replaceAll("]]>", "");
-		responseAsString = responseAsString.replaceAll(" xlink:href=\".*\"", "");
-		responseAsString = responseAsString.replaceAll("<br />", "");
-		responseAsString = responseAsString.replaceAll("<br/>", "");
-		responseAsString = responseAsString.replaceAll("<p>", "");
-		responseAsString = responseAsString.replaceAll("</p>", "");
+		CompleteProduct completeProduct = getCompleteProductWithoutDescriptions(url);
+		ProductDescriptions productDescriptions = getProductDescriptions(productId);
+		completeProduct.setDescriptions(productDescriptions.getDescriptions());
+		completeProduct.setShortDescriptions(productDescriptions.getShortDescriptions());
+		return completeProduct;
+	}
+
+	private CompleteProduct getCompleteProductWithoutDescriptions(String url) {
+		String responseAsString = retrieveProductAsStringResponse(url);
 		try {
 			XmlMapper xmlMapper = new XmlMapper();
 			return xmlMapper.readValue(responseAsString, CompleteProductWrapper.class).getProduct();
 		} catch(Exception e) {
+			log.warn("Unable to parse response:\n{}", responseAsString);
 			throw new RuntimeException(e);
 		}
 	}
 
-  public Category writeCategory(PrestashopLanguageTranslatorCache languagesCache, Category category) {
+	public ProductDescriptions getProductDescriptions(Long productId) {
+		String url = baseUrl + String.format(URL_PRODUCT, productId);
+		log.debug("getCompleteProduct({})", url);
+
+		ResponseEntity<ProductDescriptionsWrapper> resp = client.getForEntity(url, ProductDescriptionsWrapper.class);
+		return resp.getBody().getProduct();
+	}
+
+	private CompleteProduct retrieveCompleteProduct(String url) {
+		ResponseEntity<CompleteProductWrapper> resp = client.getForEntity(url, CompleteProductWrapper.class);
+		return resp.getBody().getProduct();
+	}
+
+	private String retrieveProductAsStringResponse(String url) {
+		String responseAsString = client.getForEntity(url, String.class).getBody();
+
+		responseAsString = responseAsString.replaceAll("<!\\[CDATA\\[", "");
+		responseAsString = responseAsString.replaceAll("]]>", "");
+		responseAsString = responseAsString.replaceAll(" xlink:href=\".*\">", " >");
+
+		responseAsString = removeStringWithTag(responseAsString,"description");
+		responseAsString = removeStringWithTag(responseAsString,"description_short");
+		return responseAsString;
+	}
+
+	private String removeStringWithTag(String origin, String tag) {
+  	String startTag = "<" + tag + ">";
+		String endTag = "</" + tag + ">";
+		int startIndex = origin.indexOf(startTag);
+		int endIndex = origin.indexOf(endTag);
+		String toBeReplaced = origin.substring(startIndex, endIndex + endTag.length());
+		return origin.replace(toBeReplaced, "");
+	}
+
+	public Category writeCategory(PrestashopLanguageTranslatorCache languagesCache, Category category) {
     log.debug("writeCategory({})", category);
     CategoryWrapper catWrapper = new CategoryWrapper();
     catWrapper.setCategory(category);

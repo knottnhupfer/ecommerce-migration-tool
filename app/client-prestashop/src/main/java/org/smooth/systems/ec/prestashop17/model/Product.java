@@ -2,8 +2,6 @@ package org.smooth.systems.ec.prestashop17.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Data;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;

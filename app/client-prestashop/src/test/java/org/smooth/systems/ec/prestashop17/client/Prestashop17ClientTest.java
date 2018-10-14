@@ -43,11 +43,11 @@ public class Prestashop17ClientTest {
     System.out.println("Languages: " + languages);
     assertEquals(3, languages.size());
 
-    List<Category> categories = client.getCategories();
-    System.out.println("Categories: " + categories);
-
-    Category cat = client.getCategory(1L);
-    System.out.println("Category: " + cat);
+//    List<Category> categories = client.getCategories();
+//    System.out.println("Categories: " + categories);
+//
+//    Category cat = client.getCategory(1L);
+//    System.out.println("Category: " + cat);
   }
 
   @Test
@@ -92,7 +92,7 @@ public class Prestashop17ClientTest {
   }
 
   @Test
-  public void uploadProductImage() {
+  public void uploadProductImageTest() {
     File image2 = new File("src/test/resources/images/test_image_2.jpg");
     assertTrue(image2.isFile());
     UploadedImage uploadedImage = client.uploadProductImage(PrestashopConstantsTests.EXISTING_PRODUCT_ID, image2);
@@ -100,6 +100,15 @@ public class Prestashop17ClientTest {
     assertNotNull(uploadedImage.getId());
     assertEquals(PrestashopConstantsTests.EXISTING_PRODUCT_ID, uploadedImage.getProductId());
   }
+
+	@Test
+	public void readCompleteProductTest() {
+		CompleteProduct completeProduct = client.getCompleteProduct(533L);
+		log.info("Fetched product: {}", completeProduct);
+
+		completeProduct = client.getCompleteProduct(404L);
+		log.info("Fetched product: {}", completeProduct);
+	}
 
   @Test
   public void createProductTest() {
@@ -131,7 +140,7 @@ public class Prestashop17ClientTest {
 
   @Test
   public void removeProductsTest() {
-    Long[] productIds = { 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L };
+    Long[] productIds = { 10002L, 10003L, 10004L, 10005L, 10006L, 10007L, 10008L, 10009L, 10010L };
     // Long[] productIds = {7L, 8L, 9L, 10L, 11L, 12L};
     for (Long productId : productIds) {
       client.deleteProduct(productId);
@@ -157,13 +166,21 @@ public class Prestashop17ClientTest {
   	String path = "src/test/resources/expected_result/";
 		CompleteProduct product = readCompleteProductAndWriteToFile(productId, path + "retrieved_result_beginning.xml");
 
-		product.setWeight("2500.000000");
-		client.updateProduct(product);
-		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_new_weight.xml");
+		log.info("Product:\n{}", product);
+//		product.setWeight("2500.000000");
+//		client.updateProduct(product);
+//		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_new_weight.xml");
+//
+//		product.setWeight("1500.000000");
+//		client.updateProduct(product);
+//		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_reverted_back.xml");
+	}
 
-		product.setWeight("1500.000000");
-		client.updateProduct(product);
-		readCompleteProductAndWriteToFile(productId, path + "retrieved_result_reverted_back.xml");
+	@Test
+	public void fetchDescriptionsAndDeserializeTest() {
+		Long productId = 968L;
+		ProductDescriptions product = client.getProductDescriptions(productId);
+		log.info("Product:\n{}", product);
 	}
 
   @Test

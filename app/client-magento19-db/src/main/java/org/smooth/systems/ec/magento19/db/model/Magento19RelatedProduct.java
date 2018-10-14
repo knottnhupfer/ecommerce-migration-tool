@@ -18,5 +18,5 @@ public class Magento19RelatedProduct {
   private Long productId;
 
   @Column(name = "linked_product_id")
-  private Long relatedProductIds;
+  private Long relatedProductId;
 }

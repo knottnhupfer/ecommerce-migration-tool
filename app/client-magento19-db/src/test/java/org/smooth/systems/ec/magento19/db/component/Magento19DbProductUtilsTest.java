@@ -181,7 +181,7 @@ public class Magento19DbProductUtilsTest {
 	@Test
 	public void retrieveRelatedProductsTest() {
   	Long productId = 3698L;
-		List<Magento19RelatedProduct> relatedProducts = relatedProductsRepository.findRelatedProductsByProductId(productId);
+		List<Magento19RelatedProduct> relatedProducts = productRetriever.getRelatedProducts(productId);
 		assertEquals(relatedProducts.size(),4);
 		relatedProducts.forEach(prod -> {
 			log.info("Product: {}", prod);

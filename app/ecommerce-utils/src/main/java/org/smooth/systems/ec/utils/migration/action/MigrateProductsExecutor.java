@@ -67,7 +67,7 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 	private void initializeProductsCache(List<MigrationProductData> productList) {
 		List<ProductId> collect = new ArrayList<>();
 		productList.stream().map(data -> data.getAsFullList()).collect(Collectors.toList()).stream().forEach(x -> collect.addAll(x));
-		productsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), collect);
+		srcProductsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), collect);
 	}
 
 	private List<MigrationProductData> generateProductsList(String mainLangCode, String alternativeLangCode) {
@@ -99,14 +99,14 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 
 	private Product populateProduct(MigrationProductData productData) {
 		ProductId mainProdInfo = productData.getMainProduct();
-		Product product = productsCache.getProductById(mainProdInfo.getProductId());
+		Product product = srcProductsCache.getProductById(mainProdInfo.getProductId());
 		Assert.isTrue(product.getAttributes().size() == 1 && mainProdInfo.getLangIso().equals(product.getAttributes().get(0).getLangCode()),
 			"invalid attributes configuration");
 
 		for (ProductId altProductInfo : productData.getAlternativeProducts()) {
 			Assert.isTrue(!product.getAttributes().stream().filter(attr -> attr.getLangCode().equals(altProductInfo.getLangIso())).findAny().isPresent(),
 				String.format("Duplicated attribute language for language: %s", altProductInfo.getLangIso()));
-			Product altProduct = productsCache.getProductById(altProductInfo.getProductId());
+			Product altProduct = srcProductsCache.getProductById(altProductInfo.getProductId());
 			Assert.isTrue(altProduct.getAttributes().size() == 1, "More then a single language in alternative product.");
 			ProductTranslateableAttributes attr = altProduct.getAttributes().get(0);
 			Assert.isTrue(altProductInfo.getLangIso().equals(attr.getLangCode()), String.format("Languages do not match with each other. Product data is: %s", productData));
