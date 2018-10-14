@@ -1,6 +1,7 @@
 package org.smooth.systems.ec.prestashop17.component;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.smooth.systems.ec.client.api.MigrationClientConstants;
@@ -10,17 +11,19 @@ import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.exceptions.ObjectAlreadyExistsException;
 import org.smooth.systems.ec.migration.model.*;
+import org.smooth.systems.ec.migration.model.Category;
+import org.smooth.systems.ec.migration.model.Manufacturer;
+import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.prestashop17.api.Prestashop17Constants;
 import org.smooth.systems.ec.prestashop17.client.Prestashop17Client;
 import org.smooth.systems.ec.prestashop17.mapper.CategoryMapper;
-import org.smooth.systems.ec.prestashop17.model.ImageUploadResponse;
-import org.smooth.systems.ec.prestashop17.model.ProductConvertUtil;
-import org.smooth.systems.ec.prestashop17.model.ProductSpecificPrice;
+import org.smooth.systems.ec.prestashop17.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
 
 @Slf4j
 @Component
@@ -127,12 +130,15 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
 
 	@Override
 	public void writeRelatedProducts(RelatedProducts relatedProducts) {
-		log.debug("writeRelatedProducts({})", relatedProducts);
+		log.info("writeRelatedProducts({})", relatedProducts);
+		CompleteProduct completeProduct = client.getCompleteProduct(relatedProducts.getProduct().getDstProductId());
+
+		completeProduct.getAssociations().setAccessories(convertToPrestashopRelatedProductList(relatedProducts));
 		// TODO
 		// retrieve current product from system
 		// add related products to product
 		// upload new merged product
-		throw new NotImplementedException();
+//		throw new NotImplementedException();
 	}
 
 	@Override
@@ -145,6 +151,15 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   public void repairAndValidateData() {
     // TODO check all category data
   }
+
+	private List<Id> convertToPrestashopRelatedProductList(RelatedProducts relatedProducts) {
+  	List<Id> relatedProductsList = new ArrayList<>();
+  	relatedProducts.getRelatedProducts().forEach( relProduct -> {
+				Assert.notNull(relProduct.getDstProductId(), "destination product id is null");
+  			relatedProductsList.add(new Id(relProduct.getDstProductId()));
+			});
+  	return relatedProductsList;
+	}
 
   private class CategoryWriter extends AbstractCategoryWriter {
 

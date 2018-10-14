@@ -3,6 +3,7 @@ package org.smooth.systems.ec.utils.migration.component;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
@@ -11,6 +12,7 @@ import org.smooth.systems.ec.migration.model.IProductCache;
 import org.smooth.systems.ec.migration.model.Product;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
 
 @Slf4j
 public final class ProductsCache implements IProductCache {
@@ -37,26 +39,52 @@ public final class ProductsCache implements IProductCache {
     return cache;
   }
 
+	@Override
+	public boolean existsProductWithSku(String sku) {
+		List<Product> matchingProducts = products.values().stream().filter(p -> sku.equalsIgnoreCase(p.getSku())).collect(Collectors.toList());
+		if(matchingProducts.size() == 0) {
+			try {
+				Product product = reader.readProductBySku(sku, "it");
+				products.put(product.getId(), product);
+				return true;
+			} catch(Exception e) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean existsProductWithId(Long productId) {
+		if(!products.containsKey(productId)) {
+			try {
+				List<ProductId> product = Collections.singletonList(ProductId.builder().productId(productId).langIso("id").build());
+				List<Product> retrievedProducts = reader.readAllProducts(product);
+				if(retrievedProducts.isEmpty()) {
+					return false;
+				}
+				products.put(productId, retrievedProducts.get(0));
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		return products.containsKey(productId);
+	}
+
   @Override
   public Product getProductById(Long productId) {
     log.trace("getProductById({})", productId);
-    if (!products.containsKey(productId)) {
-      throw new IllegalArgumentException(String.format("Unable to get product from cache with id: %d", productId));
-    }
+		Assert.isTrue(existsProductWithId(productId), String.format("Unable to get product from cache with productId: %d", productId));
     return products.get(productId);
   }
 
 	@Override
 	public Product getProductBySku(String sku) {
 		log.trace("getProductBySku({})", sku);
+		Assert.isTrue(existsProductWithSku(sku), String.format("Unable to get product from cache with sku: %s", sku));
 		List<Product> matchingProducts = products.values().stream().filter(p -> sku.equalsIgnoreCase(p.getSku())).collect(Collectors.toList());
-		if(matchingProducts.isEmpty()) {
-			return reader.readProductBySku(sku, "it");
-		} else if(matchingProducts.size() != 1) {
-			String msg = String.format("Found more then 1 product [size=%d] with sku '%s'", matchingProducts.size(), sku);
-			log.error(msg);
-			throw new IllegalStateException(msg);
-		}
+		Assert.isTrue(matchingProducts.size() > 0, String.format("No product found for sku: %s", sku));
 		return matchingProducts.get(0);
 	}
 
@@ -66,8 +94,6 @@ public final class ProductsCache implements IProductCache {
     for(Product prod : retrievedProducts) {
       if (products.containsKey(prod.getId())) {
         log.error("Ignore already fetched product with id {}", prod.simpleDescription());
-//        log.error("Cached product: {}", products.get(prod.getId()));
-//        log.error("Retrieved product: {}", prod);
         continue;
       }
       if(ignoreDeactivatedProducts && !prod.getActivated()) {

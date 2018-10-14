@@ -9,6 +9,7 @@ import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotFoundException;
+import org.smooth.systems.ec.migration.model.IProductCache;
 import org.smooth.systems.ec.migration.model.IProductMetaData;
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
@@ -46,9 +47,10 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
   protected MigrationSystemReader reader;
   protected MigrationSystemWriter writer;
 
-  protected ProductsCache srcProductsCache;
+  protected IProductCache srcProductsCache;
+	protected IProductCache dstProductsCache;
 
-	private HashMap<String, IProductMetaData> existingProductsDestinationSystem;
+	protected HashMap<String, IProductMetaData> existingProductsDestinationSystem;
 
 	public AbstractProductsMigrationExecuter(String actionName) {
 		this.actionName = actionName;
@@ -88,6 +90,14 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
     return existingProductsDestinationSystem.get(sku).getProductId();
 	}
 
+	protected void initializeEmptyDestinationSystemProductCache() {
+		if(dstProductsCache != null) {
+			throw new IllegalStateException("Destination product cache already initialized.");
+		}
+		log.info("Initialize destination product cache");
+		dstProductsCache = ProductsCache.createProductsCache(getReaderForDestinationSystem());
+	}
+
 	protected void populateDestinationSystemProductCache() {
 		log.info("Read existing products from destination system ...");
 		existingProductsDestinationSystem = new HashMap<>();
@@ -112,14 +122,15 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
     return mainProductIds;
   }
 
-	protected void initializeEmptyProductCache() {
+	protected void initializeEmptySourceSystemProductCache() {
   	if(srcProductsCache != null) {
   		throw new IllegalStateException("Product cache already initialized.");
 		}
+		log.info("Initialize source product cache");
 		srcProductsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader());
 	}
 
-  protected List<ProductId> initializeProductCacheAndRetrieveList() {
+  protected List<ProductId> initializeSourceSystemProductCacheAndRetrieveList() {
 		if(srcProductsCache != null) {
 			throw new IllegalStateException("Product cache already initialized.");
 		}

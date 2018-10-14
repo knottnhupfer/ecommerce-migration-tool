@@ -22,7 +22,7 @@ public class MigrateMissingProductImagesExecutor extends AbstractImagesMigration
 	@Override
 	public void execute() {
 		initialize();
-		initializeEmptyProductCache();
+		initializeEmptySourceSystemProductCache();
 		log.info("Initialized readers and writer ...");
 
 		List<IProductMetaData> productsWithMissingImages = filterDestinationProductsWithNoImages();

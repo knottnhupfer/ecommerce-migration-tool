@@ -100,4 +100,11 @@ public class Magento19DbObjectReaderTest {
     log.info("Product replaced: {}", desc);
     log.info("");
   }
+
+	@Test
+	public void retrieveRelatedProductsFromDatabaseTest() {
+		List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(1642L).langIso("it").build());
+		List<Product> retrievedProducts = reader.readAllProducts(productsList);
+		System.out.println("Product: " +  retrievedProducts.get(0).toString());
+	}
 }

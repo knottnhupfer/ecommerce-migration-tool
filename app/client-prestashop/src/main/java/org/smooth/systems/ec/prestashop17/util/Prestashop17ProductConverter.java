@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.prestashop17.util;
 
+import lombok.ToString;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.IProductMetaData;
@@ -57,6 +58,11 @@ public final class Prestashop17ProductConverter {
 		@Override
 		public boolean hasRelatedProducts() {
 			return prod.getAssociations() != null && prod.getAssociations().getAccessories() != null && !prod.getAssociations().getAccessories().isEmpty();
+		}
+
+		@Override
+		public String toString() {
+			return String.format("ProductMetaData(id:%d, sku:%s)", prod.getId(), prod.getReference());
 		}
 	}
 }

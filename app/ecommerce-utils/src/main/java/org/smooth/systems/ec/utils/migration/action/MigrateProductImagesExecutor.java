@@ -25,7 +25,7 @@ public class MigrateProductImagesExecutor extends AbstractImagesMigrationExecuto
 		initialize();
 		log.trace("execute()");
 
-		List<ProductId> mainProducts = initializeProductCacheAndRetrieveList();
+		List<ProductId> mainProducts = initializeSourceSystemProductCacheAndRetrieveList();
 		log.info("Read products and initialized cache");
 
 		uploadProductImages(mainProducts);

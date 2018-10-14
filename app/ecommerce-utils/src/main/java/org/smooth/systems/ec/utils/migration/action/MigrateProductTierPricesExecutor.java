@@ -25,7 +25,7 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
   public void execute() {
     initialize();
 
-    List<ProductId> mainProductIds = initializeProductCacheAndRetrieveList();
+    List<ProductId> mainProductIds = initializeSourceSystemProductCacheAndRetrieveList();
     log.info("Read products and initialized cache ({})", mainProductIds.size());
 
     for (ProductId productIdSrcSystem : mainProductIds) {
