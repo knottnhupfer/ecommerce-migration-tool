@@ -134,7 +134,7 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 		long skippedProducts = 0;
 		MigrationSystemWriter writer = readerWriterFactory.getMigrationWriter();
 		for (Product product : productsToBeWrittern) {
-			if(!doesProductWithSkuExists(product.getSku())) {
+			if(!doesProductOnDestinationSystemWithSkuExists(product.getSku())) {
 				writer.writeProduct(product);
 			} else {
 				log.debug("Product with sku {} already exists on destination system.", product.getSku());

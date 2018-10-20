@@ -59,8 +59,12 @@ case "$1" in
     ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-image-migrate-missing ${CONFIG_FILE_PARAM}
     ;;
   migrate-missing-related-products)
-    printInfo "Migrate missing images ..."
+    printInfo "Migrate missing related products ..."
     ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-related-products-missing ${CONFIG_FILE_PARAM}
+    ;;
+  migrate-missing-price-strategies)
+    printInfo "Migrate missing price strategies ..."
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-price-strategies-missing ${CONFIG_FILE_PARAM}
     ;;
   *)
     echo ""
@@ -80,6 +84,7 @@ case "$1" in
     echo "          migrate-product-tier-prices"
     echo "          migrate-missing-product-images"
     echo "          migrate-missing-related-products"
+    echo "          migrate-missing-price-strategies"
     echo "          migrate-products-from-list"
     echo ""
     ;;

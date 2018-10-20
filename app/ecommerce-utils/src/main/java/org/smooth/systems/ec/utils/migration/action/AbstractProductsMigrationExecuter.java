@@ -44,8 +44,8 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
    */
   protected ObjectIdMapper productIdsSourceSystem;
 
-  protected MigrationSystemReader reader;
-  protected MigrationSystemWriter writer;
+  protected MigrationSystemReader readerSrcSystem;
+  protected MigrationSystemWriter writerDstSystem;
 
   protected IProductCache srcProductsCache;
 	protected IProductCache dstProductsCache;
@@ -67,24 +67,24 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
     productIdsSourceSystem.initializeIdMapperFromFile();
 
 		initializeReaderAndWriter();
-		populateDestinationSystemProductCache();
+		populateDestinationSystemMetaData();
   }
 
 	protected void initializeReaderAndWriter() {
-		reader = readerWriterFactory.getMigrationReader();
-		writer = readerWriterFactory.getMigrationWriter();
+		readerSrcSystem = readerWriterFactory.getMigrationReader();
+		writerDstSystem = readerWriterFactory.getMigrationWriter();
 	}
 
 	protected void logExecutionStep(Logger logger, String msg, Object... params) {
 		logger.info("EXECUTION: " + msg, params);
 	}
 
-	protected boolean doesProductWithSkuExists(String sku) {
+	protected boolean doesProductOnDestinationSystemWithSkuExists(String sku) {
 		return existingProductsDestinationSystem.containsKey(sku);
 	}
 
 	protected Long getProductIdDestinationSystemForProductSku(String sku) {
-		if(!doesProductWithSkuExists(sku)) {
+		if(!doesProductOnDestinationSystemWithSkuExists(sku)) {
 			throw new RuntimeException(String.format("Unable to retrieve productId for product sku: '{}'", sku));
 		}
     return existingProductsDestinationSystem.get(sku).getProductId();
@@ -98,7 +98,7 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 		dstProductsCache = ProductsCache.createProductsCache(getReaderForDestinationSystem());
 	}
 
-	protected void populateDestinationSystemProductCache() {
+	protected void populateDestinationSystemMetaData() {
 		log.info("Read existing products from destination system ...");
 		existingProductsDestinationSystem = new HashMap<>();
 		MigrationSystemReader reader = getReaderForDestinationSystem();
@@ -140,7 +140,7 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
   }
 
 	protected IProductMetaData getProductsMetaDataFromDestinationSystemForSku(String sku) {
-  	if(!doesProductWithSkuExists(sku)) {
+  	if(!doesProductOnDestinationSystemWithSkuExists(sku)) {
 			String msg = String.format("No product exists on destination system with sku '{}'", sku);
 			log.error(msg);
 			throw new IllegalStateException(msg);

@@ -2,6 +2,7 @@ package org.smooth.systems.ec.migration.model;
 
 import java.time.LocalDateTime;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**

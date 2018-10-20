@@ -1,5 +1,6 @@
 package org.smooth.systems.ec.magento19.db.component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,8 +9,10 @@ import org.junit.runner.RunWith;
 import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
 import org.smooth.systems.ec.migration.model.Product;
+import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.util.Pair;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
@@ -106,5 +109,39 @@ public class Magento19DbObjectReaderTest {
 		List<ProductId> productsList = Arrays.asList(ProductId.builder().productId(1642L).langIso("it").build());
 		List<Product> retrievedProducts = reader.readAllProducts(productsList);
 		System.out.println("Product: " +  retrievedProducts.get(0).toString());
+	}
+
+	@Test
+	public void retrieveProductsBySkuFromDatabaseTest() {
+		List<String> skus = Arrays.asList(
+			"L5106", "L693S3E", "L691S3E", "L691R2E", "L692S3E", "L692R2E", "L69DS3E", "L69CS3E", "L690S3E", "L690S1E",
+			"L690R2E", "L690001", "L69BS3E", "L69BS1E", "L69BR2E"
+		);
+
+		long index = 1;
+		for(String sku : skus) {
+
+			Product productItalian = retrieveProductForSku(sku);
+			ProductTranslateableAttributes attributes = productItalian.getAttributes().get(0);
+			System.out.println("\n" + sku + "\n" + attributes.getName());
+
+			Product productGerman = retrieveProductForSku("_" + sku);
+			if(productGerman != null) {
+				ProductTranslateableAttributes attributesGerman = productGerman.getAttributes().get(0);
+				System.out.println(attributesGerman.getName());
+			}
+			if(index++ % 5 == 0) {
+				System.out.println("\n ==========     ==========");
+			}
+		}
+		System.out.println("\n ==========     ==========\n");
+	}
+
+	private Product retrieveProductForSku(String sku) {
+  	try {
+			return reader.readProductBySku(sku, "de");
+		} catch(IllegalArgumentException e) {
+			return null;
+		}
 	}
 }

@@ -37,7 +37,7 @@ public class MigrateProductImagesExecutor extends AbstractImagesMigrationExecuto
 		for(ProductId productIdSrcSystem : products) {
 			Product product = srcProductsCache.getProductById(productIdSrcSystem.getProductId());
 
-			if(!doesProductWithSkuExists(product.getSku())) {
+			if(!doesProductOnDestinationSystemWithSkuExists(product.getSku())) {
 				log.warn("Skip product images for product with sku '{}', does not exists on the destination system.", product.getSku());
 				continue;
 			}

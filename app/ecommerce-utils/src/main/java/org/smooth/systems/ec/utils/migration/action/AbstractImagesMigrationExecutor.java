@@ -64,7 +64,7 @@ public abstract class AbstractImagesMigrationExecutor extends AbstractProductsMi
 	private void uploadProductImages(MigrationProductImagesObject productImagesInfo) {
 		log.info("Upload product images: {}", productImagesInfo);
 		for (File imageUrl : productImagesInfo.getImageUrls()) {
-			writer.uploadProductImages(productImagesInfo.getDstProductId(), imageUrl);
+			writerDstSystem.uploadProductImages(productImagesInfo.getDstProductId(), imageUrl);
 		}
 		log.info("Uploaded successfully product images from product with id: {} to destination id: {}",
 			productImagesInfo.getSrcProductId(), productImagesInfo.getDstProductId());

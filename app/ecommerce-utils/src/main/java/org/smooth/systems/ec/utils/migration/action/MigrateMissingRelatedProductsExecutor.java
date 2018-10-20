@@ -52,11 +52,11 @@ public class MigrateMissingRelatedProductsExecutor extends AbstractProductsMigra
 	private void fetchAndUploadRelatedProducts(IProductMetaData prodMetaData) {
 		log.debug("fetchAndUploadRelatedProducts({})", prodMetaData);
 		Product product = srcProductsCache.getProductBySku(prodMetaData.getSku());
-		RelatedProducts relatedProducts = reader.readRelatedProduct(srcProductsCache, product);
+		RelatedProducts relatedProducts = readerSrcSystem.readRelatedProduct(srcProductsCache, product);
 		if(!relatedProducts.getRelatedProducts().isEmpty()) {
 			log.info("uploadRelatedProductsIdNotExists({})", relatedProducts);
 			populateDestinationRelatedProductIds(relatedProducts);
-			writer.writeRelatedProducts(relatedProducts);
+			writerDstSystem.writeRelatedProducts(relatedProducts);
 			log.info("Upload related products for product ... DONE");
 		}
 	}

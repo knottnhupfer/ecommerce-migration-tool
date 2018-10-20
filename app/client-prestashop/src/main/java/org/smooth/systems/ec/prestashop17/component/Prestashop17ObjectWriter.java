@@ -122,6 +122,10 @@ public class Prestashop17ObjectWriter extends AbstractPrestashop17Connector impl
   @Override
   public void writeProductPriceTier(ProductPriceStrategies priceStrategies) {
     log.debug("writeProductPriceTier({})", priceStrategies);
+    if(priceStrategies.getPriceStrategies() == null || priceStrategies.getPriceStrategies().isEmpty()) {
+    	log.warn("No price strategies to be written for product with id '{}'!", priceStrategies.getProductId());
+    	return;
+		}
     for (ProductTierPriceStrategy priceStrategy : priceStrategies.getPriceStrategies()) {
       ProductSpecificPrice specificPrice = ProductConvertUtil.convertProductPriceStrategy(priceStrategies.getNetPrice(), priceStrategies.getProductId(), priceStrategy);
       client.writeProductSpecificPrice(specificPrice);

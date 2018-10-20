@@ -34,11 +34,11 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
       Product product = srcProductsCache.getProductById(productIdSrcSystem.getProductId());
       Assert.notNull(product, String.format("No product found for"));
 
-      if (!doesProductWithSkuExists(product.getSku()) || hasProductAlreadyPricingStrategies(product)) {
+      if (!doesProductOnDestinationSystemWithSkuExists(product.getSku()) || hasProductAlreadyPricingStrategies(product)) {
         log.warn("Skip product images for product with sku '{}', does not exists on the destination system.", product.getSku());
         continue;
       }
-      ProductPriceStrategies priceStrategy = reader.readProductPriceStrategies(productIdSrcSystem.getProductId());
+      ProductPriceStrategies priceStrategy = readerSrcSystem.readProductPriceStrategies(productIdSrcSystem.getProductId());
       priceStrategy.setNetPrice(product.getNetPrice());
       Long productIdDestinationSystem = getProductIdDestinationSystemForProductSku(product.getSku());
       priceStrategy.setProductId(productIdDestinationSystem);
@@ -58,6 +58,6 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
     }
 
     log.debug("uploadProductPriceStrategies({})", priceStrategy);
-    writer.writeProductPriceTier(priceStrategy);
+    writerDstSystem.writeProductPriceTier(priceStrategy);
   }
 }

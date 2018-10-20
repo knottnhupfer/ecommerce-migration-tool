@@ -10,6 +10,8 @@ public class ProductPriceStrategies {
 
   private Long productId;
 
+  private boolean hasPriceStrategies;
+
   private Double netPrice;
 
   private List<ProductTierPriceStrategy> priceStrategies = new ArrayList<>();

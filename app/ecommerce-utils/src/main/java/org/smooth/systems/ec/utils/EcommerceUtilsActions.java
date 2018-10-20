@@ -19,5 +19,7 @@ public interface EcommerceUtilsActions {
 
 	String PRODUCTS_RELATED_PRODUCTS_MISSING = "products-related-products-missing";
 
+	String PRODUCTS_PRICE_STRATEGIES_MISSING = "products-price-strategies-missing";
+
   String CATEGORIES_MIGRATION = "migrate-categories";
 }
