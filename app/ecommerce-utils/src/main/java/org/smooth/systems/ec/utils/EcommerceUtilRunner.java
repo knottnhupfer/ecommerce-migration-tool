@@ -3,6 +3,7 @@ package org.smooth.systems.ec.utils;
 import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.common.config.ToolConfiguration;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
+import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.utils.db.api.IActionExecuter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -60,7 +61,11 @@ public class EcommerceUtilRunner implements ApplicationRunner {
 		log.info("Execute action name '{}'", actionParam);
 		IActionExecuter action = actions.get(actionParam);
 		log.info("Execute action '{}'", action.getClass().getSimpleName());
-		action.execute();
+		try {
+			action.execute();
+		} catch (NotImplementedException e) {
+			log.error("Error while processing action: {}", actionParam, e);
+		}
 		System.exit(0);
 	}
 }

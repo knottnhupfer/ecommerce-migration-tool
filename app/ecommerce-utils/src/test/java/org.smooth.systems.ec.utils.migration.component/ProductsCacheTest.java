@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
 import org.smooth.systems.ec.magento19.db.component.Magento19DbObjectReader;
 import org.smooth.systems.ec.migration.model.Product;
@@ -30,7 +30,7 @@ public class ProductsCacheTest {
 
   @Test
   public void retrieveOnlyActivatedProductsProductsCacheTest() {
-    List<ProductId> productsList = Arrays.asList(createSimpleProduct(3718L), createSimpleProduct(3717L),
+    List<ObjectId> productsList = Arrays.asList(createSimpleProduct(3718L), createSimpleProduct(3717L),
             createSimpleProduct(3704L), createSimpleProduct(3705L));
     ProductsCache.createProductsCache(reader, productsList, true);
     List<Product> retrievedProducts = reader.readAllProducts(productsList);
@@ -38,11 +38,11 @@ public class ProductsCacheTest {
     assertEquals(2,retrievedProducts.size());
   }
 
-  private ProductId createSimpleProduct(Long productId) {
+  private ObjectId createSimpleProduct(Long productId) {
     return createSimpleProduct(productId, "it");
   }
 
-  private ProductId createSimpleProduct(Long productId, String langCode) {
-    return ProductId.builder().productId(productId).langIso(langCode).build();
+  private ObjectId createSimpleProduct(Long productId, String langCode) {
+    return ObjectId.builder().objectId(productId).langIso(langCode).build();
   }
 }

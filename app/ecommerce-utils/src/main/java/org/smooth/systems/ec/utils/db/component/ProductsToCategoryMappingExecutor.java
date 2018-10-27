@@ -40,7 +40,7 @@ public class ProductsToCategoryMappingExecutor implements IActionExecuter {
     Properties properties = retrieveAllProductsWithCategoryMapping();
     log.info("Properties({})", properties.size());
     log.info("{}", properties);
-    FileUtils.writePropertiesToFile(properties, config.getGeneratedCreatedCategoriesMappingFile(), " mapping from productId to categoryId\n# productId=categoryId");
+    FileUtils.writePropertiesToFile(properties, config.getGeneratedCreatedCategoriesMappingFile(), " mapping from productId to categoryId\n# categoryId=categoryId");
   }
 
   private Properties retrieveAllProductsWithCategoryMapping() {

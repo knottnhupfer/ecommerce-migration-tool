@@ -66,6 +66,10 @@ case "$1" in
     printInfo "Migrate missing price strategies ..."
     ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-price-strategies-missing ${CONFIG_FILE_PARAM}
     ;;
+  migrate-missing-products)
+    printInfo "Migrate missing price strategies ..."
+    ${RUN_JAVA} -jar ${UTILS_JAR} --action=products-migrate-missing ${CONFIG_FILE_PARAM}
+    ;;
   *)
     echo ""
     echo " [WARN] No command specified!"
@@ -86,6 +90,7 @@ case "$1" in
     echo "          migrate-missing-related-products"
     echo "          migrate-missing-price-strategies"
     echo "          migrate-products-from-list"
+    echo "          migrate-missing-products"
     echo ""
     ;;
 esac

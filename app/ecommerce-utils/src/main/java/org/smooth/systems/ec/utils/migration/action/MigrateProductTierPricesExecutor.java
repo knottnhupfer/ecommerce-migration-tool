@@ -1,7 +1,7 @@
 package org.smooth.systems.ec.utils.migration.action;
 
 import lombok.extern.slf4j.Slf4j;
-import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductPriceStrategies;
 import org.smooth.systems.ec.utils.EcommerceUtilsActions;
@@ -25,20 +25,20 @@ public class MigrateProductTierPricesExecutor extends AbstractProductsMigrationE
   public void execute() {
     initialize();
 
-    List<ProductId> mainProductIds = initializeSourceSystemProductCacheAndRetrieveList();
+    List<ObjectId> mainProductIds = initializeSourceSystemProductCacheAndRetrieveList();
     log.info("Read products and initialized cache ({})", mainProductIds.size());
 
-    for (ProductId productIdSrcSystem : mainProductIds) {
-      log.trace("Process price strategies for product with id:{}", productIdSrcSystem.getProductId());
+    for (ObjectId productIdSrcSystem : mainProductIds) {
+      log.trace("Process price strategies for product with id:{}", productIdSrcSystem.getObjectId());
 
-      Product product = srcProductsCache.getProductById(productIdSrcSystem.getProductId());
+      Product product = srcProductsCache.getProductById(productIdSrcSystem.getObjectId());
       Assert.notNull(product, String.format("No product found for"));
 
       if (!doesProductOnDestinationSystemWithSkuExists(product.getSku()) || hasProductAlreadyPricingStrategies(product)) {
         log.warn("Skip product images for product with sku '{}', does not exists on the destination system.", product.getSku());
         continue;
       }
-      ProductPriceStrategies priceStrategy = readerSrcSystem.readProductPriceStrategies(productIdSrcSystem.getProductId());
+      ProductPriceStrategies priceStrategy = readerSrcSystem.readProductPriceStrategies(productIdSrcSystem.getObjectId());
       priceStrategy.setNetPrice(product.getNetPrice());
       Long productIdDestinationSystem = getProductIdDestinationSystemForProductSku(product.getSku());
       priceStrategy.setProductId(productIdDestinationSystem);

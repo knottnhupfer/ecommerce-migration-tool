@@ -9,9 +9,9 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class ProductId {
+public class ObjectId {
 
-  private Long productId;
+  private Long objectId;
 
   private String langIso;
 }

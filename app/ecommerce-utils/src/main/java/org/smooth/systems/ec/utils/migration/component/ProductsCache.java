@@ -3,11 +3,10 @@ package org.smooth.systems.ec.utils.migration.component;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
-import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.migration.model.IProductCache;
 import org.smooth.systems.ec.migration.model.Product;
 
@@ -29,11 +28,11 @@ public final class ProductsCache implements IProductCache {
 		return createProductsCache(reader, Collections.emptyList(), true);
 	}
 
-  public static ProductsCache createProductsCache(MigrationSystemReader reader, List<ProductId> productsInfo) {
+  public static ProductsCache createProductsCache(MigrationSystemReader reader, List<ObjectId> productsInfo) {
     return createProductsCache(reader, productsInfo, true);
   }
 
-  public static ProductsCache createProductsCache(MigrationSystemReader reader, List<ProductId> productsInfo, boolean ignoreDeactivatedProducts) {
+  public static ProductsCache createProductsCache(MigrationSystemReader reader, List<ObjectId> productsInfo, boolean ignoreDeactivatedProducts) {
     ProductsCache cache = new ProductsCache(reader);
     cache.initializeProductsCache(productsInfo, ignoreDeactivatedProducts);
     return cache;
@@ -58,7 +57,7 @@ public final class ProductsCache implements IProductCache {
 	public boolean existsProductWithId(Long productId) {
 		if(!products.containsKey(productId)) {
 			try {
-				List<ProductId> product = Collections.singletonList(ProductId.builder().productId(productId).langIso("id").build());
+				List<ObjectId> product = Collections.singletonList(ObjectId.builder().objectId(productId).langIso("id").build());
 				List<Product> retrievedProducts = reader.readAllProducts(product);
 				if(retrievedProducts.isEmpty()) {
 					return false;
@@ -88,7 +87,7 @@ public final class ProductsCache implements IProductCache {
 		return matchingProducts.get(0);
 	}
 
-  private void initializeProductsCache(List<ProductId> productsInfo, boolean ignoreDeactivatedProducts) {
+  private void initializeProductsCache(List<ObjectId> productsInfo, boolean ignoreDeactivatedProducts) {
     log.info("initializeProductsCache({})", productsInfo);
     List<Product> retrievedProducts = reader.readAllProducts(productsInfo);
     for(Product prod : retrievedProducts) {

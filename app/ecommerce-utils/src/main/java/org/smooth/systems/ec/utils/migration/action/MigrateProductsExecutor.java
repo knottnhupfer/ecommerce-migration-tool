@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationSystemWriter;
-import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.exceptions.NotFoundException;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.ProductTranslateableAttributes;
@@ -65,7 +65,7 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 	}
 
 	private void initializeProductsCache(List<MigrationProductData> productList) {
-		List<ProductId> collect = new ArrayList<>();
+		List<ObjectId> collect = new ArrayList<>();
 		productList.stream().map(data -> data.getAsFullList()).collect(Collectors.toList()).stream().forEach(x -> collect.addAll(x));
 		srcProductsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), collect);
 	}
@@ -76,9 +76,9 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 		Set<Long> alternativeProductIds = productIdsSourceSystem.keySet();
 		try {
 			for (Long prodId : alternativeProductIds) {
-				ProductId mainProduct = ProductId.builder().productId(productIdsSourceSystem.getMappedIdForId(prodId)).langIso(mainLangCode)
+				ObjectId mainProduct = ObjectId.builder().objectId(productIdsSourceSystem.getMappedIdForId(prodId)).langIso(mainLangCode)
 					.build();
-				ProductId altProduct = ProductId.builder().productId(prodId).langIso(alternativeLangCode).build();
+				ObjectId altProduct = ObjectId.builder().objectId(prodId).langIso(alternativeLangCode).build();
 				products.add(new MigrationProductData(mainProduct, altProduct));
 			}
 		} catch (NotFoundException e) {
@@ -98,15 +98,15 @@ public class MigrateProductsExecutor extends AbstractProductsMigrationExecuter {
 	}
 
 	private Product populateProduct(MigrationProductData productData) {
-		ProductId mainProdInfo = productData.getMainProduct();
-		Product product = srcProductsCache.getProductById(mainProdInfo.getProductId());
+		ObjectId mainProdInfo = productData.getMainProduct();
+		Product product = srcProductsCache.getProductById(mainProdInfo.getObjectId());
 		Assert.isTrue(product.getAttributes().size() == 1 && mainProdInfo.getLangIso().equals(product.getAttributes().get(0).getLangCode()),
 			"invalid attributes configuration");
 
-		for (ProductId altProductInfo : productData.getAlternativeProducts()) {
+		for (ObjectId altProductInfo : productData.getAlternativeProducts()) {
 			Assert.isTrue(!product.getAttributes().stream().filter(attr -> attr.getLangCode().equals(altProductInfo.getLangIso())).findAny().isPresent(),
 				String.format("Duplicated attribute language for language: %s", altProductInfo.getLangIso()));
-			Product altProduct = srcProductsCache.getProductById(altProductInfo.getProductId());
+			Product altProduct = srcProductsCache.getProductById(altProductInfo.getObjectId());
 			Assert.isTrue(altProduct.getAttributes().size() == 1, "More then a single language in alternative product.");
 			ProductTranslateableAttributes attr = altProduct.getAttributes().get(0);
 			Assert.isTrue(altProductInfo.getLangIso().equals(attr.getLangCode()), String.format("Languages do not match with each other. Product data is: %s", productData));

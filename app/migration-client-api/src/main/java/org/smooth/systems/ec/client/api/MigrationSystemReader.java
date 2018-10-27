@@ -1,7 +1,6 @@
 package org.smooth.systems.ec.client.api;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.*;
@@ -48,11 +47,11 @@ public interface MigrationSystemReader extends RegisterableComponent {
    */
   List<Product> readAllProductsForCategories(List<SimpleCategory> categories);
 
-  List<Product> readAllProducts(List<ProductId> products);
+  List<Product> readAllProducts(List<ObjectId> products);
 
   List<Manufacturer> readAllManufacturers();
 
-  List<ProductPriceStrategies> readProductsPriceStrategies(List<ProductId> products);
+  List<ProductPriceStrategies> readProductsPriceStrategies(List<ObjectId> products);
 
   ProductPriceStrategies readProductPriceStrategies(Long productId);
 
@@ -75,6 +74,10 @@ public interface MigrationSystemReader extends RegisterableComponent {
 	}
 
 	default RelatedProducts readRelatedProduct(IProductCache productCache, Product product) {
+		throw new NotImplementedException();
+	}
+
+	default List<ObjectId> readProductIdsFromCategoryIdRecursively(final ObjectId rootCategory) {
 		throw new NotImplementedException();
 	}
 }

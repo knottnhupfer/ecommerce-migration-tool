@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.slf4j.Logger;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
-import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.client.util.ObjectIdMapper;
 import org.smooth.systems.ec.component.MigrationSystemReaderAndWriterFactory;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
@@ -107,12 +107,12 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 		log.info("Retrieved and cached {} products meta data", productMetaData.size());
 	}
 
-  protected List<ProductId> retrieveMainProductIds() {
-    List<ProductId> mainProductIds = new ArrayList<>();
+  protected List<ObjectId> retrieveMainProductIds() {
+    List<ObjectId> mainProductIds = new ArrayList<>();
     try {
       for (Long prodId : productIdsSourceSystem.keySet()) {
         Long mainProductId = productIdsSourceSystem.getMappedIdForId(prodId);
-        ProductId product = ProductId.builder().productId(mainProductId).langIso(config.getRootCategoryLanguage()).build();
+        ObjectId product = ObjectId.builder().objectId(mainProductId).langIso(config.getRootCategoryLanguage()).build();
         mainProductIds.add(product);
       }
     } catch (NotFoundException e) {
@@ -130,11 +130,11 @@ public abstract class AbstractProductsMigrationExecuter implements IActionExecut
 		srcProductsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader());
 	}
 
-  protected List<ProductId> initializeSourceSystemProductCacheAndRetrieveList() {
+  protected List<ObjectId> initializeSourceSystemProductCacheAndRetrieveList() {
 		if(srcProductsCache != null) {
 			throw new IllegalStateException("Product cache already initialized.");
 		}
-    List<ProductId> mainProductIds = retrieveMainProductIds();
+    List<ObjectId> mainProductIds = retrieveMainProductIds();
     srcProductsCache = ProductsCache.createProductsCache(readerWriterFactory.getMigrationReader(), mainProductIds);
     return mainProductIds;
   }

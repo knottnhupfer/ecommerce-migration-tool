@@ -3,8 +3,8 @@ package org.smooth.systems.ec.magento;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.client.api.SimpleCategory;
-import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.magento.mapper.MagentoCategoryConvert;
@@ -76,7 +76,7 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
   }
 
   @Override
-  public List<Product> readAllProducts(List<ProductId> products) {
+  public List<Product> readAllProducts(List<ObjectId> products) {
     log.debug("readAllProducts({})", products);
     throw new RuntimeException("Not implemented yet");
   }
@@ -87,7 +87,7 @@ public class MagentoObjectReader extends AbstractMagentoConnector implements Mig
   }
 
   @Override
-  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ProductId> products) {
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ObjectId> products) {
     log.info("readProductsPriceStrategies({})", products);
     throw new NotImplementedException();
   }

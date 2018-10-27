@@ -1,7 +1,7 @@
 package org.smooth.systems.ec.magento19.db.component;
 
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.client.api.SimpleCategory;
-import org.smooth.systems.ec.client.api.ProductId;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.magento19.db.Magento19Constants;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,15 +69,15 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
   }
 
   @Override
-  public List<Product> readAllProducts(List<ProductId> products) {
+  public List<Product> readAllProducts(List<ObjectId> products) {
     log.debug("readAllProducts({})", products);
     return products.stream().map(this::readProduct).collect(Collectors.toList());
   }
 
-  private Product readProduct(ProductId prod) {
+  private Product readProduct(ObjectId prod) {
     log.info("readProduct({})", prod);
     try {
-      return productsReader.getProduct(prod.getProductId(), prod.getLangIso());
+      return productsReader.getProduct(prod.getObjectId(), prod.getLangIso());
     } catch(Exception e) {
       log.error("Unable to load product: {}", prod, e);
       throw new IllegalStateException(e.getMessage());
@@ -89,11 +90,11 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
   }
 
   @Override
-  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ProductId> products) {
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ObjectId> products) {
     log.debug("readProductsPriceStrategies({})", products);
     List<ProductPriceStrategies> strategies = new ArrayList<>();
-    for (ProductId product : products) {
-      strategies.add(readProductPriceStrategies(product.getProductId()));
+    for (ObjectId product : products) {
+      strategies.add(readProductPriceStrategies(product.getObjectId()));
     }
     return strategies;
   }
@@ -126,5 +127,17 @@ public class Magento19DbObjectReader implements MigrationSystemReader {
 			relatedProducts.addRelatedProduct(new ProductMapping(productCache.getProductById(prodId).getSku(), prodId));
 		});
 		return relatedProducts;
+	}
+
+	@Override
+	public List<ObjectId> readProductIdsFromCategoryIdRecursively(final ObjectId rootCategory) {
+  	log.info("readProductIdsFromCategoryIdRecursively({})", rootCategory);
+		SimpleCategory rootCategoryObj = new SimpleCategory(rootCategory.getObjectId(), rootCategory.getLangIso());
+		List<Category> categories = categoriesReader.readAllCategories(Collections.singletonList(rootCategoryObj));
+//		Category category = categoriesReader.retrieveCategoriesFromRootCategoryId(rootCategory.getObjectId());
+		// TODO
+//		productsReader.getProduct()
+//		List<Category> childrens = category.getChildrens();
+		throw new NotImplementedException();
 	}
 }

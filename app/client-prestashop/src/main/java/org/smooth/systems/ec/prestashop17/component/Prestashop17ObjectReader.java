@@ -1,13 +1,11 @@
 package org.smooth.systems.ec.prestashop17.component;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import org.smooth.systems.ec.client.api.MigrationClientConstants;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 
-import org.smooth.systems.ec.client.util.PriceConvertUtil;
 import org.smooth.systems.ec.migration.model.Category;
 import org.smooth.systems.ec.migration.model.Product;
 import org.smooth.systems.ec.migration.model.IProductMetaData;
@@ -18,7 +16,7 @@ import org.smooth.systems.ec.prestashop17.model.ProductSpecificPrice;
 import org.smooth.systems.ec.prestashop17.util.Prestashop17ProductConverter;
 
 import org.smooth.systems.ec.client.api.SimpleCategory;
-import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.configuration.MigrationConfiguration;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.*;
@@ -73,7 +71,7 @@ public class Prestashop17ObjectReader extends AbstractPrestashop17Connector impl
   }
 
   @Override
-  public List<Product> readAllProducts(List<ProductId> products) {
+  public List<Product> readAllProducts(List<ObjectId> products) {
     log.debug("readAllProducts({})", products);
     throw new RuntimeException("Not implemented yet");
   }
@@ -86,7 +84,7 @@ public class Prestashop17ObjectReader extends AbstractPrestashop17Connector impl
   }
 
   @Override
-  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ProductId> products) {
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ObjectId> products) {
     log.info("readProductsPriceStrategies({})", products);
     throw new NotImplementedException();
   }
@@ -119,7 +117,7 @@ public class Prestashop17ObjectReader extends AbstractPrestashop17Connector impl
 		strategy.setHasPriceStrategies(true);
 //		for(ProductSpecificPrice specificPrice : productSpecificPrices) {
 //			ProductTierPriceStrategy.ProductTierPriceStrategyBuilder builder = ProductTierPriceStrategy.builder();
-//			builder.id(specificPrice.getProductId());
+//			builder.id(specificPrice.getObjectId());
 //			builder.minQuantity(specificPrice.getQuantity());
 //			builder.discountType(ProductTierPriceStrategy.DiscountType.PRICE);
 //			builder.value(specificPrice.getPrice());

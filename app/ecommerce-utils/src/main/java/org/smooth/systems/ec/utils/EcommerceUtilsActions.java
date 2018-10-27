@@ -21,5 +21,7 @@ public interface EcommerceUtilsActions {
 
 	String PRODUCTS_PRICE_STRATEGIES_MISSING = "products-price-strategies-missing";
 
+	String PRODUCTS_MIGRATE_MISSING = "products-migrate-missing";
+
   String CATEGORIES_MIGRATION = "migrate-categories";
 }

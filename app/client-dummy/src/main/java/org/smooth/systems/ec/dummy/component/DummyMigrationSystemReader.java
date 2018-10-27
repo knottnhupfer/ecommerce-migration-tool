@@ -8,10 +8,9 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import lombok.extern.slf4j.Slf4j;
 import org.smooth.systems.ec.client.api.MigrationSystemReader;
 import org.smooth.systems.ec.client.api.SimpleCategory;
-import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.smooth.systems.ec.dummy.DummyConstants;
 import org.smooth.systems.ec.exceptions.NotImplementedException;
 import org.smooth.systems.ec.migration.model.*;
@@ -48,13 +47,13 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
   }
 
   @Override
-  public List<Product> readAllProducts(List<ProductId> productsInfo) {
+  public List<Product> readAllProducts(List<ObjectId> productsInfo) {
     List<Product> products = new ArrayList<>();
-    for (ProductId productInfo : productsInfo) {
-      if (!dummyProducts.containsKey(productInfo.getProductId())) {
-        throw new IllegalStateException("Unable to find product for id: " + productInfo.getProductId());
+    for (ObjectId productInfo : productsInfo) {
+      if (!dummyProducts.containsKey(productInfo.getObjectId())) {
+        throw new IllegalStateException("Unable to find product for id: " + productInfo.getObjectId());
       }
-      products.add(dummyProducts.get(productInfo.getProductId()));
+      products.add(dummyProducts.get(productInfo.getObjectId()));
     }
     return products;
   }
@@ -107,7 +106,7 @@ public class DummyMigrationSystemReader implements MigrationSystemReader {
   }
 
   @Override
-  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ProductId> products) {
+  public List<ProductPriceStrategies> readProductsPriceStrategies(List<ObjectId> products) {
     throw new NotImplementedException();
   }
 

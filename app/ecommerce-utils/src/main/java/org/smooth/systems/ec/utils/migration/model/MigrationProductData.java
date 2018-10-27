@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.smooth.systems.ec.client.api.ProductId;
+import org.smooth.systems.ec.client.api.ObjectId;
 import org.springframework.util.Assert;
 
 /**
@@ -16,19 +16,19 @@ import org.springframework.util.Assert;
 @Data
 public class MigrationProductData {
 
-  private ProductId mainProduct;
+  private ObjectId mainProduct;
 
-  private List<ProductId> alternativeProducts = new ArrayList<>();
+  private List<ObjectId> alternativeProducts = new ArrayList<>();
 
-  public MigrationProductData(ProductId... products) {
+  public MigrationProductData(ObjectId... products) {
     Assert.isTrue(products.length >= 1, "there must be at least one product");
-		List<ProductId> productsList = new ArrayList<>(Arrays.asList(products));
+		List<ObjectId> productsList = new ArrayList<>(Arrays.asList(products));
     mainProduct = productsList.remove(0);
     alternativeProducts = productsList;
   }
 
-  public List<ProductId> getAsFullList() {
-		List<ProductId> res = new ArrayList<>();
+  public List<ObjectId> getAsFullList() {
+		List<ObjectId> res = new ArrayList<>();
 		res.add(mainProduct);
     res.addAll(alternativeProducts);
     return res;
